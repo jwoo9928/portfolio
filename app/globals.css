@@ -316,7 +316,7 @@ p {
   height: 7px;
   border-radius: 50%;
   background: var(--cobalt);
-  box-shadow: 0 0 0 4px rgba(23, 72, 232, 0.14);
+  box-shadow: 0 0 0 4px rgba(36, 72, 200, 0.16);
   content: "";
 }
 
@@ -534,7 +534,7 @@ p {
 }
 
 .project-index {
-  color: rgba(17, 19, 15, 0.1);
+  color: rgba(22, 24, 20, 0.1);
   font-size: clamp(5rem, 10vw, 10rem);
   font-weight: 950;
   line-height: 0.75;
