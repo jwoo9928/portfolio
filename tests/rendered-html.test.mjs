@@ -97,15 +97,23 @@ test("server-renders all three deep case studies with explicit evidence states",
     assert.match(html, expected);
   }
 
-  const aiops = await htmlFor("/work/aiops");
-  assert.match(aiops, /86-second, 8,192-completion-token run/);
-  assert.match(aiops, /This is an RCA replay, not a fleet benchmark/);
-
   const shakespeare = await htmlFor("/work/shakespeare");
   assert.match(shakespeare, /Session-abandon cancellation is not claimed/);
   assert.match(shakespeare, /physical print outcome is not yet recorded/);
   assert.doesNotMatch(shakespeare, /records request, result, print, satisfaction/);
   assert.doesNotMatch(shakespeare, /cancels abandoned upstream work/);
+});
+
+test("does not publish the removed Laguna diagnostic replay", async () => {
+  const [english, korean] = await Promise.all([
+    htmlFor("/work/aiops"),
+    htmlFor("/ko/work/aiops"),
+  ]);
+
+  for (const html of [english, korean]) {
+    assert.doesNotMatch(html, /86-second|8,192-completion-token|779 completion/);
+    assert.doesNotMatch(html, /86초|완료 토큰 8,192|Laguna 장애 재현/);
+  }
 });
 
 test("server-renders all three Korean case studies with the same evidence boundaries", async () => {
@@ -174,6 +182,84 @@ test("keeps Korean multiline display type above overlapping line boxes", async (
     assert.ok(
       Number(lineHeight[1]) >= 1.08,
       `${selector} line-height should prevent Hangul overlap`,
+    );
+  }
+});
+
+test("keeps English multiline display type above overlapping line boxes", async () => {
+  const styles = await readFile(
+    new URL("../app/globals.css", import.meta.url),
+    "utf8",
+  );
+  const selectors = [
+    ".hero h1",
+    ".positioning h2",
+    ".section-heading h2",
+    ".project-card-header h3",
+    ".contact h2",
+    ".case-hero h1",
+    ".case-section h2",
+    ".next-case a strong",
+  ];
+
+  for (const selector of selectors) {
+    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const block = styles.match(new RegExp(`${escaped}\\s*\\{([^}]+)\\}`));
+    assert.ok(block, `${selector} should exist`);
+    const lineHeight = block[1].match(/line-height:\s*([0-9.]+)/);
+    assert.ok(lineHeight, `${selector} should define line-height`);
+    assert.ok(
+      Number(lineHeight[1]) >= 1,
+      `${selector} line-height should prevent Latin display overlap`,
+    );
+  }
+});
+
+test("keeps the core palette at WCAG AA text contrast", async () => {
+  const styles = await readFile(
+    new URL("../app/globals.css", import.meta.url),
+    "utf8",
+  );
+  const root = styles.match(/:root\s*\{([^}]+)\}/)?.[1] ?? "";
+  const tokens = Object.fromEntries(
+    [...root.matchAll(/--([\w-]+):\s*(#[0-9a-f]{6})/gi)].map((match) => [
+      match[1],
+      match[2],
+    ]),
+  );
+
+  const luminance = (hex) => {
+    const channels = hex
+      .slice(1)
+      .match(/../g)
+      .map((value) => Number.parseInt(value, 16) / 255)
+      .map((value) =>
+        value <= 0.04045
+          ? value / 12.92
+          : ((value + 0.055) / 1.055) ** 2.4,
+      );
+    return (
+      0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
+    );
+  };
+  const contrast = (foreground, background) => {
+    const first = luminance(tokens[foreground]);
+    const second = luminance(tokens[background]);
+    return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
+  };
+
+  for (const [foreground, background] of [
+    ["ink", "paper"],
+    ["muted", "paper"],
+    ["cobalt", "paper"],
+    ["white", "ink"],
+    ["white", "cobalt"],
+    ["white", "olive"],
+    ["white", "orange"],
+  ]) {
+    assert.ok(
+      contrast(foreground, background) >= 4.5,
+      `${foreground} on ${background} should meet WCAG AA`,
     );
   }
 });

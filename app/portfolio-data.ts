@@ -156,12 +156,6 @@ export const projects: Project[] = [
         state: "bounded",
       },
       {
-        label: "Laguna incident replay",
-        value:
-          "A documented single diagnostic replay changed from an 86-second, 8,192-completion-token run with no tool call to a valid tool call in 12 seconds and 779 completion tokens after disabling thinking. This is an RCA replay, not a fleet benchmark.",
-        state: "confirmed",
-      },
-      {
         label: "Scale",
         value:
           "Production-scale concurrency, p95 latency, cost per run, and sustained load results are not claimed.",

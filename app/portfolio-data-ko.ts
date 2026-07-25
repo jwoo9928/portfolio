@@ -101,12 +101,6 @@ export const projectsKo: Project[] = [
         state: "bounded",
       },
       {
-        label: "Laguna 장애 재현",
-        value:
-          "문서화된 단일 진단 재현에서 86초·완료 토큰 8,192개를 사용하고 도구 호출에 실패한 실행이 thinking 비활성화 후 12초·779개 토큰의 정상 도구 호출로 바뀌었습니다. 이는 단일 RCA 재현이며 전체 플릿 벤치마크가 아닙니다.",
-        state: "confirmed",
-      },
-      {
         label: "규모",
         value:
           "프로덕션 규모의 동시성, p95 지연, 실행당 비용, 지속 부하 결과는 주장하지 않습니다.",
