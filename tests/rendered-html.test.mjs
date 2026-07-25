@@ -124,3 +124,32 @@ test("keeps accessibility and social assets in the source contract", async () =>
   await access(new URL("../public/og.png", import.meta.url));
   await assert.rejects(access(new URL("../app/_sites-preview", import.meta.url)));
 });
+
+test("keeps Korean multiline display type above overlapping line boxes", async () => {
+  const styles = await readFile(
+    new URL("../app/globals.css", import.meta.url),
+    "utf8",
+  );
+  const selectors = [
+    '[lang="ko"] .hero h1',
+    '[lang="ko"] .positioning h2',
+    '[lang="ko"] .section-heading h2',
+    '[lang="ko"] .project-card-header h3',
+    '[lang="ko"] .contact h2',
+    '[lang="ko"] .case-hero h1',
+    '[lang="ko"] .case-section h2',
+    '[lang="ko"] .next-case a strong',
+  ];
+
+  for (const selector of selectors) {
+    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const block = styles.match(new RegExp(`${escaped}\\s*\\{([^}]+)\\}`));
+    assert.ok(block, `${selector} should have a Korean override`);
+    const lineHeight = block[1].match(/line-height:\s*([0-9.]+)/);
+    assert.ok(lineHeight, `${selector} should define line-height`);
+    assert.ok(
+      Number(lineHeight[1]) >= 1.08,
+      `${selector} line-height should prevent Hangul overlap`,
+    );
+  }
+});

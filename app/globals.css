@@ -179,12 +179,6 @@ p {
   word-break: keep-all;
 }
 
-[lang="ko"] .hero h1 {
-  font-size: clamp(3.7rem, 7.3vw, 8.2rem);
-  line-height: 0.94;
-  letter-spacing: -0.075em;
-}
-
 [lang="ko"] .hero h1 em {
   font-family:
     var(--font-geist-sans), "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic",
@@ -1378,6 +1372,104 @@ footer a {
   font-size: 2rem;
 }
 
+/* Korean typography uses taller glyph metrics than the Latin display face.
+   Keep every multiline display surface above a 1.0 line box. */
+[lang="ko"] .eyebrow,
+[lang="ko"] .detail-label,
+[lang="ko"] .section-marker,
+[lang="ko"] .status-badge strong,
+[lang="ko"] .system-topline {
+  line-height: 1.55;
+  letter-spacing: 0.055em;
+}
+
+[lang="ko"] .hero h1 {
+  font-size: clamp(3.5rem, 6.8vw, 7.6rem);
+  line-height: 1.12;
+  letter-spacing: -0.052em;
+}
+
+[lang="ko"] .positioning h2 {
+  font-size: clamp(2.5rem, 4.8vw, 5.5rem);
+  line-height: 1.16;
+  letter-spacing: -0.045em;
+}
+
+[lang="ko"] .section-heading h2 {
+  font-size: clamp(2.4rem, 4.3vw, 5rem);
+  line-height: 1.16;
+  letter-spacing: -0.045em;
+}
+
+[lang="ko"] .project-card-header h3 {
+  font-size: clamp(3rem, 5.8vw, 6.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.052em;
+}
+
+[lang="ko"] .project-subtitle,
+[lang="ko"] .case-subtitle,
+[lang="ko"] .role-fit h3 {
+  font-family:
+    var(--font-geist-sans), "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic",
+    sans-serif;
+  font-style: normal;
+}
+
+[lang="ko"] .project-subtitle,
+[lang="ko"] .case-subtitle {
+  line-height: 1.42;
+  letter-spacing: -0.025em;
+}
+
+[lang="ko"] .proof-grid h3,
+[lang="ko"] .principles h3 {
+  line-height: 1.35;
+  letter-spacing: -0.025em;
+}
+
+[lang="ko"] .role-fit h3 {
+  line-height: 1.24;
+  letter-spacing: -0.035em;
+}
+
+[lang="ko"] .contact h2 {
+  font-size: clamp(3.7rem, 8vw, 8.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+}
+
+[lang="ko"] .contact::after {
+  display: none;
+}
+
+[lang="ko"] .case-hero h1 {
+  font-size: clamp(3.7rem, 7.2vw, 7.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.055em;
+}
+
+[lang="ko"] .case-section h2 {
+  font-size: clamp(2.35rem, 4.2vw, 4.8rem);
+  line-height: 1.16;
+  letter-spacing: -0.042em;
+}
+
+[lang="ko"] .decision-grid h3 {
+  line-height: 1.28;
+  letter-spacing: -0.035em;
+}
+
+[lang="ko"] .system-map strong {
+  line-height: 1.5;
+}
+
+[lang="ko"] .next-case a strong {
+  font-size: clamp(2.8rem, 5.8vw, 6.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.05em;
+}
+
 @media (max-width: 1000px) {
   .hero {
     grid-template-columns: 1fr;
@@ -1482,11 +1574,6 @@ footer a {
 
   .hero h1 {
     font-size: clamp(3.6rem, 17vw, 5.9rem);
-  }
-
-  [lang="ko"] .hero h1 {
-    font-size: clamp(3rem, 13.8vw, 5.2rem);
-    line-height: 1;
   }
 
   .hero-actions {
@@ -1707,6 +1794,43 @@ footer a {
 
   .next-case {
     padding: 5rem 1.1rem;
+  }
+
+  [lang="ko"] .hero h1 {
+    font-size: clamp(2.65rem, 11.3vw, 4.25rem);
+    line-height: 1.16;
+    letter-spacing: -0.045em;
+  }
+
+  [lang="ko"] .positioning h2,
+  [lang="ko"] .section-heading h2 {
+    font-size: 2.2rem;
+    line-height: 1.22;
+  }
+
+  [lang="ko"] .project-card-header h3 {
+    font-size: clamp(2.8rem, 12.5vw, 4.4rem);
+    line-height: 1.13;
+  }
+
+  [lang="ko"] .contact h2 {
+    font-size: clamp(3rem, 14vw, 4.8rem);
+    line-height: 1.12;
+  }
+
+  [lang="ko"] .case-hero h1 {
+    font-size: clamp(2.9rem, 13.2vw, 4.7rem);
+    line-height: 1.13;
+  }
+
+  [lang="ko"] .case-section h2 {
+    font-size: 2.25rem;
+    line-height: 1.22;
+  }
+
+  [lang="ko"] .next-case a strong {
+    font-size: clamp(2.55rem, 11vw, 4rem);
+    line-height: 1.13;
   }
 }
 
