@@ -5,6 +5,8 @@ export const projectsKo: Project[] = [
     slug: "aiops",
     index: "01",
     theme: "blue",
+    portfolioTier: "대표 프로젝트",
+    portfolioTrack: "AI Agent Engineer",
     kicker: "에이전틱 AI 인프라",
     title: "AIOps-PoC",
     subtitle: "평가 가능한 AI PoC를 반복 구축하기 위한 재사용형 제어 계층",
@@ -26,6 +28,12 @@ export const projectsKo: Project[] = [
       { value: "A100 × 8", label: "40 GB 서빙 플릿" },
       { value: "Blackwell", label: "RTX PRO 6000 프로파일" },
     ],
+    constraints: [
+      "PoC마다 오케스트레이션 계층을 새로 만들지 않고 서로 다른 사용 사례를 지원해야 했습니다.",
+      "모델의 제안 권한과 런타임 컴파일·준비·평가·출시 권한을 분리해야 했습니다.",
+      "A100과 Blackwell 환경에서 오픈 모델을 직접 운영하면서 정확한 런타임 식별자를 보존해야 했습니다.",
+      "미지원 입력, 모델 미준비, 잘못된 그래프 바인딩을 명시적인 최종 상태로 노출해야 했습니다.",
+    ],
     flow: [
       "요구사항 계약",
       "에이전트 의미 계획",
@@ -35,6 +43,18 @@ export const projectsKo: Project[] = [
     ],
     architectureNote:
       "에이전트는 제한된 의미 의도를 담당합니다. 결정론적 생명주기 코드가 권한 검사, 정확한 그래프 바인딩, 컴파일, 준비 상태, 불변 증거 산출물을 담당합니다.",
+    scenario: {
+      title: "컨설턴트의 요구사항에서 실행 가능한 PoC까지",
+      summary:
+        "컨설턴트가 업무와 증거 요구사항을 정의하면 시스템이 이를 타입이 있는 계획으로 바꾸고, 지원되는 기능만 컴파일하고, 정확한 런타임을 준비한 뒤 동일한 그래프를 평가합니다.",
+      steps: [
+        "사용 사례, 입출력, 제약, 평가 목표를 요구사항 계약으로 수집합니다.",
+        "에이전트가 의미 의도를 제안하되 타입 스키마로 무제한 런타임 명령을 차단합니다.",
+        "등록된 경로, 모델, 토폴로지, 필수 입력을 기준으로 제안을 컴파일합니다.",
+        "지문 검증, 중단·재개, 준비 상태 게이트를 갖춘 지속 가능한 런타임을 준비합니다.",
+        "컨설턴트가 사용할 정확한 그래프와 모델 설정을 대상으로 평가와 HITL을 실행합니다.",
+      ],
+    },
     decisions: [
       {
         label: "권한",
@@ -81,10 +101,42 @@ export const projectsKo: Project[] = [
         state: "bounded",
       },
       {
+        label: "Laguna 장애 재현",
+        value:
+          "문서화된 단일 진단 재현에서 86초·완료 토큰 8,192개를 사용하고 도구 호출에 실패한 실행이 thinking 비활성화 후 12초·779개 토큰의 정상 도구 호출로 바뀌었습니다. 이는 단일 RCA 재현이며 전체 플릿 벤치마크가 아닙니다.",
+        state: "confirmed",
+      },
+      {
         label: "규모",
         value:
           "프로덕션 규모의 동시성, p95 지연, 실행당 비용, 지속 부하 결과는 주장하지 않습니다.",
         state: "open",
+      },
+    ],
+    artifacts: [
+      {
+        title: "타입 기반 런타임 계약",
+        body:
+          "RuntimeGraphIntent, RuntimeGraphDecision, ServingPipelineSpec이 에이전트의 제안 범위와 결정론적 코드의 검증 책임을 구분합니다.",
+        state: "implemented",
+      },
+      {
+        title: "지속 가능한 생명주기 구현",
+        body:
+          "Data-preparation 생명주기에 컴파일, 디스패치, 중단·재개, 지문 검증, 준비 상태, 커밋 경로가 구현되어 있습니다.",
+        state: "implemented",
+      },
+      {
+        title: "모델 서빙 운영 기록",
+        body:
+          "A100·Blackwell 프로파일, 장애 분석, 런타임 활성화 기록은 내부에 존재합니다. 공개 검토에는 비식별화된 배포 상태와 반복 가능한 벤치마크가 추가로 필요합니다.",
+        state: "available",
+      },
+      {
+        title: "공개 벤치마크 점수표",
+        body:
+          "TTFT, 처리량, 지속 동시성, 실패율, GPU 메모리, 실행당 비용을 하나의 재현 가능한 데이터셋으로 아직 공개하지 않았습니다.",
+        state: "pending",
       },
     ],
     measurementPlan: [
@@ -105,10 +157,8 @@ export const projectsKo: Project[] = [
       "NVFP4",
       "FlashAttention 4",
     ],
-    repository: "https://github.com/jwoo9928/AIOps",
     repositoryNote:
-      "공개 구현 스냅샷이며 배포 벤치마크 증거는 별도로 공개할 예정입니다.",
-    demoNote: "데모 영상 자리 표시자 — 촬영 예정",
+      "현재 구현 저장소는 비로그인 상태에서 공개 접근할 수 없습니다. 익명 접근을 검증한 후에만 링크를 복구하며, 비식별화된 아키텍처와 벤치마크를 공개 증거로 준비합니다.",
     evidenceBoundary:
       "내부 실사용과 구현된 서빙 프로파일만 주장합니다. 프로덕션 규모 부하, 공개 벤치마크 재현성, 정량화된 도입 성과는 아직 주장하지 않습니다.",
   },
@@ -116,6 +166,8 @@ export const projectsKo: Project[] = [
     slug: "audit",
     index: "02",
     theme: "olive",
+    portfolioTier: "대표 프로젝트",
+    portfolioTrack: "AI Solutions Architect",
     kicker: "규제 AI / GOVTECH",
     title: "AI 자동 일상감사 시스템",
     subtitle: "대한민국 공공계약을 위한 근거 기반 검토 시스템",
@@ -137,6 +189,12 @@ export const projectsKo: Project[] = [
       { value: "Fail-closed", label: "근거 불충분 시 차단" },
       { value: "사람의 승인", label: "인증된 최종 확정" },
     ],
+    constraints: [
+      "모든 판단을 검토 시점의 정확한 법령·규정·원본 파일·검색 세대에 연결해야 했습니다.",
+      "HWP/HWPX, PDF, DOCX를 지원하면서 파싱 누락이 조용히 적합 판정으로 바뀌지 않게 해야 했습니다.",
+      "LLM 출력은 제안으로 제한하고 결정론적 정책과 인증된 검토자가 판정·승인 권한을 가져야 했습니다.",
+      "의무, 근거, 검증 상태, 런타임 식별자가 불완전하면 fail-closed로 차단해야 했습니다.",
+    ],
     flow: [
       "버전 관리 규정",
       "이중 검색",
@@ -146,6 +204,18 @@ export const projectsKo: Project[] = [
     ],
     architectureNote:
       "LLM은 스키마에 제한된 후보만 제안합니다. 버전이 지정된 정책, 증거 채택, 준비 상태, 발견 사항, 최종 승인은 결정론적 로직 또는 인증된 사람이 담당합니다.",
+    scenario: {
+      title: "계약 문서 묶음에서 검토자 승인 결과까지",
+      summary:
+        "검색 전에 정책 세대와 원본 해시를 고정합니다. 계약 중심·의무 중심 검색이 근거 그래프를 만들고, 모델은 후보만 제안하며, 결정론적 정책이 증거 충분성을 판정한 뒤 인증된 검토자가 최종 승인합니다.",
+      steps: [
+        "계약 문서를 수집하고 문서 해시, 정책 세대, 감사 준비 번들을 고정합니다.",
+        "dense, sparse, ColBERT, reranking을 사용해 계약 중심·규정 중심 검색을 실행합니다.",
+        "채택된 구절을 의무에 연결하고 ProofRecord와 불변 실행 스냅샷에 lineage를 보존합니다.",
+        "근거가 부족한 모델 제안을 검토 필요 또는 증거 부족 상태로 강등합니다.",
+        "인증된 사람 검토자가 최종 검토 묶음을 승인하도록 강제합니다.",
+      ],
+    },
     decisions: [
       {
         label: "원천 진실",
@@ -198,6 +268,32 @@ export const projectsKo: Project[] = [
         state: "open",
       },
     ],
+    artifacts: [
+      {
+        title: "버전 관리 증거 계층",
+        body:
+          "원천 세대, 문서 해시, 의무 원장, 증거 바인딩, 불변 실행 스냅샷이 각 검토의 판단 기반을 보존합니다.",
+        state: "implemented",
+      },
+      {
+        title: "Fail-closed 판정 엔진",
+        body:
+          "계획 매트릭스, 증거 검증, 결정론적 판정, 인증된 승인이 모델 출력을 규정 적합 권한 밖에 둡니다.",
+        state: "implemented",
+      },
+      {
+        title: "베타 업무 패키지",
+        body:
+          "내부 실증을 완료했고 수요 기관이 review-assist 흐름을 검증 중입니다. 기관·문서·검토자 세부정보는 비공개입니다.",
+        state: "available",
+      },
+      {
+        title: "프로덕션 검증 패키지",
+        body:
+          "서명된 이종 골드 문서, 반복 격리 실행, 검토자 일치도, 정확한 런타임 승인이 프로덕션 검증 전에 필요합니다.",
+        state: "pending",
+      },
+    ],
     measurementPlan: [
       "검토 시간 방법론: 문서 유형, 페이지 수, 기준선, 표본 수, 중앙값, p95",
       "검토자 일치도와 사람의 수정 시간",
@@ -216,7 +312,6 @@ export const projectsKo: Project[] = [
       "Docker",
     ],
     repositoryNote: "비공개 저장소 — 비식별화된 아키텍처 증거 검토 가능",
-    demoNote: "데모 영상 자리 표시자 — 촬영 예정",
     evidenceBoundary:
       "약 5분이라는 결과는 내부 실증 관찰값이며 프로덕션 SLA가 아닙니다. 베타 정확도, 검토자 일치도, 프로덕션 검증은 아직 측정할 항목입니다.",
   },
@@ -224,6 +319,8 @@ export const projectsKo: Project[] = [
     slug: "shakespeare",
     index: "03",
     theme: "orange",
+    portfolioTier: "보조 프로젝트",
+    portfolioTrack: "Product & Edge AI",
     kicker: "공공 문화 경험 / EDGE AI",
     title: "AI 셰익스피어",
     subtitle: "대학로를 위한 현장 설치형 생성 AI 희곡 키오스크",
@@ -241,31 +338,49 @@ export const projectsKo: Project[] = [
     environment: "무인 80 mm 감열 출력이 가능한 Windows Electron 키오스크",
     metrics: [
       { value: "2026년 8월", label: "현장 출시 예정" },
-      { value: "222 MB", label: "RCA 후 설치 파일" },
+      { value: "222 MB", label: "운영자 확인 설치 파일" },
       { value: "80 mm", label: "감열 영수증" },
-      { value: "85초", label: "생성 제공자 타임아웃" },
+      { value: "85초", label: "시도당 타임아웃" },
+    ],
+    constraints: [
+      "제공자 호출 제한과 반복 방문 세션에서도 공공 키오스크가 응답성을 유지해야 했습니다.",
+      "Windows에서 80 mm 감열 영수증을 무인 출력하고 비개발자 운영자가 인수할 수 있어야 했습니다.",
+      "API 자격 증명과 관리자 권한을 방문자 렌더러 밖에 두어야 했습니다.",
+      "재시작 후에도 요청·생성 결과를 보존하되, 출력 텔레메트리는 현재 한계로 명시해야 했습니다.",
     ],
     flow: [
       "방문자 이야기",
       "직렬화된 생성",
-      "트랜잭션 원장",
+      "로컬 요청 원장",
       "영수증 출력",
       "만족도",
     ],
     architectureNote:
-      "Electron 전용 현장 화면이 한 번에 하나의 생성만 허용하고, 이탈한 상위 요청을 취소하며, 운영 상태를 트랜잭션으로 확정한 뒤 제한된 영수증을 선택된 Windows 프린터로 보냅니다.",
+      "Electron 현장 애플리케이션은 single-flight 큐로 생성을 직렬화하고, 제공자 호출마다 85초 타임아웃을 적용하며, 요청·생성 상태를 로컬에 저장한 뒤 제한된 영수증을 선택된 Windows 프린터로 보냅니다.",
+    scenario: {
+      title: "방문자의 이야기에서 가져갈 수 있는 희곡까지",
+      summary:
+        "방문자가 인물과 상황을 입력하면 데스크톱 프로세스가 한 번에 하나씩 생성을 처리하고, 제한된 타임아웃·재시도를 적용하며, 결과를 저장하고 80 mm 영수증으로 단막 희곡을 출력합니다.",
+      steps: [
+        "샌드박스 렌더러에서 방문자의 인물과 상황을 입력받습니다.",
+        "main process 큐에서 한 개의 활성 생성만 처리하고 시도당 타임아웃과 제한된 재시도를 적용합니다.",
+        "요청, 생성 결과 또는 오류, 이후 만족도 상태를 로컬 SQLite에 저장합니다.",
+        "보호된 숨김 출력 창에서 제한된 영수증을 렌더링하고 Windows 프린터로 전송합니다.",
+        "다음 방문을 위해 초기화하며 현장 신뢰성과 방문자 성과는 설치 후 측정합니다.",
+      ],
+    },
     decisions: [
       {
         label: "동시성",
         title: "공공 체험을 직렬화합니다.",
         body:
-          "연속 이용에서 세션 중첩과 호출 제한 증폭이 드러났습니다. 하나의 활성 생성, 상위 요청 취소, 제한된 재시도, 세션 소유권으로 상호작용을 보호합니다.",
+          "연속 이용에서 세션 중첩과 호출 제한 증폭이 드러났습니다. Promise 큐로 한 번에 하나의 생성만 허용하고, 시도당 타임아웃과 제한된 재시도로 무제한 대기를 막습니다. 세션 이탈 취소는 주장하지 않습니다.",
       },
       {
         label: "영속성",
-        title: "부분 쓰기를 운영 장애로 취급합니다.",
+        title: "현재 원장이 실제 관측하는 상태만 저장합니다.",
         body:
-          "로컬 SQLite 원장이 요청, 결과, 출력, 만족도, 오류 상태를 트랜잭션으로 기록해 재시작 후 불완전한 작업이 성공한 방문으로 표시되지 않게 합니다.",
+          "로컬 SQLite는 요청, 생성 결과 또는 오류, 만족도 상태를 저장합니다. 성공 결과 갱신에는 immediate transaction을 사용하지만 실제 출력 결과는 아직 지속 텔레메트리로 기록하지 않습니다.",
       },
       {
         label: "패키징 RCA",
@@ -290,8 +405,8 @@ export const projectsKo: Project[] = [
       {
         label: "패키징",
         value:
-          "빌드 이력에 1,268.53 MB 패키징 오류, 근본 원인, 다시 빌드한 222 MB 설치 파일, 해시 검증, 설치, 실행 스모크 테스트가 기록되어 있습니다.",
-        state: "confirmed",
+          "운영자는 재귀 패키징 오류와 다시 빌드한 222 MB 설치 파일을 확인했습니다. 비식별 저장소에는 원본 빌드 이력과 공개 해시·스모크 테스트 산출물이 없습니다.",
+        state: "bounded",
       },
       {
         label: "보관",
@@ -304,6 +419,32 @@ export const projectsKo: Project[] = [
         value:
           "방문자 수, 실제 출력 성공률, 만족도, 장애 지표는 8월 설치 후 측정할 예정입니다.",
         state: "open",
+      },
+    ],
+    artifacts: [
+      {
+        title: "비식별 Electron 애플리케이션",
+        body:
+          "코드에서 single-flight 생성 큐, 시도당 타임아웃, 제한된 재시도, 보안 설정, SQLite 상태, 80 mm 출력 경로를 확인했습니다.",
+        state: "implemented",
+      },
+      {
+        title: "보안 경계",
+        body:
+          "OS 기반 비밀 저장, scrypt 관리자 자격 증명, 제한적 CSP, context isolation, 렌더러 sandbox가 구현되어 있습니다.",
+        state: "implemented",
+      },
+      {
+        title: "현장 설치 파일",
+        body:
+          "222 MB 설치 파일은 운영자가 확인했지만 공개 체크섬, 깨끗한 PC 설치 기록, 스모크 테스트 증거는 아직 첨부되지 않았습니다.",
+        state: "available",
+      },
+      {
+        title: "현장 성과 보고서",
+        body:
+          "방문 완료율, 실제 출력 성공률, 지연 분포, 만족도, 장애 복구는 2026년 8월 설치 후 측정할 예정입니다.",
+        state: "pending",
       },
     ],
     measurementPlan: [
@@ -322,11 +463,10 @@ export const projectsKo: Project[] = [
       "Thermal Print",
       "CSP",
     ],
-    repository: "https://github.com/seoul-ai-foundation/AI-Drama",
-    repositoryNote: "비식별화된 Electron 스냅샷",
-    demoNote: "데모 영상 자리 표시자 — 촬영 예정",
+    repositoryNote:
+      "비식별 구현은 현재 익명 접근 가능한 공개 저장소로 확인되지 않았습니다. 따라서 깨진 저장소 CTA 없이 검토한 코드 범위만 설명합니다.",
     evidenceBoundary:
-      "현장 빌드와 설치 파일은 검증되었습니다. 8월 출시 전에는 현장 프린터 신뢰성, 방문자 성과, 만족도를 주장하지 않습니다.",
+      "애플리케이션 코드와 운영자 확인 설치 파일은 서로 다른 증거 수준입니다. 8월 출시 전에는 현장 프린터 신뢰성, 방문자 성과, 만족도를 주장하지 않습니다.",
   },
 ];
 

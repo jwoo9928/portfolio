@@ -14,9 +14,9 @@ import type { Project } from "./portfolio-data";
 const homeCopy = {
   en: {
     eyebrow: "JAEWOO PARK / BUILDER-FIRST AI SYSTEMS",
-    hero: ["Architect the system.", "Ship the code.", "Prove it can operate."],
+    hero: ["Discover the workflow.", "Build the system.", "Earn the proof."],
     lede:
-      "Builder-first AI Solutions Architect and Agentic AI Engineer with approximately four years of end-to-end ownership—from discovery and architecture to model serving, evaluation, deployment, and field hardening.",
+      "Builder-first AI Solutions Architect and Agentic AI Engineer with approximately four years of end-to-end ownership. I turn ambiguous operating problems into bounded agent systems, ship the product and infrastructure, and keep deployment claims tied to evidence.",
     explore: "Explore case studies",
     lifecycleLabel: "End-to-end delivery lifecycle",
     accountable: "ONE ACCOUNTABLE BUILDER",
@@ -31,9 +31,9 @@ const homeCopy = {
     lifecycleNote:
       "Requirements, architecture, code, evaluation, deployment, and operational hardening—owned without a handoff gap.",
     heroMetrics: [
-      ["≈4 years", "building applied AI systems"],
-      ["3 systems", "active use, institutional beta, and scheduled field launch"],
-      ["Full lifecycle", "discovery through deployment"],
+      ["≈4 years", "applied AI delivery"],
+      ["2 flagships", "agent engineering + solution architecture"],
+      ["Sole owner", "discovery through deployment"],
     ],
     positioningLabel: "Professional positioning",
     positioning:
@@ -45,35 +45,39 @@ const homeCopy = {
       ["Field launch scheduled", "AI Shakespeare", "maturity-scheduled"],
     ],
     selected: "SELECTED SYSTEMS / 2026",
-    selectedTitle: "Three systems. Three distinct stages of operational proof.",
+    selectedTitle: "Two flagship systems. One supporting field product.",
     selectedBody:
-      "Each case separates implemented architecture, operator-confirmed use, bounded claims, and measurements that remain open.",
+      "AIOps-PoC demonstrates agent infrastructure and model operations. AI Automated Daily Audit demonstrates regulated solution architecture. AI Shakespeare adds a compact edge and public-experience case before field results are available.",
     role: "Role",
     ownership: "Ownership",
     systemFlow: "system flow",
     boundary: "Evidence boundary",
     fullCase: "Full case study",
     repository: "Repository",
-    proofEyebrow: "THE EVIDENCE CONTRACT",
-    proofTitle: "A portfolio claim should expose its proof and its boundary.",
+    proofEyebrow: "REUSABLE OPERATING ASSETS",
+    proofTitle: "The work produced systems that can be reused beyond one demo.",
     proof: [
       [
-        "Architecture artifact",
-        "Show the real runtime path, authority split, state transitions, and operational dependencies—not a generic agent loop.",
+        "Typed runtime contracts",
+        "Agent intent, deterministic authority, runtime identity, terminal state, and proof are represented as explicit contracts instead of prompt conventions.",
       ],
       [
-        "Evaluation unit",
-        "Define the dataset, baseline, sample size, metric, distribution, and human judgment behind every performance claim.",
+        "Evaluation and admission gates",
+        "Evaluation is bound to the executable runtime. Unsupported inputs, missing evidence, model readiness, and production qualification remain explicit gates.",
       ],
       [
-        "Deployment state",
-        "Separate implemented, internally validated, beta, field-ready, and production-qualified states.",
+        "Evidence and review ledgers",
+        "Versioned sources, immutable run snapshots, human release, and local operational state preserve what happened and who retained authority.",
       ],
       [
-        "Open measurement",
-        "Name what is not yet proven. A visible evidence boundary is a reliability feature, not a disclaimer.",
+        "Model and edge operations",
+        "The portfolio covers direct vLLM serving and inference RCA as well as secured Electron packaging, local persistence, and physical printing.",
       ],
     ],
+    rolePathEyebrow: "ROLE-SPECIFIC READING PATHS",
+    rolePathTitle: "Start with the evidence closest to the role.",
+    rolePathBody:
+      "The same builder owned discovery, architecture, code, evaluation, deployment, and operations. The emphasis changes by role.",
     approachEyebrow: "HOW I BUILD",
     approachTitle: "Architecture is a chain of accountable decisions.",
     principles: [
@@ -97,7 +101,10 @@ const homeCopy = {
     roles: [
       {
         label: "AI SOLUTIONS ARCHITECT",
-        title: "Business problem to operating system",
+        title: "Regulated workflow to operating system",
+        href: "/work/audit",
+        proof:
+          "Start with AI Automated Daily Audit: versioned policy, dual retrieval, evidence lineage, fail-closed decisions, authenticated review, and institutional beta.",
         items: [
           "Discovery and use-case qualification",
           "Reusable reference architectures",
@@ -107,7 +114,10 @@ const homeCopy = {
       },
       {
         label: "AGENTIC AI ENGINEER",
-        title: "Deep systems work",
+        title: "Agent runtime to model operations",
+        href: "/work/aiops",
+        proof:
+          "Start with AIOps-PoC: typed agent contracts, deterministic compilation, durable lifecycle execution, exact-runtime evaluation, vLLM serving, and incident RCA.",
         items: [
           "Typed agent state and tool contracts",
           "Evaluation and failure-mode design",
@@ -120,14 +130,12 @@ const homeCopy = {
     contactTitle: ["Complex workflow.", "Clear system."],
     contactBody:
       "I am interested in AI Solutions Architect and Agentic AI Engineer roles where architecture, code, evaluation, and customer outcomes belong in the same conversation.",
-    contactNote:
-      "Résumé and direct email CTA will be added when the public assets are provided.",
   },
   ko: {
     eyebrow: "PARK JAEWOO / BUILDER-FIRST AI SYSTEMS",
-    hero: ["시스템을 설계하고.", "코드를 배포하고.", "운영 가능성을 증명합니다."],
+    hero: ["업무를 발견하고.", "시스템을 구축하고.", "증거로 증명합니다."],
     lede:
-      "약 4년 경력의 Builder-first AI Solutions Architect이자 Agentic AI Engineer입니다. 요구사항 발굴과 아키텍처부터 모델 서빙, 평가, 배포, 현장 안정화까지 전 과정을 책임집니다.",
+      "약 4년 경력의 Builder-first AI Solutions Architect이자 Agentic AI Engineer입니다. 모호한 운영 문제를 권한이 제한된 에이전트 시스템으로 바꾸고, 제품과 인프라를 직접 배포하며, 모든 배포 주장을 증거에 연결합니다.",
     explore: "프로젝트 사례 보기",
     lifecycleLabel: "엔드투엔드 전달 생명주기",
     accountable: "한 명의 책임 있는 빌더",
@@ -142,9 +150,9 @@ const homeCopy = {
     lifecycleNote:
       "요구사항, 아키텍처, 코드, 평가, 배포, 운영 안정화까지 인수인계 공백 없이 직접 책임졌습니다.",
     heroMetrics: [
-      ["약 4년", "응용 AI 시스템 구축"],
-      ["3개 시스템", "내부 사용, 기관 베타, 현장 출시 예정"],
-      ["전체 생명주기", "문제 발굴부터 배포까지"],
+      ["약 4년", "응용 AI 구축"],
+      ["대표 2건", "Agent Engineering + Solution Architecture"],
+      ["단독 책임", "문제 발굴부터 배포까지"],
     ],
     positioningLabel: "전문 역량 포지셔닝",
     positioning:
@@ -156,35 +164,39 @@ const homeCopy = {
       ["현장 출시 예정", "AI 셰익스피어", "maturity-scheduled"],
     ],
     selected: "주요 시스템 / 2026",
-    selectedTitle: "세 개의 시스템. 서로 다른 세 단계의 운영 증거.",
+    selectedTitle: "대표 시스템 두 건. 현장 제품 사례 한 건.",
     selectedBody:
-      "각 사례는 구현된 아키텍처, 운영자 확인 사용, 범위가 제한된 주장, 아직 측정할 항목을 구분합니다.",
+      "AIOps-PoC는 에이전트 인프라와 모델 운영을, AI 자동 일상감사는 규제 업무 솔루션 아키텍처를 보여줍니다. AI 셰익스피어는 현장 성과가 나오기 전까지 edge·공공 경험을 보완하는 사례입니다.",
     role: "역할",
     ownership: "담당 범위",
     systemFlow: "시스템 흐름",
     boundary: "증거 경계",
     fullCase: "전체 사례 보기",
     repository: "저장소",
-    proofEyebrow: "증거 계약",
-    proofTitle: "포트폴리오의 모든 주장은 증거와 경계를 함께 보여야 합니다.",
+    proofEyebrow: "재사용 가능한 운영 자산",
+    proofTitle: "한 번의 데모를 넘어 재사용할 수 있는 시스템을 만들었습니다.",
     proof: [
       [
-        "아키텍처 산출물",
-        "일반적인 에이전트 반복도가 아니라 실제 런타임 경로, 권한 분리, 상태 전이, 운영 의존성을 보여줍니다.",
+        "타입 기반 런타임 계약",
+        "에이전트 의도, 결정론적 권한, 런타임 식별자, 최종 상태, 증거를 프롬프트 관례가 아닌 명시적 계약으로 표현합니다.",
       ],
       [
-        "평가 단위",
-        "모든 성능 주장에 대해 데이터셋, 기준선, 표본 수, 지표, 분포, 사람의 판단을 정의합니다.",
+        "평가와 승인 게이트",
+        "평가를 실행 런타임에 연결하고, 미지원 입력, 근거 누락, 모델 준비 상태, 프로덕션 검증을 명시적 게이트로 유지합니다.",
       ],
       [
-        "배포 상태",
-        "구현, 내부 검증, 베타, 현장 준비, 프로덕션 검증 상태를 명확히 구분합니다.",
+        "증거와 검토 원장",
+        "버전이 있는 원천, 불변 실행 스냅샷, 사람의 승인, 로컬 운영 상태로 무슨 일이 있었고 누가 권한을 가졌는지 보존합니다.",
       ],
       [
-        "미측정 항목",
-        "아직 증명되지 않은 것을 밝힙니다. 보이는 증거 경계는 변명이 아니라 신뢰성 기능입니다.",
+        "모델과 Edge 운영",
+        "vLLM 직접 서빙과 추론 장애 분석부터 Electron 보안·패키징·로컬 저장·물리 출력까지 다룹니다.",
       ],
     ],
+    rolePathEyebrow: "역할별 읽기 경로",
+    rolePathTitle: "지원 역할과 가장 가까운 증거부터 확인할 수 있습니다.",
+    rolePathBody:
+      "문제 발굴, 아키텍처, 코드, 평가, 배포, 운영을 동일한 빌더가 책임했습니다. 역할에 따라 강조점만 달라집니다.",
     approachEyebrow: "구축 원칙",
     approachTitle: "아키텍처는 책임 있는 의사결정의 연쇄입니다.",
     principles: [
@@ -208,7 +220,10 @@ const homeCopy = {
     roles: [
       {
         label: "AI SOLUTIONS ARCHITECT",
-        title: "비즈니스 문제에서 운영 시스템까지",
+        title: "규제 업무에서 운영 시스템까지",
+        href: "/ko/work/audit",
+        proof:
+          "AI 자동 일상감사부터 확인: 버전 관리 정책, 이중 검색, 증거 lineage, fail-closed 판정, 인증된 검토, 기관 베타.",
         items: [
           "문제 발굴과 사용 사례 적합성 판단",
           "재사용 가능한 참조 아키텍처",
@@ -218,7 +233,10 @@ const homeCopy = {
       },
       {
         label: "AGENTIC AI ENGINEER",
-        title: "깊이 있는 시스템 구현",
+        title: "에이전트 런타임에서 모델 운영까지",
+        href: "/ko/work/aiops",
+        proof:
+          "AIOps-PoC부터 확인: 타입 기반 에이전트 계약, 결정론적 컴파일, 지속 가능한 생명주기, 정확한 런타임 평가, vLLM 서빙, 장애 RCA.",
         items: [
           "타입이 있는 에이전트 상태와 도구 계약",
           "평가와 실패 모드 설계",
@@ -231,8 +249,6 @@ const homeCopy = {
     contactTitle: ["복잡한 업무 흐름.", "명확한 시스템."],
     contactBody:
       "아키텍처, 코드, 평가, 고객 성과를 하나의 대화에서 다루는 AI Solutions Architect 및 Agentic AI Engineer 역할을 찾고 있습니다.",
-    contactNote:
-      "공개 가능한 이력서와 직접 연락 이메일을 제공받으면 CTA를 추가할 예정입니다.",
   },
 } as const;
 
@@ -318,6 +334,31 @@ export function HomePage({
         ))}
       </section>
 
+      <section className="role-paths" id="tracks">
+        <div className="section-heading">
+          <p className="eyebrow">{copy.rolePathEyebrow}</p>
+          <h2>{copy.rolePathTitle}</h2>
+          <p>{copy.rolePathBody}</p>
+        </div>
+        <div className="role-fit">
+          {copy.roles.map((role) => (
+            <article key={role.label}>
+              <p className="detail-label">{role.label}</p>
+              <h3>{role.title}</h3>
+              <p className="role-proof">{role.proof}</p>
+              <ul>
+                {role.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <Link href={role.href}>
+                {copy.fullCase} <Arrow />
+              </Link>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="work" id="work">
         <div className="section-heading">
           <p className="eyebrow">{copy.selected}</p>
@@ -328,7 +369,12 @@ export function HomePage({
         <div className="project-list">
           {projects.map((project) => (
             <article
-              className={`project-card project-${project.theme}`}
+              className={`project-card project-${project.theme} ${
+                project.portfolioTier.includes("SUPPORTING") ||
+                project.portfolioTier.includes("보조")
+                  ? "project-supporting"
+                  : "project-flagship"
+              }`}
               key={project.slug}
             >
               <div className="project-card-top">
@@ -339,6 +385,10 @@ export function HomePage({
               </div>
 
               <div className="project-card-header">
+                <div className="project-designation">
+                  <span>{project.portfolioTier}</span>
+                  <strong>{project.portfolioTrack}</strong>
+                </div>
                 <p className="eyebrow">{project.kicker}</p>
                 <h3>{project.title}</h3>
                 <p className="project-subtitle">{project.subtitle}</p>
@@ -415,20 +465,6 @@ export function HomePage({
             </article>
           ))}
         </div>
-
-        <div className="role-fit">
-          {copy.roles.map((role) => (
-            <div key={role.label}>
-              <p className="detail-label">{role.label}</p>
-              <h3>{role.title}</h3>
-              <ul>
-                {role.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
       </section>
 
       <section className="contact" id="contact">
@@ -451,7 +487,6 @@ export function HomePage({
             LinkedIn <Arrow />
           </a>
         </div>
-        <p className="contact-note">{copy.contactNote}</p>
       </section>
 
       <Footer locale={locale} />

@@ -37,8 +37,10 @@ test("server-renders the evidence-first portfolio home page", async () => {
     html,
     /<title>Jaewoo Park — AI Solutions Architect &amp; Agentic AI Engineer<\/title>/i,
   );
-  assert.match(html, /Architect the system\./);
-  assert.match(html, /Three systems\. Three distinct stages/);
+  assert.match(html, /Discover the workflow\./);
+  assert.match(html, /Two flagship systems\. One supporting field product/);
+  assert.match(html, /ROLE-SPECIFIC READING PATHS/);
+  assert.match(html, /REUSABLE OPERATING ASSETS/);
   assert.match(html, /AIOps-PoC/);
   assert.match(html, /AI Automated Daily Audit/);
   assert.match(html, /AI Shakespeare/);
@@ -50,6 +52,9 @@ test("server-renders the evidence-first portfolio home page", async () => {
   assert.match(html, /hreflang="ko"/i);
   assert.match(html, /property="og:image"/);
   assert.match(html, /\/og\.png/);
+  assert.doesNotMatch(html, /github\.com\/jwoo9928\/AIOps/);
+  assert.doesNotMatch(html, /github\.com\/seoul-ai-foundation\/AI-Drama/);
+  assert.doesNotMatch(html, /Demo video placeholder/);
   assert.doesNotMatch(html, /launch-ready|Three production paths/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
@@ -62,7 +67,10 @@ test("server-renders the Korean home page with locale-aware metadata and navigat
     /<title>박재우 — AI 솔루션 아키텍트 &amp; 에이전틱 AI 엔지니어<\/title>/,
   );
   assert.match(html, /<main[^>]+lang="ko"/);
-  assert.match(html, /시스템을 설계하고\./);
+  assert.match(html, /업무를 발견하고\./);
+  assert.match(html, /대표 시스템 두 건\. 현장 제품 사례 한 건/);
+  assert.match(html, /역할별 읽기 경로/);
+  assert.match(html, /재사용 가능한 운영 자산/);
   assert.match(html, /AI 자동 일상감사 시스템/);
   assert.match(html, /AI 셰익스피어/);
   assert.match(html, /href="\/"/);
@@ -79,12 +87,25 @@ test("server-renders all three deep case studies with explicit evidence states",
 
   for (const [pathname, expected] of cases) {
     const html = await htmlFor(pathname);
-    assert.match(html, /What is proven, bounded, and still open/);
+    assert.match(html, /Observed results, their proof, and their boundary/);
     assert.match(html, /Confirmed/);
     assert.match(html, /Bounded claim/);
     assert.match(html, /Open measurement/);
+    assert.match(html, /Representative workflow/);
+    assert.match(html, /Operating constraints/);
+    assert.match(html, /IMPLEMENTATION ARTIFACTS/);
     assert.match(html, expected);
   }
+
+  const aiops = await htmlFor("/work/aiops");
+  assert.match(aiops, /86-second, 8,192-completion-token run/);
+  assert.match(aiops, /This is an RCA replay, not a fleet benchmark/);
+
+  const shakespeare = await htmlFor("/work/shakespeare");
+  assert.match(shakespeare, /Session-abandon cancellation is not claimed/);
+  assert.match(shakespeare, /physical print outcome is not yet recorded/);
+  assert.doesNotMatch(shakespeare, /records request, result, print, satisfaction/);
+  assert.doesNotMatch(shakespeare, /cancels abandoned upstream work/);
 });
 
 test("server-renders all three Korean case studies with the same evidence boundaries", async () => {
@@ -96,10 +117,13 @@ test("server-renders all three Korean case studies with the same evidence bounda
 
   for (const [pathname, expected] of cases) {
     const html = await htmlFor(pathname);
-    assert.match(html, /검증된 것, 범위를 제한한 주장, 아직 측정할 것/);
+    assert.match(html, /관찰된 결과, 그 증거, 그리고 증거의 경계/);
     assert.match(html, /검증됨/);
     assert.match(html, /범위 제한 주장/);
     assert.match(html, /측정 예정/);
+    assert.match(html, /대표 업무 흐름/);
+    assert.match(html, /운영 제약/);
+    assert.match(html, /구현 산출물/);
     assert.match(html, /href="\/work\//);
     assert.match(html, expected);
   }

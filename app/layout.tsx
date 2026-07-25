@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s",
   },
   description:
-    "Builder-first AI Solutions Architect and Agentic AI Engineer. Three evidence-bounded systems spanning agentic infrastructure, regulated public-sector AI, and a field-ready generative kiosk.",
+    "Builder-first AI Solutions Architect and Agentic AI Engineer. Two flagship systems spanning agent infrastructure and regulated solution architecture, plus one supporting edge AI product.",
   keywords: [
     "AI Solutions Architect",
     "Agentic AI Engineer",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "Jaewoo Park — AI Systems Portfolio",
     title: "Jaewoo Park — AI Solutions Architect & Agentic AI Engineer",
     description:
-      "Architect the system. Ship the code. Prove it can operate.",
+      "Discover the workflow. Build the system. Earn the proof.",
     images: [
       {
         url: "/og.png",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Jaewoo Park — AI Solutions Architect & Agentic AI Engineer",
     description:
-      "Architect the system. Ship the code. Prove it can operate.",
+      "Discover the workflow. Build the system. Earn the proof.",
     images: ["/og.png"],
   },
   robots: {

@@ -13,6 +13,8 @@ export type Project = {
   slug: "aiops" | "audit" | "shakespeare";
   index: string;
   theme: "blue" | "olive" | "orange";
+  portfolioTier: string;
+  portfolioTrack: string;
   kicker: string;
   title: string;
   subtitle: string;
@@ -26,19 +28,30 @@ export type Project = {
   duration: string;
   environment: string;
   metrics: Metric[];
+  constraints: string[];
   flow: string[];
   architectureNote: string;
+  scenario: {
+    title: string;
+    summary: string;
+    steps: string[];
+  };
   decisions: Array<{
     label: string;
     title: string;
     body: string;
   }>;
   evidence: EvidenceItem[];
+  artifacts: Array<{
+    title: string;
+    body: string;
+    state: "implemented" | "available" | "pending";
+  }>;
   measurementPlan: string[];
   technologies: string[];
   repository?: string;
   repositoryNote: string;
-  demoNote: string;
+  demoNote?: string;
   evidenceBoundary: string;
 };
 
@@ -47,6 +60,8 @@ export const projects: Project[] = [
     slug: "aiops",
     index: "01",
     theme: "blue",
+    portfolioTier: "FLAGSHIP CASE",
+    portfolioTrack: "AI Agent Engineer",
     kicker: "AGENTIC INFRASTRUCTURE",
     title: "AIOps-PoC",
     subtitle: "A reusable control plane for evaluated AI proofs of concept",
@@ -68,6 +83,12 @@ export const projects: Project[] = [
       { value: "8 × A100", label: "40 GB serving fleet" },
       { value: "Blackwell", label: "RTX PRO 6000 profile" },
     ],
+    constraints: [
+      "Support different PoC use cases without rebuilding the orchestration stack each time.",
+      "Keep model proposals separate from authority to compile, prepare, evaluate, and release a runtime.",
+      "Serve and operate open models across A100 and Blackwell profiles while preserving exact runtime identity.",
+      "Expose unsupported inputs, unavailable models, and invalid graph bindings as explicit terminal states.",
+    ],
     flow: [
       "Requirement contract",
       "Semantic agent plan",
@@ -77,6 +98,18 @@ export const projects: Project[] = [
     ],
     architectureNote:
       "The agent owns bounded semantic intent. Deterministic lifecycle code owns authority checks, exact graph binding, compilation, readiness, and immutable proof artifacts.",
+    scenario: {
+      title: "From consultant request to an executable PoC",
+      summary:
+        "A consultant defines the business task and evidence requirement. The system converts that request into a typed plan, compiles only supported capabilities, prepares the exact runtime, and evaluates the same bound graph before it can be used.",
+      steps: [
+        "Capture the use case, inputs, outputs, constraints, and evaluation target as a requirement contract.",
+        "Let agents propose semantic intent while typed schemas prevent unbounded runtime instructions.",
+        "Compile the proposal against registered routes, models, topology, and required inputs.",
+        "Prepare the durable runtime with fingerprint checks, interrupt/resume, and readiness gates.",
+        "Run evaluation and HITL against the exact graph and model configuration that the consultant will use.",
+      ],
+    },
     decisions: [
       {
         label: "AUTHORITY",
@@ -123,10 +156,42 @@ export const projects: Project[] = [
         state: "bounded",
       },
       {
+        label: "Laguna incident replay",
+        value:
+          "A documented single diagnostic replay changed from an 86-second, 8,192-completion-token run with no tool call to a valid tool call in 12 seconds and 779 completion tokens after disabling thinking. This is an RCA replay, not a fleet benchmark.",
+        state: "confirmed",
+      },
+      {
         label: "Scale",
         value:
           "Production-scale concurrency, p95 latency, cost per run, and sustained load results are not claimed.",
         state: "open",
+      },
+    ],
+    artifacts: [
+      {
+        title: "Typed runtime contracts",
+        body:
+          "RuntimeGraphIntent, RuntimeGraphDecision, and ServingPipelineSpec outputs define what agents may propose and what deterministic code must certify.",
+        state: "implemented",
+      },
+      {
+        title: "Durable lifecycle implementation",
+        body:
+          "Compile, dispatch, interrupt/resume, fingerprint validation, readiness, and commit paths are implemented for the Data-preparation lifecycle.",
+        state: "implemented",
+      },
+      {
+        title: "Model-serving operations record",
+        body:
+          "A100 and Blackwell profiles, failure investigations, and runtime activation records exist internally. A redacted deployment status and repeatable benchmark are still required for public review.",
+        state: "available",
+      },
+      {
+        title: "Public benchmark scorecard",
+        body:
+          "TTFT, throughput, sustained concurrency, failure rate, GPU memory, and cost per run have not yet been published as one reproducible dataset.",
+        state: "pending",
       },
     ],
     measurementPlan: [
@@ -147,10 +212,8 @@ export const projects: Project[] = [
       "NVFP4",
       "FlashAttention 4",
     ],
-    repository: "https://github.com/jwoo9928/AIOps",
     repositoryNote:
-      "Public implementation snapshot; deployment benchmark evidence will be published separately.",
-    demoNote: "Demo video placeholder — recording pending",
+      "The implementation repository is currently not publicly accessible. A repository link will only be restored after anonymous-access verification; redacted architecture and benchmark evidence are the planned public artifacts.",
     evidenceBoundary:
       "The portfolio claims active internal use and implemented serving profiles. It does not claim production-scale load, public benchmark reproducibility, or quantified adoption yet.",
   },
@@ -158,6 +221,8 @@ export const projects: Project[] = [
     slug: "audit",
     index: "02",
     theme: "olive",
+    portfolioTier: "FLAGSHIP CASE",
+    portfolioTrack: "AI Solutions Architect",
     kicker: "REGULATED AI / GOVTECH",
     title: "AI Automated Daily Audit",
     subtitle: "Evidence-grounded review for Korean public procurement",
@@ -179,6 +244,12 @@ export const projects: Project[] = [
       { value: "Fail-closed", label: "insufficient evidence" },
       { value: "Human release", label: "authenticated approval" },
     ],
+    constraints: [
+      "Bind every finding to the exact version of laws, rules, source files, and retrieval generation used for the review.",
+      "Support Korean HWP/HWPX, PDF, and DOCX evidence without allowing parsing gaps to become silent compliance decisions.",
+      "Keep LLM output advisory: deterministic policy and an authenticated reviewer retain decision and release authority.",
+      "Fail closed when required obligations, evidence, qualification, or runtime identity are incomplete.",
+    ],
     flow: [
       "Versioned rules",
       "Dual retrieval",
@@ -188,6 +259,18 @@ export const projects: Project[] = [
     ],
     architectureNote:
       "The LLM may propose schema-bound candidates. Versioned policy, evidence acceptance, readiness, findings, and release remain deterministic or authenticated-human authority.",
+    scenario: {
+      title: "From contract package to reviewer-approved finding",
+      summary:
+        "A review run pins its policy generation and source hashes before retrieval. Contract-driven and obligation-driven searches build an evidence graph; the model proposes candidates, deterministic policy decides whether evidence is sufficient, and an authenticated reviewer releases the result.",
+      steps: [
+        "Ingest the contract package and freeze document hashes, policy generation, and audit-ready bundle.",
+        "Run target-driven and rule-driven retrieval using dense, sparse, ColBERT, and reranking signals.",
+        "Bind accepted passages to obligations and preserve lineage in ProofRecords and an immutable run snapshot.",
+        "Downgrade unsupported model proposals to review-required or insufficient-evidence states.",
+        "Require an authenticated human reviewer to release the final review package.",
+      ],
+    },
     decisions: [
       {
         label: "SOURCE TRUTH",
@@ -240,6 +323,32 @@ export const projects: Project[] = [
         state: "open",
       },
     ],
+    artifacts: [
+      {
+        title: "Versioned evidence plane",
+        body:
+          "Source generations, document hashes, obligation ledgers, evidence bindings, and immutable run snapshots preserve the basis of each review.",
+        state: "implemented",
+      },
+      {
+        title: "Fail-closed decision engine",
+        body:
+          "Planning matrices, evidence qualification, deterministic decisions, and authenticated release keep model output outside compliance authority.",
+        state: "implemented",
+      },
+      {
+        title: "Beta workflow package",
+        body:
+          "Internal validation is complete and a demand-side institution is testing the review-assist workflow. Institution, document, and reviewer details remain confidential.",
+        state: "available",
+      },
+      {
+        title: "Production qualification pack",
+        body:
+          "Signed heterogeneous gold documents, repeated isolated runs, reviewer agreement, and exact runtime admission remain required before production qualification.",
+        state: "pending",
+      },
+    ],
     measurementPlan: [
       "Cycle-time methodology: document class, page count, baseline, n, median, and p95",
       "Reviewer agreement and human correction time",
@@ -258,7 +367,6 @@ export const projects: Project[] = [
       "Docker",
     ],
     repositoryNote: "Private repository — architecture evidence available in a redacted review",
-    demoNote: "Demo video placeholder — recording pending",
     evidenceBoundary:
       "The five-minute result is an internal-validation observation, not a production SLA. Beta accuracy, reviewer agreement, and production qualification remain explicitly open.",
   },
@@ -266,6 +374,8 @@ export const projects: Project[] = [
     slug: "shakespeare",
     index: "03",
     theme: "orange",
+    portfolioTier: "SUPPORTING CASE",
+    portfolioTrack: "Product & Edge AI",
     kicker: "PUBLIC EXPERIENCE / EDGE AI",
     title: "AI Shakespeare",
     subtitle: "A field-ready generative theatre kiosk for Daehak-ro",
@@ -283,31 +393,49 @@ export const projects: Project[] = [
     environment: "Windows Electron kiosk with silent 80 mm thermal printing",
     metrics: [
       { value: "August 2026", label: "scheduled field launch" },
-      { value: "222 MB", label: "installer after RCA" },
+      { value: "222 MB", label: "operator-confirmed installer" },
       { value: "80 mm", label: "thermal receipt" },
-      { value: "85 sec", label: "provider timeout" },
+      { value: "85 sec", label: "per-attempt timeout" },
+    ],
+    constraints: [
+      "Keep a public kiosk responsive under provider rate limits and repeated visitor sessions.",
+      "Operate on Windows with silent 80 mm thermal printing and a handoff suitable for nontechnical operators.",
+      "Keep API credentials and administrator authority outside the visitor renderer.",
+      "Preserve request and generation outcomes across local restarts while treating print telemetry as a current limitation.",
     ],
     flow: [
       "Visitor story",
       "Serialized generation",
-      "Transactional ledger",
+      "Local request ledger",
       "Receipt print",
       "Satisfaction",
     ],
     architectureNote:
-      "An Electron-only field surface owns one active generation at a time, cancels abandoned upstream work, commits operational state transactionally, and sends a bounded receipt to the selected Windows printer.",
+      "An Electron field application serializes generation through a single-flight queue, applies an 85-second timeout to each provider attempt, persists request and generation state locally, and sends a bounded receipt to the selected Windows printer.",
+    scenario: {
+      title: "From a visitor’s story to a take-home play",
+      summary:
+        "The visitor enters characters and a personal situation. The desktop process queues one generation at a time, applies bounded timeout and retry behavior, stores the request outcome, and prints the generated one-scene play as an 80 mm receipt.",
+      steps: [
+        "Collect the visitor’s characters and situation through the sandboxed renderer.",
+        "Submit one active generation through the main-process queue with per-attempt timeout and bounded retry.",
+        "Persist request, generated play or error, and later satisfaction state in local SQLite.",
+        "Render a bounded receipt in a secured hidden print window and send it to the selected Windows printer.",
+        "Return the kiosk to the next session; field reliability and visitor outcomes will be measured after installation.",
+      ],
+    },
     decisions: [
       {
         label: "CONCURRENCY",
         title: "Serialize the public experience.",
         body:
-          "Consecutive use exposed overlapping sessions and rate-limit amplification. One active generation, upstream cancellation, bounded retries, and session ownership now protect the interaction.",
+          "Consecutive use exposed overlapping sessions and rate-limit amplification. A promise queue permits one active generation, while per-attempt timeout and bounded retries prevent an unlimited provider wait. Session-abandon cancellation is not claimed.",
       },
       {
         label: "PERSISTENCE",
-        title: "Treat partial writes as an operational incident.",
+        title: "Persist what the current ledger actually observes.",
         body:
-          "The local SQLite ledger records request, result, print, satisfaction, and error state transactionally so a restart cannot silently present incomplete work as a successful visit.",
+          "The local SQLite store records the request, generated result or error, and satisfaction state. The successful result update uses an immediate transaction; physical print outcome is not yet recorded as durable telemetry.",
       },
       {
         label: "PACKAGING RCA",
@@ -332,8 +460,8 @@ export const projects: Project[] = [
       {
         label: "Packaging",
         value:
-          "Build history records the 1,268.53 MB packaging fault, root cause, rebuilt 222 MB installer, hash verification, installation, and launch smoke test.",
-        state: "confirmed",
+          "The operator confirms a recursive packaging fault and a rebuilt 222 MB installer. The sanitized repository does not contain the original build history or a public hash and smoke-test artifact.",
+        state: "bounded",
       },
       {
         label: "Retention",
@@ -346,6 +474,32 @@ export const projects: Project[] = [
         value:
           "Visitor volume, physical print success, satisfaction, and incident metrics remain pending until the August installation.",
         state: "open",
+      },
+    ],
+    artifacts: [
+      {
+        title: "Sanitized Electron application",
+        body:
+          "The code confirms the single-flight generation queue, per-attempt timeout, bounded retry, secure configuration, SQLite state, and 80 mm print path.",
+        state: "implemented",
+      },
+      {
+        title: "Security boundary",
+        body:
+          "OS-backed secret storage, scrypt administrator credentials, restrictive CSP, context isolation, and renderer sandboxing are implemented.",
+        state: "implemented",
+      },
+      {
+        title: "Field installer",
+        body:
+          "A 222 MB installer is operator-confirmed, but the public checksum, clean-machine installation record, and smoke-test evidence are not attached yet.",
+        state: "available",
+      },
+      {
+        title: "Field outcome report",
+        body:
+          "Visitor completion, physical print success, latency distribution, satisfaction, and incident recovery remain pending until the August 2026 installation.",
+        state: "pending",
       },
     ],
     measurementPlan: [
@@ -364,11 +518,10 @@ export const projects: Project[] = [
       "Thermal Print",
       "CSP",
     ],
-    repository: "https://github.com/seoul-ai-foundation/AI-Drama",
-    repositoryNote: "Sanitized Electron snapshot",
-    demoNote: "Demo video placeholder — recording pending",
+    repositoryNote:
+      "The sanitized implementation is not currently reachable through an anonymously verified public repository. The portfolio therefore describes the reviewed code without presenting a broken repository CTA.",
     evidenceBoundary:
-      "The field build and installer are verified. On-site printer reliability, visitor outcomes, and satisfaction are not claimed before the August launch.",
+      "The application code and operator-confirmed installer are distinct evidence levels. On-site printer reliability, visitor outcomes, and satisfaction are not claimed before the August launch.",
   },
 ];
 

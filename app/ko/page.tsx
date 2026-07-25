@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     url: "/ko",
     siteName: "박재우 — AI 시스템 포트폴리오",
     title: "박재우 — AI 솔루션 아키텍트 & 에이전틱 AI 엔지니어",
-    description: "시스템을 설계하고, 코드를 배포하고, 운영 가능성을 증명합니다.",
+    description: "업무를 발견하고, 시스템을 구축하고, 증거로 증명합니다.",
     images: [
       {
         url: "/og.png",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "박재우 — AI 솔루션 아키텍트 & 에이전틱 AI 엔지니어",
-    description: "시스템을 설계하고, 코드를 배포하고, 운영 가능성을 증명합니다.",
+    description: "업무를 발견하고, 시스템을 구축하고, 증거로 증명합니다.",
     images: ["/og.png"],
   },
 };

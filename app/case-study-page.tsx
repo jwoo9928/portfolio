@@ -17,24 +17,32 @@ const caseCopy = {
     engagement: "Engagement",
     engagementTitle: "The problem and my exact ownership.",
     facts: ["Role", "Team", "Ownership", "Stage", "Environment"],
+    constraints: "Operating constraints",
     architecture: "Architecture",
     architectureTitle: "Bounded autonomy with an explicit proof chain.",
     architectureFlow: "architecture flow",
+    scenario: "Representative workflow",
     decisions: "Decisions",
     decisionsTitle: "Architecture is the record of what was allowed to fail.",
-    evidence: "Evidence",
-    evidenceTitle: "What is proven, bounded, and still open.",
+    evidence: "Results & evidence",
+    evidenceTitle: "Observed results, their proof, and their boundary.",
     evidenceStates: {
       confirmed: "Confirmed",
       bounded: "Bounded claim",
       open: "Open measurement",
     },
     boundary: "Evidence boundary",
-    measurement: "Measurement",
-    measurementTitle: "The next claims must be earned with these measurements.",
-    artifacts: "ARTIFACTS",
+    measurement: "Delivery record",
+    measurementTitle: "Implementation artifacts, current limits, and the next validation gate.",
+    artifacts: "IMPLEMENTATION ARTIFACTS",
+    artifactStates: {
+      implemented: "Implemented",
+      available: "Internal evidence",
+      pending: "Pending",
+    },
+    nextValidation: "NEXT VALIDATION GATE",
     repository: "Repository",
-    privateRepository: "Private repository",
+    privateRepository: "Repository not publicly verified",
     next: "NEXT CASE STUDY",
   },
   ko: {
@@ -42,24 +50,32 @@ const caseCopy = {
     engagement: "프로젝트 범위",
     engagementTitle: "해결할 문제와 정확한 담당 범위.",
     facts: ["역할", "팀", "담당 범위", "단계", "환경"],
+    constraints: "운영 제약",
     architecture: "아키텍처",
     architectureTitle: "명시적인 증거 체계를 갖춘 제한된 자율성.",
     architectureFlow: "아키텍처 흐름",
+    scenario: "대표 업무 흐름",
     decisions: "설계 결정",
     decisionsTitle: "아키텍처는 어떤 실패를 허용했는지 남기는 기록입니다.",
-    evidence: "증거",
-    evidenceTitle: "검증된 것, 범위를 제한한 주장, 아직 측정할 것.",
+    evidence: "성과와 증거",
+    evidenceTitle: "관찰된 결과, 그 증거, 그리고 증거의 경계.",
     evidenceStates: {
       confirmed: "검증됨",
       bounded: "범위 제한 주장",
       open: "측정 예정",
     },
     boundary: "증거 경계",
-    measurement: "측정",
-    measurementTitle: "다음 주장은 아래 측정으로 증명해야 합니다.",
-    artifacts: "산출물",
+    measurement: "전달 기록",
+    measurementTitle: "구현 산출물, 현재 한계, 다음 검증 게이트.",
+    artifacts: "구현 산출물",
+    artifactStates: {
+      implemented: "구현됨",
+      available: "내부 증거",
+      pending: "준비 중",
+    },
+    nextValidation: "다음 검증 게이트",
     repository: "저장소",
-    privateRepository: "비공개 저장소",
+    privateRepository: "공개 검증된 저장소 없음",
     next: "다음 프로젝트 사례",
   },
 } as const;
@@ -102,6 +118,10 @@ export function CaseStudyPage({
         </div>
         <div className="case-hero-grid">
           <div>
+            <div className="project-designation">
+              <span>{project.portfolioTier}</span>
+              <strong>{project.portfolioTrack}</strong>
+            </div>
             <p className="eyebrow">{project.kicker}</p>
             <h1>{project.title}</h1>
             <p className="case-subtitle">{project.subtitle}</p>
@@ -137,6 +157,14 @@ export function CaseStudyPage({
               </div>
             ))}
           </dl>
+          <div className="constraint-block">
+            <p className="detail-label">{copy.constraints}</p>
+            <ul>
+              {project.constraints.map((constraint) => (
+                <li key={constraint}>{constraint}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -155,6 +183,19 @@ export function CaseStudyPage({
             label={`${project.title} ${copy.architectureFlow}`}
           />
           <p className="architecture-note">{project.architectureNote}</p>
+          <div className="scenario-block">
+            <p className="detail-label">{copy.scenario}</p>
+            <h3>{project.scenario.title}</h3>
+            <p>{project.scenario.summary}</p>
+            <ol>
+              {project.scenario.steps.map((step, index) => (
+                <li key={step}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <p>{step}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </section>
 
@@ -214,30 +255,46 @@ export function CaseStudyPage({
           <span>05</span>
           <p id="measurement-title">{copy.measurement}</p>
         </div>
-        <div className="measurement-grid">
-          <div>
-            <h2>{copy.measurementTitle}</h2>
-            <ol>
-              {project.measurementPlan.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ol>
+        <div>
+          <h2>{copy.measurementTitle}</h2>
+          <div className="artifact-grid">
+            {project.artifacts.map((artifact) => (
+              <article key={artifact.title}>
+                <div
+                  className={`artifact-state artifact-${artifact.state}`}
+                >
+                  <span aria-hidden="true" />
+                  {copy.artifactStates[artifact.state]}
+                </div>
+                <h3>{artifact.title}</h3>
+                <p>{artifact.body}</p>
+              </article>
+            ))}
           </div>
-          <aside>
-            <p className="detail-label">{copy.artifacts}</p>
-            <TechRow items={project.technologies} locale={locale} />
-            <p className="artifact-note">{project.repositoryNote}</p>
-            <div className="artifact-links">
-              {project.repository ? (
-                <a href={project.repository} target="_blank" rel="noreferrer">
-                  {copy.repository} <Arrow />
-                </a>
-              ) : (
-                <span>{copy.privateRepository}</span>
-              )}
-              <span>{project.demoNote}</span>
+          <div className="delivery-grid">
+            <aside>
+              <p className="detail-label">{copy.artifacts}</p>
+              <TechRow items={project.technologies} locale={locale} />
+              <p className="artifact-note">{project.repositoryNote}</p>
+              <div className="artifact-links">
+                {project.repository ? (
+                  <a href={project.repository} target="_blank" rel="noreferrer">
+                    {copy.repository} <Arrow />
+                  </a>
+                ) : (
+                  <span>{copy.privateRepository}</span>
+                )}
+              </div>
+            </aside>
+            <div className="next-validation">
+              <p className="detail-label">{copy.nextValidation}</p>
+              <ol>
+                {project.measurementPlan.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ol>
             </div>
-          </aside>
+          </div>
         </div>
       </section>
 
