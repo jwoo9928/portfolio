@@ -35,6 +35,10 @@ export const metadata: Metadata = {
   creator: "Jaewoo Park",
   alternates: {
     canonical: "/",
+    languages: {
+      en: "/",
+      ko: "/ko",
+    },
   },
   openGraph: {
     type: "website",

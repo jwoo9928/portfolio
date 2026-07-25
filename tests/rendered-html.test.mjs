@@ -46,10 +46,28 @@ test("server-renders the evidence-first portfolio home page", async () => {
   assert.match(html, /Field launch scheduled/);
   assert.match(html, /github\.com\/jwoo9928/);
   assert.match(html, /linkedin\.com\/in\/jaewoo9928/);
+  assert.match(html, /href="\/ko"/);
+  assert.match(html, /hreflang="ko"/i);
   assert.match(html, /property="og:image"/);
   assert.match(html, /\/og\.png/);
   assert.doesNotMatch(html, /launch-ready|Three production paths/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
+});
+
+test("server-renders the Korean home page with locale-aware metadata and navigation", async () => {
+  const html = await htmlFor("/ko");
+
+  assert.match(
+    html,
+    /<title>박재우 — AI 솔루션 아키텍트 &amp; 에이전틱 AI 엔지니어<\/title>/,
+  );
+  assert.match(html, /<main[^>]+lang="ko"/);
+  assert.match(html, /시스템을 설계하고\./);
+  assert.match(html, /AI 자동 일상감사 시스템/);
+  assert.match(html, /AI 셰익스피어/);
+  assert.match(html, /href="\/"/);
+  assert.match(html, /hreflang="en"/i);
+  assert.match(html, /href="[^"]*\/ko"[^>]+rel="canonical"|rel="canonical"[^>]+href="[^"]*\/ko"/i);
 });
 
 test("server-renders all three deep case studies with explicit evidence states", async () => {
@@ -69,17 +87,36 @@ test("server-renders all three deep case studies with explicit evidence states",
   }
 });
 
+test("server-renders all three Korean case studies with the same evidence boundaries", async () => {
+  const cases = [
+    ["/ko/work/aiops", /poolside\/Laguna-S-2\.1/],
+    ["/ko/work/audit", /프로덕션 검증은 차단 상태/],
+    ["/ko/work/shakespeare", /방문자 기록 6개월 보관은 운영 정책/],
+  ];
+
+  for (const [pathname, expected] of cases) {
+    const html = await htmlFor(pathname);
+    assert.match(html, /검증된 것, 범위를 제한한 주장, 아직 측정할 것/);
+    assert.match(html, /검증됨/);
+    assert.match(html, /범위 제한 주장/);
+    assert.match(html, /측정 예정/);
+    assert.match(html, /href="\/work\//);
+    assert.match(html, expected);
+  }
+});
+
 test("keeps accessibility and social assets in the source contract", async () => {
-  const [page, layout, styles, packageJson] = await Promise.all([
-    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+  const [homePage, layout, styles, packageJson] = await Promise.all([
+    readFile(new URL("../app/home-page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
-  assert.match(page, /<SiteNav/);
+  assert.match(homePage, /<SiteNav/);
   assert.match(layout, /openGraph:/);
   assert.match(layout, /twitter:/);
+  assert.match(layout, /languages:/);
   assert.match(styles, /:focus-visible/);
   assert.match(styles, /\.mobile-nav/);
   assert.doesNotMatch(packageJson, /drizzle/);

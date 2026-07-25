@@ -26,7 +26,9 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family:
+    var(--font-geist-sans), "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic",
+    Arial, Helvetica, sans-serif;
   text-rendering: optimizeLegibility;
 }
 
@@ -96,6 +98,7 @@ p {
 
 .nav-links a,
 .nav-github,
+.language-switch,
 .mobile-nav {
   font-family: var(--font-geist-mono), monospace;
   font-size: 0.7rem;
@@ -130,11 +133,64 @@ p {
 }
 
 .nav-github {
+  white-space: nowrap;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 1.35rem;
+  align-items: center;
   justify-self: end;
+}
+
+.language-switch {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.language-switch > span[aria-current="page"] {
+  padding-bottom: 0.18rem;
+  border-bottom: 2px solid var(--cobalt);
+}
+
+.language-switch > span[aria-hidden="true"] {
+  color: var(--line);
+}
+
+.language-switch a {
+  color: var(--muted);
+}
+
+.language-switch a:hover {
+  color: var(--ink);
 }
 
 .mobile-nav {
   display: none;
+}
+
+[lang="ko"] h1,
+[lang="ko"] h2,
+[lang="ko"] h3,
+[lang="ko"] p,
+[lang="ko"] dd,
+[lang="ko"] li {
+  word-break: keep-all;
+}
+
+[lang="ko"] .hero h1 {
+  font-size: clamp(3.7rem, 7.3vw, 8.2rem);
+  line-height: 0.94;
+  letter-spacing: -0.075em;
+}
+
+[lang="ko"] .hero h1 em {
+  font-family:
+    var(--font-geist-sans), "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic",
+    sans-serif;
+  font-style: normal;
+  font-weight: 950;
 }
 
 .hero {
@@ -1368,7 +1424,8 @@ footer a {
 
   .site-nav {
     height: 64px;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr auto auto;
+    gap: 0.65rem;
     padding: 0 1.1rem;
   }
 
@@ -1380,6 +1437,10 @@ footer a {
   .mobile-nav {
     position: relative;
     display: block;
+  }
+
+  .nav-actions {
+    gap: 0;
   }
 
   .mobile-nav summary {
@@ -1421,6 +1482,11 @@ footer a {
 
   .hero h1 {
     font-size: clamp(3.6rem, 17vw, 5.9rem);
+  }
+
+  [lang="ko"] .hero h1 {
+    font-size: clamp(3rem, 13.8vw, 5.2rem);
+    line-height: 1;
   }
 
   .hero-actions {

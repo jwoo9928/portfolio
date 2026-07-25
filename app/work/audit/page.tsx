@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import { CaseStudyPage } from "../../case-study-page";
-import { getProject } from "../../portfolio-data";
+import { getProject, projects } from "../../portfolio-data";
 
 const project = getProject("audit");
 
 export const metadata: Metadata = {
   title: `${project.title} — Jaewoo Park`,
   description: project.subtitle,
-  alternates: { canonical: "/work/audit" },
+  alternates: {
+    canonical: "/work/audit",
+    languages: { en: "/work/audit", ko: "/ko/work/audit" },
+  },
 };
 
 export default function AuditCaseStudy() {
-  return <CaseStudyPage project={project} />;
+  return <CaseStudyPage project={project} projects={projects} />;
 }

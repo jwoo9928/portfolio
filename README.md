@@ -1,10 +1,13 @@
 # Jaewoo Park — AI Systems Portfolio
 
-English-first portfolio for a builder-first AI Solutions Architect and Agentic
-AI Engineer.
+Bilingual EN/KO portfolio for a builder-first AI Solutions Architect and
+Agentic AI Engineer.
 
 Live site:
 [jaewoo-park-ai-portfolio.jwoo9928.chatgpt.site](https://jaewoo-park-ai-portfolio.jwoo9928.chatgpt.site)
+
+- English: `/`
+- 한국어: `/ko`
 
 ## Case studies
 
@@ -34,6 +37,6 @@ npm test
 npm audit --omit=dev
 ```
 
-`npm test` creates the Cloudflare-compatible vinext build and verifies the
-server-rendered home page, case-study routes, metadata, social image, and
-evidence-boundary language.
+`npm test` creates the Cloudflare-compatible vinext build and verifies both
+languages across the server-rendered home pages, case-study routes, localized
+metadata, language alternates, social image, and evidence-boundary language.
