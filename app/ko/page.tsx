@@ -3,9 +3,9 @@ import { HomePage } from "../home-page";
 import { projectsKo } from "../portfolio-data-ko";
 
 export const metadata: Metadata = {
-  title: "박재우 — AI 솔루션 아키텍트 & AI 에이전트 엔지니어",
+  title: "박재우 — AI 에이전트 엔지니어 & AI 솔루션 아키텍트",
   description:
-    "요구사항 분석부터 아키텍처 설계, 서비스 개발, 모델 서빙, 평가, 배포까지 직접 수행한 AI 솔루션 아키텍트이자 AI 에이전트 엔지니어 박재우의 포트폴리오입니다.",
+    "AI 에이전트 플랫폼, 공공 규제 시스템, 현장 설치형 생성형 AI 제품을 구축한 박재우의 포트폴리오입니다.",
   alternates: {
     canonical: "/ko",
     languages: { en: "/", ko: "/ko" },
@@ -15,9 +15,9 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     url: "/ko",
     siteName: "박재우 — AI 시스템 포트폴리오",
-    title: "박재우 — AI 솔루션 아키텍트 & AI 에이전트 엔지니어",
+    title: "박재우 — AI 에이전트 엔지니어 & AI 솔루션 아키텍트",
     description:
-      "문제의 본질을 찾고 작동하는 AI 시스템으로 구현합니다. 성과는 검증 가능한 근거와 함께 제시합니다.",
+      "에이전트 인프라, 공공계약 감사, 현장 문화 체험을 실제 AI 시스템으로 구현했습니다.",
     images: [
       {
         url: "/og.png",
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "박재우 — AI 솔루션 아키텍트 & AI 에이전트 엔지니어",
+    title: "박재우 — AI 에이전트 엔지니어 & AI 솔루션 아키텍트",
     description:
-      "문제의 본질을 찾고 작동하는 AI 시스템으로 구현합니다. 성과는 검증 가능한 근거와 함께 제시합니다.",
+      "AI 에이전트 플랫폼, 공공 규제 시스템, 현장 설치형 생성형 AI 제품 포트폴리오.",
     images: ["/og.png"],
   },
 };

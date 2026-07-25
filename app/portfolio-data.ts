@@ -13,7 +13,6 @@ export type Project = {
   slug: "aiops" | "audit" | "shakespeare";
   index: string;
   theme: "blue" | "olive" | "orange";
-  portfolioTier: string;
   portfolioTrack: string;
   kicker: string;
   title: string;
@@ -60,8 +59,7 @@ export const projects: Project[] = [
     slug: "aiops",
     index: "01",
     theme: "blue",
-    portfolioTier: "FLAGSHIP CASE",
-    portfolioTrack: "AI Agent Engineer",
+    portfolioTrack: "AGENT SYSTEMS / LLM INFRASTRUCTURE",
     kicker: "AGENTIC INFRASTRUCTURE",
     title: "AIOps-PoC",
     subtitle: "A reusable control plane for evaluated AI proofs of concept",
@@ -71,10 +69,10 @@ export const projects: Project[] = [
       "Consulting teams repeatedly paid the cost of scoping, designing, and rebuilding AI proofs of concept. I built one bounded lifecycle that turns requirements into an executable, evaluated AI system.",
     problem:
       "A PoC should reduce uncertainty, not create another bespoke software project. The system had to preserve use-case flexibility while preventing agents from silently inventing runtime capabilities, deployment state, or proof.",
-    role: "Sole builder",
-    team: "Independent delivery; consulting team as operators",
+    role: "Product architecture and engineering",
+    team: "Built independently; used by the consulting team",
     ownership:
-      "Discovery, architecture, agent design, model serving, product engineering, evaluation, deployment, and operations",
+      "Agent orchestration, runtime contracts, data preparation, evaluation, full-stack product, model serving, and deployment",
     duration: "6 months",
     environment: "8 × A100 40 GB; RTX PRO 6000 Blackwell profile",
     metrics: [
@@ -215,21 +213,20 @@ export const projects: Project[] = [
     slug: "audit",
     index: "02",
     theme: "olive",
-    portfolioTier: "FLAGSHIP CASE",
-    portfolioTrack: "AI Solutions Architect",
+    portfolioTrack: "AI SOLUTIONS ARCHITECTURE / GOVTECH",
     kicker: "REGULATED AI / GOVTECH",
     title: "AI Automated Daily Audit",
     subtitle: "Evidence-grounded review for Korean public procurement",
     status: "Institutional beta",
-    statusDetail: "Production qualification remains blocked",
+    statusDetail: "Internal validation complete; institutional beta in progress",
     lede:
       "Korean public institutions must review contracts against changing laws and internal rules. Manual review creates a bottleneck; a free-form LLM answer creates unacceptable authority risk.",
     problem:
       "The system had to shorten a multi-hour review without allowing an LLM to decide compliance, hide missing evidence, or evaluate a document against an untraceable version of the rules.",
-    role: "Sole builder",
-    team: "Independent delivery; demand-side institution in beta testing",
+    role: "Solution architecture and full-stack engineering",
+    team: "Built independently; validating with a demand-side institution",
     ownership:
-      "Requirements, architecture, document pipeline, RAG and graph design, backend, frontend, serving, security, evaluation, deployment, and beta support",
+      "Document pipeline, RAG and graph retrieval, decision workflow, backend, frontend, model serving, security, evaluation, and deployment",
     duration: "Internal validation complete; beta in progress",
     environment: "Korean HWP/HWPX, PDF, and DOCX review workflow",
     metrics: [
@@ -368,8 +365,7 @@ export const projects: Project[] = [
     slug: "shakespeare",
     index: "03",
     theme: "orange",
-    portfolioTier: "SUPPORTING CASE",
-    portfolioTrack: "Product & Edge AI",
+    portfolioTrack: "AI PRODUCT DELIVERY / FIELD SYSTEMS",
     kicker: "PUBLIC EXPERIENCE / EDGE AI",
     title: "AI Shakespeare",
     subtitle: "A field-ready generative theatre kiosk for Daehak-ro",
@@ -379,15 +375,15 @@ export const projects: Project[] = [
       "For the Seoul Foundation for Arts and Culture, I built a kiosk that turns a visitor’s characters and personal situation into a short one-scene play they can read and take home as an 80 mm receipt.",
     problem:
       "The experience had to feel immediate and playful in a public venue while surviving rate limits, overlapping sessions, abandoned requests, local restarts, printer constraints, and nontechnical operations.",
-    role: "Sole product and engineering owner",
-    team: "Independent development; foundation owns post-launch operations",
+    role: "Product architecture and desktop engineering",
+    team: "Built independently for the foundation; foundation owns post-launch operations",
     ownership:
-      "Experience design, architecture, Electron application, generation flow, local persistence, print path, security, packaging, installation build, and operator handoff",
+      "Kiosk UX, Electron application, generation flow, secure configuration, SQLite, receipt printing, Windows packaging, and operator handoff",
     duration: "On-site launch scheduled for August 2026",
     environment: "Windows Electron kiosk with silent 80 mm thermal printing",
     metrics: [
       { value: "August 2026", label: "scheduled field launch" },
-      { value: "222 MB", label: "operator-confirmed installer" },
+      { value: "Windows", label: "self-contained desktop app" },
       { value: "80 mm", label: "thermal receipt" },
       { value: "85 sec", label: "per-attempt timeout" },
     ],
@@ -432,10 +428,10 @@ export const projects: Project[] = [
           "The local SQLite store records the request, generated result or error, and satisfaction state. The successful result update uses an immediate transaction; physical print outcome is not yet recorded as durable telemetry.",
       },
       {
-        label: "PACKAGING RCA",
-        title: "1.27 GB was a build-graph bug, not a product requirement.",
+        label: "FIELD DEPLOYMENT",
+        title: "Package the experience as a Windows desktop product.",
         body:
-          "Electron build output and package output shared one directory, recursively packaging previous artifacts. Isolating them reduced the verified installer to 222 MB; the sanitized field architecture later removed the embedded Next.js runtime.",
+          "The installed application runs without a local web server, Docker, Node.js installation, or an external database. Electron Builder produces an NSIS installer containing the compiled desktop processes, static visitor interface, and field assets.",
       },
       {
         label: "SECURITY",
@@ -454,7 +450,7 @@ export const projects: Project[] = [
       {
         label: "Packaging",
         value:
-          "The operator confirms a recursive packaging fault and a rebuilt 222 MB installer. The sanitized repository does not contain the original build history or a public hash and smoke-test artifact.",
+          "The repository confirms the NSIS Windows packaging configuration and its bounded application files. The release binary, public checksum, and clean-machine smoke-test record are not committed to the sanitized repository.",
         state: "bounded",
       },
       {
@@ -486,7 +482,7 @@ export const projects: Project[] = [
       {
         title: "Field installer",
         body:
-          "A 222 MB installer is operator-confirmed, but the public checksum, clean-machine installation record, and smoke-test evidence are not attached yet.",
+          "The NSIS Windows release target is configured for field installation. A public checksum, clean-machine installation record, and smoke-test evidence are not attached yet.",
         state: "available",
       },
       {

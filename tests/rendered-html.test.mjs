@@ -30,22 +30,23 @@ async function htmlFor(pathname) {
   return response.text();
 }
 
-test("server-renders the evidence-first portfolio home page", async () => {
+test("server-renders the recruiter-first portfolio home page", async () => {
   const html = await htmlFor("/");
 
   assert.match(
     html,
-    /<title>Jaewoo Park — AI Solutions Architect &amp; Agentic AI Engineer<\/title>/i,
+    /<title>Jaewoo Park — AI Agent Engineer &amp; AI Solutions Architect<\/title>/i,
   );
-  assert.match(html, /Discover the workflow\./);
-  assert.match(html, /Two flagship systems\. One supporting field product/);
-  assert.match(html, /ROLE-SPECIFIC READING PATHS/);
-  assert.match(html, /REUSABLE OPERATING ASSETS/);
+  assert.match(html, /Built an agent platform/);
+  assert.match(html, /Hours → ≈5 min/);
+  assert.match(html, /ROLE FIT/);
+  assert.match(html, /TECHNICAL RANGE/);
   assert.match(html, /AIOps-PoC/);
   assert.match(html, /AI Automated Daily Audit/);
   assert.match(html, /AI Shakespeare/);
   assert.match(html, /Institutional beta/);
   assert.match(html, /Field launch scheduled/);
+  assert.match(html, /Demo video coming soon/);
   assert.match(html, /github\.com\/jwoo9928/);
   assert.match(html, /linkedin\.com\/in\/jaewoo9928/);
   assert.match(html, /href="\/ko"/);
@@ -54,8 +55,14 @@ test("server-renders the evidence-first portfolio home page", async () => {
   assert.match(html, /\/og\.png/);
   assert.doesNotMatch(html, /github\.com\/jwoo9928\/AIOps/);
   assert.doesNotMatch(html, /github\.com\/seoul-ai-foundation\/AI-Drama/);
-  assert.doesNotMatch(html, /Demo video placeholder/);
-  assert.doesNotMatch(html, /launch-ready|Three production paths/);
+  assert.doesNotMatch(
+    html,
+    /FLAGSHIP|SUPPORTING|Two flagship|supporting field product|Portfolio maturity overview/,
+  );
+  assert.doesNotMatch(
+    html,
+    /Discover the workflow|Earn the proof|ONE ACCOUNTABLE BUILDER|Sole owner/,
+  );
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
 
@@ -64,21 +71,26 @@ test("server-renders the Korean home page with locale-aware metadata and navigat
 
   assert.match(
     html,
-    /<title>박재우 — AI 솔루션 아키텍트 &amp; AI 에이전트 엔지니어<\/title>/,
+    /<title>박재우 — AI 에이전트 엔지니어 &amp; AI 솔루션 아키텍트<\/title>/,
   );
   assert.match(html, /<main[^>]+lang="ko"/);
-  assert.match(html, /문제의 본질을 찾습니다\./);
-  assert.match(html, /대표 프로젝트 2건과 현장형 제품 1건/);
-  assert.match(html, /지원 직무별 추천 프로젝트/);
-  assert.match(html, /다음 프로젝트에도 재사용할 수 있는 운영 자산/);
+  assert.match(html, /AI 에이전트 플랫폼/);
+  assert.match(html, /수 시간 → 약 5분/);
+  assert.match(html, /직접 구현하는 엔지니어링과 고객 중심의 솔루션 설계/);
+  assert.match(html, /에이전트, 모델, 근거 데이터, 배포 환경/);
   assert.match(html, /AI 자동 일상감사 시스템/);
   assert.match(html, /AI 셰익스피어/);
+  assert.match(html, /데모 영상 준비 중/);
+  assert.doesNotMatch(
+    html,
+    /대표 프로젝트|보조 프로젝트|현장형 제품 1건|프로젝트 진행 상태|한 사람이 끝까지 책임|전 과정 직접 수행|문제의 본질을 찾습니다/,
+  );
   assert.match(html, /href="\/"/);
   assert.match(html, /hreflang="en"/i);
   assert.match(html, /href="[^"]*\/ko"[^>]+rel="canonical"|rel="canonical"[^>]+href="[^"]*\/ko"/i);
 });
 
-test("server-renders all three deep case studies with explicit evidence states", async () => {
+test("server-renders all three deep case studies with implementation and result evidence", async () => {
   const cases = [
     ["/work/aiops", /poolside\/Laguna-S-2\.1/],
     ["/work/audit", /Production qualification is blocked/],
@@ -87,19 +99,22 @@ test("server-renders all three deep case studies with explicit evidence states",
 
   for (const [pathname, expected] of cases) {
     const html = await htmlFor(pathname);
-    assert.match(html, /Observed results, their proof, and their boundary/);
-    assert.match(html, /Confirmed/);
-    assert.match(html, /Bounded claim/);
-    assert.match(html, /Open measurement/);
-    assert.match(html, /Representative workflow/);
+    assert.match(html, /Implemented system and observed results/);
+    assert.match(html, /Implemented \/ verified/);
+    assert.match(html, /Observed in current scope/);
+    assert.match(html, /Next measurement/);
+    assert.match(html, /End-to-end workflow/);
     assert.match(html, /Operating constraints/);
-    assert.match(html, /IMPLEMENTATION ARTIFACTS/);
+    assert.match(html, /TECHNOLOGY &amp; ARTIFACTS/);
+    assert.match(html, /Demo video/);
     assert.match(html, expected);
   }
 
   const shakespeare = await htmlFor("/work/shakespeare");
   assert.match(shakespeare, /Session-abandon cancellation is not claimed/);
   assert.match(shakespeare, /physical print outcome is not yet recorded/);
+  assert.match(shakespeare, /Windows desktop product/);
+  assert.doesNotMatch(shakespeare, /222 MB|1\.27 GB|PACKAGING RCA/);
   assert.doesNotMatch(shakespeare, /records request, result, print, satisfaction/);
   assert.doesNotMatch(shakespeare, /cancels abandoned upstream work/);
 });
@@ -116,7 +131,7 @@ test("does not publish the removed Laguna diagnostic replay", async () => {
   }
 });
 
-test("server-renders all three Korean case studies with the same evidence boundaries", async () => {
+test("server-renders all three Korean case studies with the same implementation evidence", async () => {
   const cases = [
     ["/ko/work/aiops", /poolside\/Laguna-S-2\.1/],
     ["/ko/work/audit", /운영 검증을 통과한 것으로 보지 않습니다/],
@@ -128,13 +143,14 @@ test("server-renders all three Korean case studies with the same evidence bounda
 
   for (const [pathname, expected] of cases) {
     const html = await htmlFor(pathname);
-    assert.match(html, /확인된 결과와 아직 검증하지 않은 범위를 구분했습니다/);
-    assert.match(html, /구현·관찰로 확인/);
-    assert.match(html, /제한된 범위에서 확인/);
-    assert.match(html, /추가 측정 필요/);
-    assert.match(html, /실제 처리 흐름/);
-    assert.match(html, /반드시 지켜야 했던 조건/);
-    assert.match(html, /기술 구성 및 구현 자료/);
+    assert.match(html, /구현 내용과 확인된 결과/);
+    assert.match(html, /구현 확인/);
+    assert.match(html, /현재 범위에서 확인/);
+    assert.match(html, /추가 측정 예정/);
+    assert.match(html, /처리 과정/);
+    assert.match(html, /운영 환경의 핵심 제약/);
+    assert.match(html, /기술 스택 및 산출물/);
+    assert.match(html, /데모 영상/);
     assert.match(html, /href="\/work\//);
     assert.match(html, expected);
   }
@@ -181,7 +197,7 @@ test("Korean rewrites preserve the verified facts from the English cases", async
       "/work/shakespeare",
       "/ko/work/shakespeare",
       [
-        [/222 MB/, /222 MB/],
+        [/Windows/, /Windows/],
         [/80 mm/, /80 mm/],
         [/85-second/, /85초/],
         [/Six-month/, /6개월/],
@@ -229,7 +245,6 @@ test("keeps Korean multiline display type above overlapping line boxes", async (
   );
   const selectors = [
     '[lang="ko"] .hero h1',
-    '[lang="ko"] .positioning h2',
     '[lang="ko"] .section-heading h2',
     '[lang="ko"] .project-card-header h3',
     '[lang="ko"] .contact h2',
@@ -258,7 +273,6 @@ test("keeps English multiline display type above overlapping line boxes", async 
   );
   const selectors = [
     ".hero h1",
-    ".positioning h2",
     ".section-heading h2",
     ".project-card-header h3",
     ".contact h2",

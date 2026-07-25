@@ -1,7 +1,6 @@
 # Jaewoo Park — AI Systems Portfolio
 
-Bilingual EN/KO portfolio for a builder-first AI Solutions Architect and
-Agentic AI Engineer.
+Bilingual EN/KO portfolio for AI Agent Engineer and AI Solutions Architect roles.
 
 Live site:
 [jaewoo-park-ai-portfolio.jwoo9928.chatgpt.site](https://jaewoo-park-ai-portfolio.jwoo9928.chatgpt.site)
@@ -15,12 +14,13 @@ Live site:
 - **AI Automated Daily Audit** — evidence-grounded Korean public-procurement review
 - **AI Shakespeare** — Windows Electron theatre kiosk with receipt printing
 
-Each case study separates:
+Each case study covers:
 
-- implemented architecture;
-- operator-confirmed or internally validated outcomes;
-- bounded claims that are not independently reproducible yet; and
-- open measurements required before stronger production claims.
+- stakeholder problem and operating constraints;
+- architecture and code-level decisions;
+- implementation and deployment scope;
+- observed results and supporting evidence; and
+- the next measurements planned for the system.
 
 ## Local development
 
@@ -39,4 +39,4 @@ npm audit --omit=dev
 
 `npm test` creates the Cloudflare-compatible vinext build and verifies both
 languages across the server-rendered home pages, case-study routes, localized
-metadata, language alternates, social image, and evidence-boundary language.
+metadata, language alternates, social image, and project evidence.

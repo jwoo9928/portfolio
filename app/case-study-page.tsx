@@ -13,70 +13,73 @@ import type { Project } from "./portfolio-data";
 
 const caseCopy = {
   en: {
-    selected: "Selected systems",
-    engagement: "Engagement",
-    engagementTitle: "The problem and my exact ownership.",
-    facts: ["Role", "Team", "Ownership", "Stage", "Environment"],
+    selected: "Selected work",
+    engagement: "Context & responsibility",
+    engagementTitle: "The problem, users, and engineering scope.",
+    facts: ["Responsibility", "Users & stakeholders", "Built", "Delivery stage", "Environment"],
     constraints: "Operating constraints",
-    architecture: "Architecture",
-    architectureTitle: "Bounded autonomy with an explicit proof chain.",
+    architecture: "System architecture",
+    architectureTitle: "How the system works.",
     architectureFlow: "architecture flow",
-    scenario: "Representative workflow",
-    decisions: "Decisions",
-    decisionsTitle: "Architecture is the record of what was allowed to fail.",
-    evidence: "Results & evidence",
-    evidenceTitle: "Observed results, their proof, and their boundary.",
+    scenario: "End-to-end workflow",
+    decisions: "Technical decisions",
+    decisionsTitle: "Key engineering decisions and trade-offs.",
+    evidence: "Results",
+    evidenceTitle: "Implemented system and observed results.",
     evidenceStates: {
-      confirmed: "Confirmed",
-      bounded: "Bounded claim",
-      open: "Open measurement",
+      confirmed: "Implemented / verified",
+      bounded: "Observed in current scope",
+      open: "Next measurement",
     },
-    boundary: "Evidence boundary",
-    measurement: "Delivery record",
-    measurementTitle: "Implementation artifacts, current limits, and the next validation gate.",
-    artifacts: "IMPLEMENTATION ARTIFACTS",
+    boundary: "Validation scope",
+    measurement: "Technical record",
+    measurementTitle: "Artifacts, stack, and next measurements.",
+    artifacts: "TECHNOLOGY & ARTIFACTS",
     artifactStates: {
       implemented: "Implemented",
       available: "Internal evidence",
       pending: "Pending",
     },
-    nextValidation: "NEXT VALIDATION GATE",
+    nextValidation: "NEXT MEASUREMENTS",
     repository: "Repository",
     privateRepository: "Repository not publicly verified",
+    demo: "Demo video",
+    comingSoon: "Coming soon",
     next: "NEXT CASE STUDY",
   },
   ko: {
-    selected: "주요 프로젝트",
-    engagement: "문제와 역할",
-    engagementTitle: "어떤 문제를 해결했고, 어디까지 직접 맡았는가.",
-    facts: ["역할", "협업 방식", "직접 수행한 범위", "현재 단계", "운영 환경"],
-    constraints: "반드시 지켜야 했던 조건",
-    architecture: "시스템 설계",
-    architectureTitle:
-      "자동화의 범위와 권한을 제한하고, 결과가 만들어진 과정을 추적할 수 있게 설계했습니다.",
+    selected: "프로젝트",
+    engagement: "문제·사용자·담당",
+    engagementTitle: "해결한 문제와 사용 환경, 구현 범위",
+    facts: ["담당", "사용자·이해관계자", "구현 범위", "진행 단계", "운영 환경"],
+    constraints: "운영 환경의 핵심 제약",
+    architecture: "아키텍처",
+    architectureTitle: "시스템 동작 방식",
     architectureFlow: "아키텍처 흐름",
-    scenario: "실제 처리 흐름",
-    decisions: "핵심 설계 결정",
-    decisionsTitle: "무엇을 자동화하고 무엇을 통제할지 명확히 결정했습니다.",
-    evidence: "결과와 검증 근거",
-    evidenceTitle: "확인된 결과와 아직 검증하지 않은 범위를 구분했습니다.",
+    scenario: "처리 과정",
+    decisions: "기술적 결정",
+    decisionsTitle: "신뢰성과 운영을 좌우한 핵심 결정",
+    evidence: "결과",
+    evidenceTitle: "구현 내용과 확인된 결과",
     evidenceStates: {
-      confirmed: "구현·관찰로 확인",
-      bounded: "제한된 범위에서 확인",
-      open: "추가 측정 필요",
+      confirmed: "구현 확인",
+      bounded: "현재 범위에서 확인",
+      open: "추가 측정 예정",
     },
-    boundary: "현재 검증된 범위",
-    measurement: "구현과 다음 단계",
-    measurementTitle: "현재 확보한 산출물과 한계, 다음에 검증할 항목입니다.",
-    artifacts: "기술 구성 및 구현 자료",
+    boundary: "검증 범위",
+    measurement: "기술 자료",
+    measurementTitle: "구현 산출물, 기술 스택, 다음 측정 항목",
+    artifacts: "기술 스택 및 산출물",
     artifactStates: {
       implemented: "코드로 구현",
       available: "내부 자료 보유",
       pending: "추가 준비 필요",
     },
-    nextValidation: "다음 검증 항목",
+    nextValidation: "다음 측정 항목",
     repository: "저장소",
     privateRepository: "외부에 공개된 저장소가 없습니다",
+    demo: "데모 영상",
+    comingSoon: "준비 중",
     next: "다음 프로젝트",
   },
 } as const;
@@ -120,14 +123,18 @@ export function CaseStudyPage({
         <div className="case-hero-grid">
           <div>
             <div className="project-designation">
-              <span>{project.portfolioTier}</span>
               <strong>{project.portfolioTrack}</strong>
             </div>
             <p className="eyebrow">{project.kicker}</p>
             <h1>{project.title}</h1>
             <p className="case-subtitle">{project.subtitle}</p>
           </div>
-          <StatusBadge project={project} />
+          <div className="case-hero-status">
+            <StatusBadge project={project} />
+            <span className="demo-placeholder">
+              {copy.demo} · {copy.comingSoon}
+            </span>
+          </div>
         </div>
         <p className="case-lede">{project.lede}</p>
         <MetricGrid metrics={project.metrics} />

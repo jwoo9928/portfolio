@@ -171,8 +171,8 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
       <p>© 2026 Jaewoo Park</p>
       <p>
         {locale === "ko"
-          ? "AI 솔루션 아키텍트 · AI 에이전트 엔지니어"
-          : "AI Solutions Architect · Agentic AI Engineer"}
+          ? "AI 에이전트 엔지니어 · AI 솔루션 아키텍트"
+          : "AI Agent Engineer · AI Solutions Architect"}
       </p>
       <a href="#top">{locale === "ko" ? "맨 위로 ↑" : "Back to top ↑"}</a>
     </footer>

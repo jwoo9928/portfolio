@@ -5,8 +5,7 @@ export const projectsKo: Project[] = [
     slug: "aiops",
     index: "01",
     theme: "blue",
-    portfolioTier: "대표 프로젝트",
-    portfolioTrack: "AI Agent Engineer",
+    portfolioTrack: "AGENT SYSTEMS / LLM 인프라",
     kicker: "에이전틱 AI 인프라",
     title: "AIOps-PoC",
     subtitle: "AI PoC를 빠르게 반복 구축하고 검증하기 위한 재사용형 운영 플랫폼",
@@ -16,10 +15,10 @@ export const projectsKo: Project[] = [
       "컨설팅 팀은 고객마다 다른 AI PoC 요청을 받을 때마다 범위를 다시 정하고 설계와 개발을 처음부터 반복해야 했습니다. 이를 해결하기 위해 요구사항을 실행 가능한 구성으로 바꾸고, 동일한 체계에서 모델을 준비·평가·배포할 수 있는 공통 플랫폼을 만들었습니다.",
     problem:
       "PoC의 목적은 맞춤형 제품 하나를 더 만드는 것이 아니라 핵심 가설을 빠르고 적은 비용으로 검증하는 것입니다. 서로 다른 사례를 유연하게 수용하되, 에이전트가 지원하지 않는 기능이나 배포 상태, 검증 결과를 임의로 만들어내지 못하도록 통제해야 했습니다.",
-    role: "단독 설계·개발·배포",
-    team: "혼자 설계·개발했고, 현재 컨설팅 팀이 실무에 사용하고 있습니다.",
+    role: "제품 아키텍처 및 엔지니어링",
+    team: "독립적으로 구축했으며, 현재 컨설팅 팀이 사용하고 있습니다.",
     ownership:
-      "문제 발굴부터 아키텍처, 에이전트 설계, 모델 서빙, 제품 개발, 평가, 배포, 운영까지 전 과정을 직접 수행했습니다.",
+      "에이전트 오케스트레이션, 런타임 계약, 데이터 준비, 평가, 웹 제품, 모델 서빙, 배포",
     duration: "6개월",
     environment: "A100 40 GB 8대와 RTX PRO 6000 Blackwell 환경",
     metrics: [
@@ -160,8 +159,7 @@ export const projectsKo: Project[] = [
     slug: "audit",
     index: "02",
     theme: "olive",
-    portfolioTier: "대표 프로젝트",
-    portfolioTrack: "AI Solutions Architect",
+    portfolioTrack: "AI SOLUTIONS ARCHITECTURE / GOVTECH",
     kicker: "규제 AI / GOVTECH",
     title: "AI 자동 일상감사 시스템",
     subtitle: "공공계약 검토를 빠르고 추적 가능하게 만드는 근거 중심 AI 시스템",
@@ -171,10 +169,10 @@ export const projectsKo: Project[] = [
       "대한민국 공공기관은 계약을 진행하기 전에 관련 법령과 내부 규정에 따라 일상감사를 수행해야 합니다. 사람이 문서와 규정을 일일이 대조하는 방식은 처리 지연을 만들고, 규정이 바뀔 때마다 검토 기준을 갱신하기도 어렵습니다.",
     problem:
       "수 시간 걸리던 검토를 단축하되, LLM이 계약의 적합 여부를 임의로 판단하거나 근거가 부족한 상태를 숨겨서는 안 됐습니다. 어떤 규정의 어느 조항을 기준으로 판단했는지 추적할 수 있어야 하고, 최종 승인 권한은 반드시 담당자에게 남겨야 했습니다.",
-    role: "단독 설계·개발·배포",
-    team: "혼자 설계·개발했고, 현재 수요 기관과 베타테스트를 진행하고 있습니다.",
+    role: "솔루션 아키텍처 및 풀스택 엔지니어링",
+    team: "독립적으로 구축했으며, 현재 수요 기관과 베타테스트를 진행하고 있습니다.",
     ownership:
-      "요구사항 분석부터 아키텍처, 문서 파이프라인, RAG와 그래프, 백엔드, 프론트엔드, 모델 서빙, 보안, 평가, 배포, 베타테스트 지원까지 전 과정을 직접 수행했습니다.",
+      "문서 파이프라인, RAG·그래프 검색, 판정 흐름, 백엔드, 프론트엔드, 모델 서빙, 보안, 평가, 배포",
     duration: "내부 실증 완료, 기관 베타테스트 진행 중",
     environment: "HWP/HWPX, PDF, DOCX 기반 공공계약 검토 환경",
     metrics: [
@@ -314,8 +312,7 @@ export const projectsKo: Project[] = [
     slug: "shakespeare",
     index: "03",
     theme: "orange",
-    portfolioTier: "보조 프로젝트",
-    portfolioTrack: "Product & Edge AI",
+    portfolioTrack: "AI PRODUCT DELIVERY / 현장 시스템",
     kicker: "공공 문화 경험 / EDGE AI",
     title: "AI 셰익스피어",
     subtitle: "방문자의 이야기를 희곡 영수증으로 만들어 주는 대학로 AI 키오스크",
@@ -325,15 +322,15 @@ export const projectsKo: Project[] = [
       "서울문화재단의 대학로 문화 체험 활성화 과제를 해결하기 위해, 방문자가 인물과 상황을 입력하면 AI가 이를 짧은 단막 희곡으로 각색하고 80 mm 감열 영수증으로 출력해 주는 키오스크를 만들었습니다.",
     problem:
       "방문자는 설명 없이도 바로 즐길 수 있어야 했고, 운영자는 개발 지식 없이 키오스크를 관리할 수 있어야 했습니다. 동시에 API 호출 제한, 여러 세션의 중첩, 생성 도중 이탈, 앱 재시작, 감열 프린터 오류까지 현장에서 발생할 수 있는 문제를 견뎌야 했습니다.",
-    role: "제품 설계·개발 전 과정 단독 수행",
-    team: "설계와 개발은 혼자 수행했고, 설치 후 운영은 서울문화재단이 맡습니다.",
+    role: "제품 아키텍처 및 데스크톱 엔지니어링",
+    team: "서울문화재단을 위해 독립적으로 구축했으며, 설치 후 운영은 재단이 맡습니다.",
     ownership:
-      "사용자 경험 설계부터 아키텍처, Electron 애플리케이션, 생성 흐름, 로컬 저장, 출력, 보안, 패키징, 설치 파일 제작, 운영자 인수인계까지 직접 수행했습니다.",
+      "키오스크 UX, Electron 애플리케이션, 생성 흐름, 보안 설정, SQLite, 영수증 출력, Windows 패키징, 운영자 인수인계",
     duration: "2026년 8월 현장 설치 및 운영 시작 예정",
     environment: "Windows 기반 Electron 키오스크와 80 mm 감열 프린터",
     metrics: [
       { value: "2026년 8월", label: "현장 설치 예정" },
-      { value: "222 MB", label: "운영자가 확인한 설치 파일" },
+      { value: "Windows", label: "독립 실행형 데스크톱 앱" },
       { value: "80 mm", label: "희곡 감열 영수증" },
       { value: "85초", label: "생성 1회당 제한 시간" },
     ],
@@ -378,10 +375,10 @@ export const projectsKo: Project[] = [
           "로컬 SQLite에는 요청, 생성 결과 또는 오류, 만족도 응답을 저장합니다. 성공 결과를 갱신할 때는 immediate transaction을 사용합니다. 다만 프린터에서 종이가 실제로 출력됐는지는 아직 지속적으로 기록하지 않습니다.",
       },
       {
-        label: "설치 파일 최적화",
-        title: "1.27 GB 설치 파일의 원인은 기능이 아니라 빌드 경로 오류였습니다.",
+        label: "현장 배포",
+        title: "Windows 데스크톱 제품으로 패키징했습니다.",
         body:
-          "Electron 빌드 결과와 패키지 결과가 같은 폴더에 쌓이면서 이전 산출물이 새 설치 파일 안에 반복해서 포함되고 있었습니다. 출력 경로를 분리해 운영자가 확인한 설치 파일을 222 MB로 줄였고, 비식별화한 현장용 구조에서는 불필요한 내장 Next.js 런타임도 제거했습니다.",
+          "설치된 애플리케이션은 로컬 웹 서버, Docker, 별도 Node.js 설치, 외부 데이터베이스 없이 실행됩니다. Electron Builder가 컴파일된 데스크톱 프로세스, 정적 방문자 화면, 현장용 자산을 포함한 NSIS 설치 파일을 생성합니다.",
       },
       {
         label: "보안",
@@ -400,7 +397,7 @@ export const projectsKo: Project[] = [
       {
         label: "패키징",
         value:
-          "운영자가 재귀 패키징 오류와 수정 후 생성한 222 MB 설치 파일을 확인했습니다. 다만 비식별화한 저장소에는 원본 빌드 이력, 외부 공개용 해시, 설치 스모크 테스트 결과가 포함되어 있지 않습니다.",
+          "저장소에서 NSIS Windows 패키징 설정과 설치 파일에 포함되는 애플리케이션 범위를 확인했습니다. 배포 바이너리, 외부 공개용 해시, 초기화된 PC의 설치 테스트 기록은 비식별화한 저장소에 포함되어 있지 않습니다.",
         state: "bounded",
       },
       {
@@ -432,7 +429,7 @@ export const projectsKo: Project[] = [
       {
         title: "현장 설치 파일",
         body:
-          "운영자가 222 MB 설치 파일을 확인했습니다. 다만 외부 공개용 체크섬, 초기화된 PC에서의 설치 기록, 스모크 테스트 결과는 아직 준비되지 않았습니다.",
+          "현장 설치를 위한 NSIS Windows 배포 대상이 구성되어 있습니다. 외부 공개용 체크섬, 초기화된 PC에서의 설치 기록, 스모크 테스트 결과는 아직 첨부하지 않았습니다.",
         state: "available",
       },
       {

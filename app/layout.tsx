@@ -17,14 +17,13 @@ export const metadata: Metadata = {
     "https://jaewoo-park-ai-portfolio.jwoo9928.chatgpt.site",
   ),
   title: {
-    default: "Jaewoo Park — AI Solutions Architect & Agentic AI Engineer",
+    default: "Jaewoo Park — AI Agent Engineer & AI Solutions Architect",
     template: "%s",
   },
   description:
-    "Builder-first AI Solutions Architect and Agentic AI Engineer. Two flagship systems spanning agent infrastructure and regulated solution architecture, plus one supporting edge AI product.",
+    "Jaewoo Park builds AI agent platforms, regulated AI systems, and on-site generative AI products—from model serving and evaluation to full-stack deployment.",
   keywords: [
     "AI Solutions Architect",
-    "Agentic AI Engineer",
     "AI Agent Engineer",
     "LLM systems",
     "AI evaluation",
@@ -45,23 +44,23 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "/",
     siteName: "Jaewoo Park — AI Systems Portfolio",
-    title: "Jaewoo Park — AI Solutions Architect & Agentic AI Engineer",
+    title: "Jaewoo Park — AI Agent Engineer & AI Solutions Architect",
     description:
-      "Discover the workflow. Build the system. Earn the proof.",
+      "An agent platform, a public-sector audit system, and an on-site generative AI product—built for real users and operating environments.",
     images: [
       {
         url: "/og.png",
         width: 1536,
         height: 1024,
-        alt: "Jaewoo Park — AI Solutions Architect and Agentic AI Engineer",
+        alt: "Jaewoo Park — AI Agent Engineer and AI Solutions Architect",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jaewoo Park — AI Solutions Architect & Agentic AI Engineer",
+    title: "Jaewoo Park — AI Agent Engineer & AI Solutions Architect",
     description:
-      "Discover the workflow. Build the system. Earn the proof.",
+      "AI agent platforms, regulated AI systems, and field-deployed generative AI products.",
     images: ["/og.png"],
   },
   robots: {
