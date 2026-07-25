@@ -64,13 +64,13 @@ test("server-renders the Korean home page with locale-aware metadata and navigat
 
   assert.match(
     html,
-    /<title>박재우 — AI 솔루션 아키텍트 &amp; 에이전틱 AI 엔지니어<\/title>/,
+    /<title>박재우 — AI 솔루션 아키텍트 &amp; AI 에이전트 엔지니어<\/title>/,
   );
   assert.match(html, /<main[^>]+lang="ko"/);
-  assert.match(html, /업무를 발견하고\./);
-  assert.match(html, /대표 시스템 두 건\. 현장 제품 사례 한 건/);
-  assert.match(html, /역할별 읽기 경로/);
-  assert.match(html, /재사용 가능한 운영 자산/);
+  assert.match(html, /문제의 본질을 찾습니다\./);
+  assert.match(html, /대표 프로젝트 2건과 현장형 제품 1건/);
+  assert.match(html, /지원 직무별 추천 프로젝트/);
+  assert.match(html, /다음 프로젝트에도 재사용할 수 있는 운영 자산/);
   assert.match(html, /AI 자동 일상감사 시스템/);
   assert.match(html, /AI 셰익스피어/);
   assert.match(html, /href="\/"/);
@@ -119,21 +119,86 @@ test("does not publish the removed Laguna diagnostic replay", async () => {
 test("server-renders all three Korean case studies with the same evidence boundaries", async () => {
   const cases = [
     ["/ko/work/aiops", /poolside\/Laguna-S-2\.1/],
-    ["/ko/work/audit", /프로덕션 검증은 차단 상태/],
-    ["/ko/work/shakespeare", /방문자 기록 6개월 보관은 운영 정책/],
+    ["/ko/work/audit", /운영 검증을 통과한 것으로 보지 않습니다/],
+    [
+      "/ko/work/shakespeare",
+      /방문자 기록을 6개월 동안 보관한 뒤 삭제하는 것은 운영 정책/,
+    ],
   ];
 
   for (const [pathname, expected] of cases) {
     const html = await htmlFor(pathname);
-    assert.match(html, /관찰된 결과, 그 증거, 그리고 증거의 경계/);
-    assert.match(html, /검증됨/);
-    assert.match(html, /범위 제한 주장/);
-    assert.match(html, /측정 예정/);
-    assert.match(html, /대표 업무 흐름/);
-    assert.match(html, /운영 제약/);
-    assert.match(html, /구현 산출물/);
+    assert.match(html, /확인된 결과와 아직 검증하지 않은 범위를 구분했습니다/);
+    assert.match(html, /구현·관찰로 확인/);
+    assert.match(html, /제한된 범위에서 확인/);
+    assert.match(html, /추가 측정 필요/);
+    assert.match(html, /실제 처리 흐름/);
+    assert.match(html, /반드시 지켜야 했던 조건/);
+    assert.match(html, /기술 구성 및 구현 자료/);
     assert.match(html, /href="\/work\//);
     assert.match(html, expected);
+  }
+});
+
+test("Korean pages avoid known literal-translation artifacts", async () => {
+  const pages = await Promise.all([
+    htmlFor("/ko"),
+    htmlFor("/ko/work/aiops"),
+    htmlFor("/ko/work/audit"),
+    htmlFor("/ko/work/shakespeare"),
+  ]);
+
+  for (const html of pages) {
+    assert.doesNotMatch(
+      html,
+      /업무를 발견하고|증거 경계|범위 제한 주장|전달 기록|원천 진실|런타임 진실|생명주기|review-assist|lineage|검증 게이트/,
+    );
+  }
+});
+
+test("Korean rewrites preserve the verified facts from the English cases", async () => {
+  const routePairs = [
+    [
+      "/work/aiops",
+      "/ko/work/aiops",
+      [
+        [/poolside\/Laguna-S-2\.1/, /poolside\/Laguna-S-2\.1/],
+        [/Solar Open 2/, /Solar Open 2/],
+        [/A100/, /A100/],
+        [/RTX PRO 6000/, /RTX PRO 6000/],
+      ],
+    ],
+    [
+      "/work/audit",
+      "/ko/work/audit",
+      [
+        [/approximately five minutes/, /약 5분/],
+        [/institutional beta/i, /기관 베타테스트/],
+        [/HWP\/HWPX/, /HWP\/HWPX/],
+      ],
+    ],
+    [
+      "/work/shakespeare",
+      "/ko/work/shakespeare",
+      [
+        [/222 MB/, /222 MB/],
+        [/80 mm/, /80 mm/],
+        [/85-second/, /85초/],
+        [/Six-month/, /6개월/],
+      ],
+    ],
+  ];
+
+  for (const [englishRoute, koreanRoute, facts] of routePairs) {
+    const [english, korean] = await Promise.all([
+      htmlFor(englishRoute),
+      htmlFor(koreanRoute),
+    ]);
+
+    for (const [englishFact, koreanFact] of facts) {
+      assert.match(english, englishFact);
+      assert.match(korean, koreanFact);
+    }
   }
 });
 

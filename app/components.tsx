@@ -19,13 +19,13 @@ const navigation = {
   },
   ko: {
     label: "주요 메뉴",
-    home: "박재우, 홈",
+    home: "박재우 포트폴리오 홈",
     menu: "메뉴",
     links: [
-      ["역할 경로", "/ko#tracks"],
-      ["시스템", "/ko#work"],
-      ["운영 자산", "/ko#evidence"],
-      ["연락", "/ko#contact"],
+      ["직무별 프로젝트", "/ko#tracks"],
+      ["주요 프로젝트", "/ko#work"],
+      ["핵심 역량", "/ko#evidence"],
+      ["연락처", "/ko#contact"],
     ],
   },
 } as const;
@@ -171,7 +171,7 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
       <p>© 2026 Jaewoo Park</p>
       <p>
         {locale === "ko"
-          ? "AI 솔루션 아키텍트 · 에이전틱 AI 엔지니어"
+          ? "AI 솔루션 아키텍트 · AI 에이전트 엔지니어"
           : "AI Solutions Architect · Agentic AI Engineer"}
       </p>
       <a href="#top">{locale === "ko" ? "맨 위로 ↑" : "Back to top ↑"}</a>
