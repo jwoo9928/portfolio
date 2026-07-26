@@ -570,9 +570,27 @@ ol {
 }
 
 .education-line {
-  padding-top: 24px;
   color: var(--muted);
   font-size: 12px;
+}
+
+.education-row {
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.career-document-link {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .contact-section {
@@ -1491,6 +1509,11 @@ ol {
     padding: 26px 0;
     grid-template-columns: 1fr;
     gap: 15px;
+  }
+
+  .education-row {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .contact-section {

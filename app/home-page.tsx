@@ -70,6 +70,7 @@ const homeCopy = {
     linkedin: "LinkedIn",
     github: "GitHub",
     demo: "Demo videos will be added",
+    careerDocument: "Korean career document",
   },
   ko: {
     eyebrow: "AI AGENT ENGINEER · AI SOLUTIONS ARCHITECT",
@@ -127,6 +128,7 @@ const homeCopy = {
     linkedin: "LinkedIn",
     github: "GitHub",
     demo: "데모 영상은 추후 추가 예정",
+    careerDocument: "한국 지원용 경력기술서",
   },
 } as const;
 
@@ -269,7 +271,14 @@ export function HomePage({
             </article>
           ))}
         </div>
-        <p className="education-line">{copy.education}</p>
+        <div className="education-row">
+          <p className="education-line">{copy.education}</p>
+          {locale === "ko" ? (
+            <Link className="career-document-link" href="/ko/career">
+              {copy.careerDocument} <Arrow />
+            </Link>
+          ) : null}
+        </div>
       </section>
 
       <section className="contact-section" id="contact">

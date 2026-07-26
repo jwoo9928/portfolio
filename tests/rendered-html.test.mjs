@@ -148,6 +148,28 @@ test("renders the same verified scope in all four Korean case studies", async ()
   }
 });
 
+test("renders the Korean career document with full career and project evidence", async () => {
+  const html = await htmlFor("/ko/career");
+
+  assert.match(html, /한국 지원용 경력기술서/);
+  assert.match(html, /약 4년의 소프트웨어 개발/);
+  assert.match(html, /서울AI재단/);
+  assert.match(html, /ICT Global Internship Program/);
+  assert.match(html, /충남대학교/);
+  assert.match(html, /PILAB Technology/);
+  assert.match(html, /SOLIF/);
+  assert.match(html, /NAUEM/);
+  assert.match(html, /dangamsoft/);
+  assert.match(html, /AIOps-PoC/);
+  assert.match(html, /AI 자동 일상감사 시스템/);
+  assert.match(html, /AI 영작문 자동 첨삭 서비스/);
+  assert.match(html, /AI 셰익스피어/);
+  assert.match(html, /복수 니모닉 기반 키 컨트롤러/);
+  assert.match(html, /PDF로 저장/);
+  assert.doesNotMatch(html, /약 4년간 AI/);
+  assert.doesNotMatch(html, /�|援ы쁽|\?꾨줈|吏곷Т/);
+});
+
 test("keeps removed or unverified claims out of published case studies", async () => {
   const pages = await Promise.all([
     htmlFor("/work/aiops"),
