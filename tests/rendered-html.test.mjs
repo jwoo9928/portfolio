@@ -30,271 +30,171 @@ async function htmlFor(pathname) {
   return response.text();
 }
 
-test("server-renders the recruiter-first portfolio home page", async () => {
+test("renders the English home page with four projects and accurate career framing", async () => {
   const html = await htmlFor("/");
 
   assert.match(
     html,
-    /<title>Jaewoo Park — AI Agent Engineer &amp; AI Solutions Architect<\/title>/i,
+    /Software engineer with approximately four years of experience/,
   );
-  assert.match(html, /Built an agent platform/);
-  assert.match(html, /Hours → ≈5 min/);
-  assert.match(html, /ROLE FIT/);
-  assert.match(html, /TECHNICAL RANGE/);
+  assert.doesNotMatch(
+    html,
+    /four years (building|of experience building) applied AI systems/i,
+  );
   assert.match(html, /AIOps-PoC/);
   assert.match(html, /AI Automated Daily Audit/);
+  assert.match(html, /AI English Writing Feedback/);
   assert.match(html, /AI Shakespeare/);
-  assert.match(html, /Institutional beta/);
-  assert.match(html, /Field launch scheduled/);
-  assert.match(html, /Demo video coming soon/);
-  assert.match(html, /github\.com\/jwoo9928/);
+  assert.match(html, /Seoul AI Foundation/);
+  assert.match(html, /PILAB Technology/);
   assert.match(html, /linkedin\.com\/in\/jaewoo9928/);
   assert.match(html, /href="\/ko"/);
-  assert.match(html, /hreflang="ko"/i);
-  assert.match(html, /property="og:image"/);
-  assert.match(html, /\/og\.png/);
-  assert.doesNotMatch(html, /github\.com\/jwoo9928\/AIOps/);
-  assert.doesNotMatch(html, /github\.com\/seoul-ai-foundation\/AI-Drama/);
-  assert.doesNotMatch(
-    html,
-    /FLAGSHIP|SUPPORTING|Two flagship|supporting field product|Portfolio maturity overview/,
-  );
-  assert.doesNotMatch(
-    html,
-    /Discover the workflow|Earn the proof|ONE ACCOUNTABLE BUILDER|Sole owner/,
-  );
-  assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
 
-test("server-renders the Korean home page with locale-aware metadata and navigation", async () => {
+test("renders natural Korean copy without mojibake or the incorrect four-year AI claim", async () => {
   const html = await htmlFor("/ko");
 
-  assert.match(
-    html,
-    /<title>박재우 — AI 에이전트 엔지니어 &amp; AI 솔루션 아키텍트<\/title>/,
-  );
-  assert.match(html, /<main[^>]+lang="ko"/);
-  assert.match(html, /AI 에이전트 플랫폼/);
-  assert.match(html, /수 시간 → 약 5분/);
-  assert.match(html, /직접 구현하는 엔지니어링과 고객 중심의 솔루션 설계/);
-  assert.match(html, /에이전트, 모델, 근거 데이터, 배포 환경/);
-  assert.match(html, /AI 자동 일상감사 시스템/);
-  assert.match(html, /AI 셰익스피어/);
-  assert.match(html, /데모 영상 준비 중/);
-  assert.doesNotMatch(
-    html,
-    /대표 프로젝트|보조 프로젝트|현장형 제품 1건|프로젝트 진행 상태|한 사람이 끝까지 책임|전 과정 직접 수행|문제의 본질을 찾습니다/,
-  );
-  assert.match(html, /href="\/"/);
+  assert.match(html, /약 4년의 소프트웨어 개발 경력/);
+  assert.match(html, /기관의 업무 요구사항을 분석해 AI 제품의 구조를 설계/);
+  assert.match(html, /AI 영작문 자동 첨삭 서비스/);
+  assert.match(html, /서울AI재단/);
+  assert.match(html, /복수 니모닉 기반 키 컨트롤러/);
+  assert.doesNotMatch(html, /약 4년간 AI/);
+  assert.doesNotMatch(html, /�|援ы쁽|\?꾨줈|吏곷Т/);
   assert.match(html, /hreflang="en"/i);
-  assert.match(html, /href="[^"]*\/ko"[^>]+rel="canonical"|rel="canonical"[^>]+href="[^"]*\/ko"/i);
 });
 
-test("server-renders all three deep case studies with implementation and result evidence", async () => {
+test("renders four distinct English case studies with verified project facts", async () => {
   const cases = [
-    ["/work/aiops", /poolside\/Laguna-S-2\.1/],
-    ["/work/audit", /Production qualification is blocked/],
-    ["/work/shakespeare", /Six-month visitor-record retention is an operator policy/],
-  ];
-
-  for (const [pathname, expected] of cases) {
-    const html = await htmlFor(pathname);
-    assert.match(html, /Implemented system and observed results/);
-    assert.match(html, /Implemented \/ verified/);
-    assert.match(html, /Observed in current scope/);
-    assert.match(html, /Next measurement/);
-    assert.match(html, /End-to-end workflow/);
-    assert.match(html, /Operating constraints/);
-    assert.match(html, /TECHNOLOGY &amp; ARTIFACTS/);
-    assert.match(html, /Demo video/);
-    assert.match(html, expected);
-  }
-
-  const shakespeare = await htmlFor("/work/shakespeare");
-  assert.match(shakespeare, /Session-abandon cancellation is not claimed/);
-  assert.match(shakespeare, /physical print outcome is not yet recorded/);
-  assert.match(shakespeare, /Windows desktop product/);
-  assert.doesNotMatch(shakespeare, /222 MB|1\.27 GB|PACKAGING RCA/);
-  assert.doesNotMatch(shakespeare, /records request, result, print, satisfaction/);
-  assert.doesNotMatch(shakespeare, /cancels abandoned upstream work/);
-});
-
-test("does not publish the removed Laguna diagnostic replay", async () => {
-  const [english, korean] = await Promise.all([
-    htmlFor("/work/aiops"),
-    htmlFor("/ko/work/aiops"),
-  ]);
-
-  for (const html of [english, korean]) {
-    assert.doesNotMatch(html, /86-second|8,192-completion-token|779 completion/);
-    assert.doesNotMatch(html, /86초|완료 토큰 8,192|Laguna 장애 재현/);
-  }
-});
-
-test("server-renders all three Korean case studies with the same implementation evidence", async () => {
-  const cases = [
-    ["/ko/work/aiops", /poolside\/Laguna-S-2\.1/],
-    ["/ko/work/audit", /운영 검증을 통과한 것으로 보지 않습니다/],
-    [
-      "/ko/work/shakespeare",
-      /방문자 기록을 6개월 동안 보관한 뒤 삭제하는 것은 운영 정책/,
-    ],
-  ];
-
-  for (const [pathname, expected] of cases) {
-    const html = await htmlFor(pathname);
-    assert.match(html, /구현 내용과 확인된 결과/);
-    assert.match(html, /구현 확인/);
-    assert.match(html, /현재 범위에서 확인/);
-    assert.match(html, /추가 측정 예정/);
-    assert.match(html, /처리 과정/);
-    assert.match(html, /운영 환경의 핵심 제약/);
-    assert.match(html, /기술 스택 및 산출물/);
-    assert.match(html, /데모 영상/);
-    assert.match(html, /href="\/work\//);
-    assert.match(html, expected);
-  }
-});
-
-test("Korean pages avoid known literal-translation artifacts", async () => {
-  const pages = await Promise.all([
-    htmlFor("/ko"),
-    htmlFor("/ko/work/aiops"),
-    htmlFor("/ko/work/audit"),
-    htmlFor("/ko/work/shakespeare"),
-  ]);
-
-  for (const html of pages) {
-    assert.doesNotMatch(
-      html,
-      /업무를 발견하고|증거 경계|범위 제한 주장|전달 기록|원천 진실|런타임 진실|생명주기|review-assist|lineage|검증 게이트/,
-    );
-  }
-});
-
-test("Korean rewrites preserve the verified facts from the English cases", async () => {
-  const routePairs = [
     [
       "/work/aiops",
-      "/ko/work/aiops",
       [
-        [/poolside\/Laguna-S-2\.1/, /poolside\/Laguna-S-2\.1/],
-        [/Solar Open 2/, /Solar Open 2/],
-        [/A100/, /A100/],
-        [/RTX PRO 6000/, /RTX PRO 6000/],
+        /From institutional requirements to an executable AI PoC/,
+        /poolside\/Laguna-S-2\.1/,
+        /Graph Intent Compiler/,
+        /Consulting delivery/,
       ],
     ],
     [
       "/work/audit",
-      "/ko/work/audit",
       [
-        [/approximately five minutes/, /약 5분/],
-        [/institutional beta/i, /기관 베타테스트/],
-        [/HWP\/HWPX/, /HWP\/HWPX/],
+        /source-grounded review system/,
+        /Hours → about 5 minutes/,
+        /ProofRecord/,
+        /Institutional beta/,
+      ],
+    ],
+    [
+      "/work/writing",
+      [
+        /Manual corrections depended on when English teachers were available/,
+        /High stipend per correction/,
+        /Next\.js/,
+        /Jul 2024 – Sep 2024/,
       ],
     ],
     [
       "/work/shakespeare",
-      "/ko/work/shakespeare",
       [
-        [/Windows/, /Windows/],
-        [/80 mm/, /80 mm/],
-        [/85-second/, /85초/],
-        [/Six-month/, /6개월/],
+        /80 mm thermal receipt/,
+        /85-second timeout/,
+        /NSIS/,
+        /Installation scheduled/,
       ],
     ],
   ];
 
-  for (const [englishRoute, koreanRoute, facts] of routePairs) {
-    const [english, korean] = await Promise.all([
-      htmlFor(englishRoute),
-      htmlFor(koreanRoute),
-    ]);
-
-    for (const [englishFact, koreanFact] of facts) {
-      assert.match(english, englishFact);
-      assert.match(korean, koreanFact);
-    }
+  for (const [route, expectations] of cases) {
+    const html = await htmlFor(route);
+    assert.match(html, /Project facts/);
+    assert.match(html, /Results &amp; evidence/);
+    assert.match(html, /Evidence boundaries/);
+    for (const expected of expectations) assert.match(html, expected);
   }
 });
 
-test("keeps accessibility and social assets in the source contract", async () => {
-  const [homePage, layout, styles, packageJson] = await Promise.all([
-    readFile(new URL("../app/home-page.tsx", import.meta.url), "utf8"),
+test("renders the same verified scope in all four Korean case studies", async () => {
+  const cases = [
+    [
+      "/ko/work/aiops",
+      [
+        /요구사항 접수/,
+        /전문 에이전트 분석/,
+        /서빙·Playground 구성/,
+        /컨설팅 실사용/,
+      ],
+    ],
+    [
+      "/ko/work/audit",
+      [/수 시간 → 약 5분/, /수요기관 베타/, /ProofRecord/, /담당자 최종 승인/],
+    ],
+    [
+      "/ko/work/writing",
+      [/높은 첨삭 수당/, /일관된 1차 첨삭/, /2024\.07 – 2024\.09/, /Next\.js/],
+    ],
+    [
+      "/ko/work/shakespeare",
+      [/80mm/, /85초 제한 시간/, /NSIS/, /2026년 8월 현장 설치 예정/],
+    ],
+  ];
+
+  for (const [route, expectations] of cases) {
+    const html = await htmlFor(route);
+    assert.match(html, /프로젝트 정보/);
+    assert.match(html, /성과와 검증 범위/);
+    assert.match(html, /성과 해석 범위/);
+    assert.doesNotMatch(html, /�|援ы쁽|\?꾨줈|吏곷Т/);
+    for (const expected of expectations) assert.match(html, expected);
+  }
+});
+
+test("keeps removed or unverified claims out of published case studies", async () => {
+  const pages = await Promise.all([
+    htmlFor("/work/aiops"),
+    htmlFor("/work/audit"),
+    htmlFor("/work/writing"),
+    htmlFor("/work/shakespeare"),
+  ]);
+  const combined = pages.join("\n");
+
+  assert.doesNotMatch(combined, /Laguna incident.*\d+ (seconds|tokens)/i);
+  assert.doesNotMatch(combined, /218 ?KB/);
+  assert.doesNotMatch(combined, /Edge AI/i);
+  assert.doesNotMatch(combined, /automatic six-month deletion is implemented/i);
+});
+
+test("publishes real project assets and social metadata", async () => {
+  const [layout, home] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
-    readFile(new URL("../package.json", import.meta.url), "utf8"),
+    htmlFor("/"),
   ]);
 
-  assert.match(homePage, /<SiteNav/);
   assert.match(layout, /openGraph:/);
   assert.match(layout, /twitter:/);
-  assert.match(layout, /languages:/);
+  assert.match(home, /property="og:image"/);
+  await access(new URL("../public/og.png", import.meta.url));
+  await access(
+    new URL("../public/projects/aiops-plan-approval.png", import.meta.url),
+  );
+  await access(
+    new URL("../public/projects/ai-shakespeare-title.jpg", import.meta.url),
+  );
+});
+
+test("keeps readable display line-height, focus states, and mobile navigation", async () => {
+  const styles = await readFile(
+    new URL("../app/globals.css", import.meta.url),
+    "utf8",
+  );
+
   assert.match(styles, /:focus-visible/);
   assert.match(styles, /\.mobile-nav/);
-  assert.doesNotMatch(packageJson, /drizzle/);
-
-  await access(new URL("../public/og.png", import.meta.url));
-  await assert.rejects(access(new URL("../app/_sites-preview", import.meta.url)));
+  assert.match(styles, /\[lang="ko"\] \.hero-main h1[\s\S]*?line-height:\s*1\.16/);
+  assert.match(styles, /\.hero-main h1[\s\S]*?line-height:\s*1\.03/);
+  assert.match(styles, /@media \(max-width: 760px\)/);
 });
 
-test("keeps Korean multiline display type above overlapping line boxes", async () => {
-  const styles = await readFile(
-    new URL("../app/globals.css", import.meta.url),
-    "utf8",
-  );
-  const selectors = [
-    '[lang="ko"] .hero h1',
-    '[lang="ko"] .section-heading h2',
-    '[lang="ko"] .project-card-header h3',
-    '[lang="ko"] .contact h2',
-    '[lang="ko"] .case-hero h1',
-    '[lang="ko"] .case-section h2',
-    '[lang="ko"] .next-case a strong',
-  ];
-
-  for (const selector of selectors) {
-    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const block = styles.match(new RegExp(`${escaped}\\s*\\{([^}]+)\\}`));
-    assert.ok(block, `${selector} should have a Korean override`);
-    const lineHeight = block[1].match(/line-height:\s*([0-9.]+)/);
-    assert.ok(lineHeight, `${selector} should define line-height`);
-    assert.ok(
-      Number(lineHeight[1]) >= 1.08,
-      `${selector} line-height should prevent Hangul overlap`,
-    );
-  }
-});
-
-test("keeps English multiline display type above overlapping line boxes", async () => {
-  const styles = await readFile(
-    new URL("../app/globals.css", import.meta.url),
-    "utf8",
-  );
-  const selectors = [
-    ".hero h1",
-    ".section-heading h2",
-    ".project-card-header h3",
-    ".contact h2",
-    ".case-hero h1",
-    ".case-section h2",
-    ".next-case a strong",
-  ];
-
-  for (const selector of selectors) {
-    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const block = styles.match(new RegExp(`${escaped}\\s*\\{([^}]+)\\}`));
-    assert.ok(block, `${selector} should exist`);
-    const lineHeight = block[1].match(/line-height:\s*([0-9.]+)/);
-    assert.ok(lineHeight, `${selector} should define line-height`);
-    assert.ok(
-      Number(lineHeight[1]) >= 1,
-      `${selector} line-height should prevent Latin display overlap`,
-    );
-  }
-});
-
-test("keeps the core palette at WCAG AA text contrast", async () => {
+test("keeps core text colors at WCAG AA contrast", async () => {
   const styles = await readFile(
     new URL("../app/globals.css", import.meta.url),
     "utf8",
@@ -321,19 +221,18 @@ test("keeps the core palette at WCAG AA text contrast", async () => {
       0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
     );
   };
-  const contrast = (foreground, background) => {
-    const first = luminance(tokens[foreground]);
-    const second = luminance(tokens[background]);
-    return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
+  const contrast = (first, second) => {
+    const a = luminance(tokens[first]);
+    const b = luminance(tokens[second]);
+    return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
   };
 
   for (const [foreground, background] of [
     ["ink", "paper"],
     ["muted", "paper"],
-    ["cobalt", "paper"],
-    ["white", "ink"],
-    ["white", "cobalt"],
-    ["white", "olive"],
+    ["white", "blue"],
+    ["white", "green"],
+    ["white", "violet"],
     ["white", "orange"],
   ]) {
     assert.ok(

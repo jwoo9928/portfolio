@@ -5,7 +5,7 @@ import { getProject, projects } from "../../portfolio-data";
 const project = getProject("aiops");
 
 export const metadata: Metadata = {
-  title: `${project.title} — Jaewoo Park`,
+  title: project.title,
   description: project.subtitle,
   alternates: {
     canonical: "/work/aiops",
@@ -13,6 +13,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AIOpsCaseStudy() {
+export default function Page() {
   return <CaseStudyPage project={project} projects={projects} />;
 }

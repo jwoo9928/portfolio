@@ -18,15 +18,16 @@ export const metadata: Metadata = {
   ),
   title: {
     default: "Jaewoo Park — AI Agent Engineer & AI Solutions Architect",
-    template: "%s",
+    template: "%s — Jaewoo Park",
   },
   description:
-    "Jaewoo Park builds AI agent platforms, regulated AI systems, and on-site generative AI products—from model serving and evaluation to full-stack deployment.",
+    "Four AI products spanning agent orchestration, public-sector audit, education workflow, and a field-installed Windows kiosk.",
   keywords: [
-    "AI Solutions Architect",
     "AI Agent Engineer",
-    "LLM systems",
-    "AI evaluation",
+    "AI Solutions Architect",
+    "Agentic AI",
+    "multi-agent systems",
+    "LLM evaluation",
     "model serving",
     "Jaewoo Park",
   ],
@@ -34,10 +35,7 @@ export const metadata: Metadata = {
   creator: "Jaewoo Park",
   alternates: {
     canonical: "/",
-    languages: {
-      en: "/",
-      ko: "/ko",
-    },
+    languages: { en: "/", ko: "/ko" },
   },
   openGraph: {
     type: "website",
@@ -46,13 +44,13 @@ export const metadata: Metadata = {
     siteName: "Jaewoo Park — AI Systems Portfolio",
     title: "Jaewoo Park — AI Agent Engineer & AI Solutions Architect",
     description:
-      "An agent platform, a public-sector audit system, and an on-site generative AI product—built for real users and operating environments.",
+      "AI systems designed for real operating constraints—from requirements and architecture through deployment and handoff.",
     images: [
       {
         url: "/og.png",
         width: 1536,
         height: 1024,
-        alt: "Jaewoo Park — AI Agent Engineer and AI Solutions Architect",
+        alt: "Jaewoo Park, AI Agent Engineer and AI Solutions Architect",
       },
     ],
   },
@@ -60,20 +58,15 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Jaewoo Park — AI Agent Engineer & AI Solutions Architect",
     description:
-      "AI agent platforms, regulated AI systems, and field-deployed generative AI products.",
+      "Agent systems, regulated AI, education workflow automation, and field AI products.",
     images: ["/og.png"],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>

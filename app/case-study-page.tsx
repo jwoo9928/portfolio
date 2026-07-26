@@ -1,88 +1,196 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   Arrow,
   Footer,
-  type Locale,
   MetricGrid,
   SiteNav,
   StatusBadge,
-  SystemMap,
   TechRow,
 } from "./components";
-import type { Project } from "./portfolio-data";
+import type { Locale, Project } from "./portfolio-data";
 
-const caseCopy = {
+const copy = {
   en: {
-    selected: "Selected work",
-    engagement: "Context & responsibility",
-    engagementTitle: "The problem, users, and engineering scope.",
-    facts: ["Responsibility", "Users & stakeholders", "Built", "Delivery stage", "Environment"],
-    constraints: "Operating constraints",
-    architecture: "System architecture",
-    architectureTitle: "How the system works.",
-    architectureFlow: "architecture flow",
-    scenario: "End-to-end workflow",
-    decisions: "Technical decisions",
-    decisionsTitle: "Key engineering decisions and trade-offs.",
-    evidence: "Results",
-    evidenceTitle: "Implemented system and observed results.",
-    evidenceStates: {
-      confirmed: "Implemented / verified",
-      bounded: "Observed in current scope",
-      open: "Next measurement",
+    back: "Selected work",
+    demo: "Demo video · coming soon",
+    facts: "Project facts",
+    labels: {
+      client: "Client / initiative",
+      workplace: "Workplace",
+      period: "Period / stage",
+      role: "Responsibility",
+      contribution: "Contribution",
+      delivery: "Delivery",
     },
-    boundary: "Validation scope",
-    measurement: "Technical record",
-    measurementTitle: "Artifacts, stack, and next measurements.",
-    artifacts: "TECHNOLOGY & ARTIFACTS",
-    artifactStates: {
-      implemented: "Implemented",
-      available: "Internal evidence",
-      pending: "Pending",
-    },
-    nextValidation: "NEXT MEASUREMENTS",
-    repository: "Repository",
-    privateRepository: "Repository not publicly verified",
-    demo: "Demo video",
-    comingSoon: "Coming soon",
-    next: "NEXT CASE STUDY",
+    problem: "Operating problem",
+    process: "Product workflow",
+    architecture: "Architecture decisions",
+    evidence: "Results & evidence",
+    boundaries: "Evidence boundaries",
+    stack: "Technology & capability areas",
+    next: "Next project",
   },
   ko: {
-    selected: "프로젝트",
-    engagement: "문제·사용자·담당",
-    engagementTitle: "해결한 문제와 사용 환경, 구현 범위",
-    facts: ["담당", "사용자·이해관계자", "구현 범위", "진행 단계", "운영 환경"],
-    constraints: "운영 환경의 핵심 제약",
-    architecture: "아키텍처",
-    architectureTitle: "시스템 동작 방식",
-    architectureFlow: "아키텍처 흐름",
-    scenario: "처리 과정",
-    decisions: "기술적 결정",
-    decisionsTitle: "신뢰성과 운영을 좌우한 핵심 결정",
-    evidence: "결과",
-    evidenceTitle: "구현 내용과 확인된 결과",
-    evidenceStates: {
-      confirmed: "구현 확인",
-      bounded: "현재 범위에서 확인",
-      open: "추가 측정 예정",
+    back: "주요 프로젝트",
+    demo: "데모 영상 · 추후 추가 예정",
+    facts: "프로젝트 정보",
+    labels: {
+      client: "발주처·과제",
+      workplace: "근무처",
+      period: "기간·단계",
+      role: "참여 역할",
+      contribution: "기여도",
+      delivery: "구축·운영 상태",
     },
-    boundary: "검증 범위",
-    measurement: "기술 자료",
-    measurementTitle: "구현 산출물, 기술 스택, 다음 측정 항목",
-    artifacts: "기술 스택 및 산출물",
-    artifactStates: {
-      implemented: "코드로 구현",
-      available: "내부 자료 보유",
-      pending: "추가 준비 필요",
-    },
-    nextValidation: "다음 측정 항목",
-    repository: "저장소",
-    privateRepository: "외부에 공개된 저장소가 없습니다",
-    demo: "데모 영상",
-    comingSoon: "준비 중",
+    problem: "해결한 업무 문제",
+    process: "제품 실행 흐름",
+    architecture: "핵심 설계",
+    evidence: "성과와 검증 범위",
+    boundaries: "성과 해석 범위",
+    stack: "기술·구현 영역",
     next: "다음 프로젝트",
   },
 } as const;
+
+function AIOpsControlVisual({ locale }: { locale: Locale }) {
+  const labels =
+    locale === "ko"
+      ? [
+          ["AGENT", "실행 의도 제안"],
+          ["COMPILER", "코드 규칙 검증"],
+          ["HUMAN", "실행 계획 승인"],
+          ["RUNTIME", "검증된 명세 실행"],
+        ]
+      : [
+          ["AGENT", "Propose intent"],
+          ["COMPILER", "Validate by code"],
+          ["HUMAN", "Approve plan"],
+          ["RUNTIME", "Execute bound spec"],
+        ];
+  return (
+    <div className="control-chain" aria-label="Agent to runtime control chain">
+      {labels.map(([name, detail], index) => (
+        <div key={name}>
+          <span>0{index + 1}</span>
+          <strong>{name}</strong>
+          <small>{detail}</small>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function AuditEvidenceVisual({ locale }: { locale: Locale }) {
+  const labels =
+    locale === "ko"
+      ? ["법령·내규 버전", "원문 구간", "ProofRecord", "결정 규칙", "담당자 승인"]
+      : [
+          "Regulation version",
+          "Source passage",
+          "ProofRecord",
+          "Decision rule",
+          "Reviewer approval",
+        ];
+  return (
+    <div className="evidence-chain" aria-label="Source-to-decision evidence chain">
+      {labels.map((label, index) => (
+        <div key={label}>
+          <span>{String(index + 1).padStart(2, "0")}</span>
+          <strong>{label}</strong>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function WritingProblemVisual({ locale }: { locale: Locale }) {
+  const before =
+    locale === "ko"
+      ? ["교사 일정에 따른 대기", "높은 건별 첨삭 수당", "담당자별 기준 차이"]
+      : [
+          "Wait for teacher availability",
+          "High stipend per correction",
+          "Different reviewer criteria",
+        ];
+  const after =
+    locale === "ko"
+      ? ["필요할 때 1차 첨삭", "반복 업무 보조", "공통 서비스 흐름"]
+      : [
+          "On-demand first pass",
+          "Reduced repeated work",
+          "Shared service workflow",
+        ];
+  return (
+    <div className="writing-change">
+      <div>
+        <p>{locale === "ko" ? "기존 업무" : "BEFORE"}</p>
+        {before.map((item) => (
+          <span key={item}>{item}</span>
+        ))}
+      </div>
+      <strong aria-hidden="true">→</strong>
+      <div>
+        <p>{locale === "ko" ? "AI 보조 흐름" : "AI-ASSISTED FLOW"}</p>
+        {after.map((item) => (
+          <span key={item}>{item}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ReceiptVisual({ locale }: { locale: Locale }) {
+  return (
+    <div className="receipt-visual" aria-label="Thermal receipt output concept">
+      <p>AI SHAKESPEARE</p>
+      <span>{locale === "ko" ? "오늘의 단막 희곡" : "A ONE-ACT PLAY FOR TODAY"}</span>
+      <div />
+      <h4>{locale === "ko" ? "막이 오르기 전" : "BEFORE THE CURTAIN RISES"}</h4>
+      <p>
+        {locale === "ko"
+          ? "방문자의 고민과 상황이 등장인물, 장면, 대사가 있는 한 편의 희곡으로 이어집니다."
+          : "A visitor’s concern becomes a play with characters, scenes, and dialogue."}
+      </p>
+      <div />
+      <small>HYEHWA · DAEHANGNO · 80 mm</small>
+    </div>
+  );
+}
+
+function ProjectSignature({
+  project,
+  locale,
+}: {
+  project: Project;
+  locale: Locale;
+}) {
+  if (project.slug === "aiops") return <AIOpsControlVisual locale={locale} />;
+  if (project.slug === "audit") return <AuditEvidenceVisual locale={locale} />;
+  if (project.slug === "writing") return <WritingProblemVisual locale={locale} />;
+  return <ReceiptVisual locale={locale} />;
+}
+
+function ProjectMedia({ project }: { project: Project }) {
+  if (!project.image) return null;
+  const dimensions =
+    project.slug === "shakespeare"
+      ? { width: 1280, height: 640 }
+      : { width: 1600, height: 1000 };
+
+  return (
+    <figure className={`project-media project-media-${project.slug}`}>
+      <Image
+        src={project.image.src}
+        alt={project.image.alt}
+        width={dimensions.width}
+        height={dimensions.height}
+        sizes="(max-width: 900px) 100vw, 1200px"
+      />
+      <figcaption>{project.image.caption}</figcaption>
+    </figure>
+  );
+}
 
 export function CaseStudyPage({
   project,
@@ -93,18 +201,26 @@ export function CaseStudyPage({
   projects: Project[];
   locale?: Locale;
 }) {
-  const copy = caseCopy[locale];
-  const currentIndex = projects.findIndex((item) => item.slug === project.slug);
-  const nextProject = projects[(currentIndex + 1) % projects.length];
-  const routePrefix = locale === "ko" ? "/ko" : "";
+  const t = copy[locale];
+  const prefix = locale === "ko" ? "/ko" : "";
+  const current = projects.findIndex((item) => item.slug === project.slug);
+  const next = projects[(current + 1) % projects.length];
   const alternateHref =
     locale === "ko"
       ? `/work/${project.slug}`
       : `/ko/work/${project.slug}`;
+  const facts = [
+    [t.labels.client, project.client],
+    [t.labels.workplace, project.workplace],
+    [t.labels.period, project.period],
+    [t.labels.role, project.role],
+    [t.labels.contribution, project.contribution],
+    [t.labels.delivery, project.delivery],
+  ];
 
   return (
     <main
-      className={`case-page theme-${project.theme}`}
+      className={`case-page theme-${project.theme} case-${project.slug}`}
       id="top"
       lang={locale}
     >
@@ -116,204 +232,158 @@ export function CaseStudyPage({
 
       <header className="case-hero">
         <div className="case-breadcrumb">
-          <Link href={`${routePrefix}/#work`}>{copy.selected}</Link>
-          <span>/</span>
-          <span>{project.index}</span>
+          <Link href={`${prefix}/#work`}>← {t.back}</Link>
+          <span>{project.index} / 04</span>
         </div>
-        <div className="case-hero-grid">
+        <div className="case-title-row">
           <div>
-            <div className="project-designation">
-              <strong>{project.portfolioTrack}</strong>
-            </div>
-            <p className="eyebrow">{project.kicker}</p>
+            <p className="eyebrow">{project.track}</p>
             <h1>{project.title}</h1>
             <p className="case-subtitle">{project.subtitle}</p>
           </div>
-          <div className="case-hero-status">
+          <div className="case-status">
             <StatusBadge project={project} />
-            <span className="demo-placeholder">
-              {copy.demo} · {copy.comingSoon}
-            </span>
+            <small>{t.demo}</small>
           </div>
         </div>
-        <p className="case-lede">{project.lede}</p>
+        <p className="case-overview">{project.overview}</p>
         <MetricGrid metrics={project.metrics} />
       </header>
 
-      <section
-        className="case-section case-engagement"
-        aria-labelledby="engagement-title"
-      >
-        <div className="section-marker">
+      <section className="case-context">
+        <div className="case-section-heading">
           <span>01</span>
-          <p id="engagement-title">{copy.engagement}</p>
+          <div>
+            <p className="eyebrow">{t.problem}</p>
+            <h2>{project.problem}</h2>
+          </div>
         </div>
-        <div className="engagement-content">
-          <h2>{copy.engagementTitle}</h2>
-          <p className="large-copy">{project.problem}</p>
-          <dl className="fact-list">
-            {[
-              project.role,
-              project.team,
-              project.ownership,
-              project.duration,
-              project.environment,
-            ].map((value, index) => (
-              <div key={copy.facts[index]}>
-                <dt>{copy.facts[index]}</dt>
+        <aside className="project-facts">
+          <p>{t.facts}</p>
+          <dl>
+            {facts.map(([label, value]) => (
+              <div key={label}>
+                <dt>{label}</dt>
                 <dd>{value}</dd>
               </div>
             ))}
           </dl>
-          <div className="constraint-block">
-            <p className="detail-label">{copy.constraints}</p>
-            <ul>
-              {project.constraints.map((constraint) => (
-                <li key={constraint}>{constraint}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        </aside>
       </section>
 
-      <section
-        className="case-section architecture-section"
-        aria-labelledby="architecture-title"
-      >
-        <div className="section-marker">
+      <section className="case-workflow">
+        <div className="case-section-heading">
           <span>02</span>
-          <p id="architecture-title">{copy.architecture}</p>
-        </div>
-        <div>
-          <h2>{copy.architectureTitle}</h2>
-          <SystemMap
-            items={project.flow}
-            label={`${project.title} ${copy.architectureFlow}`}
-          />
-          <p className="architecture-note">{project.architectureNote}</p>
-          <div className="scenario-block">
-            <p className="detail-label">{copy.scenario}</p>
-            <h3>{project.scenario.title}</h3>
-            <p>{project.scenario.summary}</p>
-            <ol>
-              {project.scenario.steps.map((step, index) => (
-                <li key={step}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <p>{step}</p>
-                </li>
-              ))}
-            </ol>
+          <div>
+            <p className="eyebrow">{t.process}</p>
+            <h2>{project.chapterTitle}</h2>
+            <p>{project.chapterBody}</p>
           </div>
         </div>
+        <ol className={`workflow-grid workflow-${project.slug}`}>
+          {project.flow.map((step, index) => (
+            <li key={step.title}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+              {step.tags ? (
+                <ul>
+                  {step.tags.map((tag) => (
+                    <li key={tag}>{tag}</li>
+                  ))}
+                </ul>
+              ) : null}
+            </li>
+          ))}
+        </ol>
       </section>
 
-      <section className="case-section" aria-labelledby="decisions-title">
-        <div className="section-marker">
+      <section className="signature-section">
+        <div className="case-section-heading">
           <span>03</span>
-          <p id="decisions-title">{copy.decisions}</p>
-        </div>
-        <div>
-          <h2>{copy.decisionsTitle}</h2>
-          <div className="decision-grid">
-            {project.decisions.map((decision, index) => (
-              <article key={decision.title}>
-                <div>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <p>{decision.label}</p>
-                </div>
-                <h3>{decision.title}</h3>
-                <p>{decision.body}</p>
-              </article>
-            ))}
+          <div>
+            <p className="eyebrow">{t.architecture}</p>
+            <h2>
+              {project.slug === "aiops" &&
+                (locale === "ko"
+                  ? "에이전트의 판단과 실행 권한의 분리"
+                  : "Separation of agent judgment and execution authority")}
+              {project.slug === "audit" &&
+                (locale === "ko"
+                  ? "규정 원문부터 최종 승인까지 이어지는 근거"
+                  : "Evidence from source regulation to final approval")}
+              {project.slug === "writing" &&
+                (locale === "ko"
+                  ? "기존 첨삭 업무를 바꾸는 서비스 구조"
+                  : "A service design that changes the correction workflow")}
+              {project.slug === "shakespeare" &&
+                (locale === "ko"
+                  ? "현장 체험을 완성하는 데스크톱 제품"
+                  : "A desktop product designed for a field experience")}
+            </h2>
           </div>
         </div>
-      </section>
-
-      <section
-        className="case-section evidence-section"
-        aria-labelledby="evidence-title"
-      >
-        <div className="section-marker">
-          <span>04</span>
-          <p id="evidence-title">{copy.evidence}</p>
-        </div>
-        <div>
-          <h2>{copy.evidenceTitle}</h2>
-          <div className="evidence-ledger">
-            {project.evidence.map((item) => (
-              <article key={item.label}>
-                <div className={`evidence-state evidence-${item.state}`}>
-                  <span aria-hidden="true" />
-                  {copy.evidenceStates[item.state]}
-                </div>
-                <h3>{item.label}</h3>
-                <p>{item.value}</p>
-              </article>
-            ))}
-          </div>
-          <div className="boundary-callout">
-            <p>{copy.boundary}</p>
-            <strong>{project.evidenceBoundary}</strong>
-          </div>
-        </div>
-      </section>
-
-      <section className="case-section" aria-labelledby="measurement-title">
-        <div className="section-marker">
-          <span>05</span>
-          <p id="measurement-title">{copy.measurement}</p>
-        </div>
-        <div>
-          <h2>{copy.measurementTitle}</h2>
-          <div className="artifact-grid">
-            {project.artifacts.map((artifact) => (
-              <article key={artifact.title}>
-                <div
-                  className={`artifact-state artifact-${artifact.state}`}
-                >
-                  <span aria-hidden="true" />
-                  {copy.artifactStates[artifact.state]}
-                </div>
-                <h3>{artifact.title}</h3>
-                <p>{artifact.body}</p>
-              </article>
-            ))}
-          </div>
-          <div className="delivery-grid">
-            <aside>
-              <p className="detail-label">{copy.artifacts}</p>
-              <TechRow items={project.technologies} locale={locale} />
-              <p className="artifact-note">{project.repositoryNote}</p>
-              <div className="artifact-links">
-                {project.repository ? (
-                  <a href={project.repository} target="_blank" rel="noreferrer">
-                    {copy.repository} <Arrow />
-                  </a>
-                ) : (
-                  <span>{copy.privateRepository}</span>
-                )}
-              </div>
-            </aside>
-            <div className="next-validation">
-              <p className="detail-label">{copy.nextValidation}</p>
-              <ol>
-                {project.measurementPlan.map((item) => (
-                  <li key={item}>{item}</li>
+        <ProjectSignature project={project} locale={locale} />
+        <div className="focus-grid">
+          {project.focus.map((item) => (
+            <article key={item.title}>
+              <p className="detail-label">{item.label}</p>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+              <ul>
+                {item.items.map((entry) => (
+                  <li key={entry}>{entry}</li>
                 ))}
-              </ol>
-            </div>
+              </ul>
+            </article>
+          ))}
+        </div>
+        <ProjectMedia project={project} />
+      </section>
+
+      <section className="results-section">
+        <div className="case-section-heading">
+          <span>04</span>
+          <div>
+            <p className="eyebrow">{t.evidence}</p>
+            <h2>
+              {locale === "ko"
+                ? "확인된 결과와 아직 측정하지 않은 항목의 구분"
+                : "Verified outcomes, separated from claims not yet measured"}
+            </h2>
           </div>
+        </div>
+        <div className="result-grid">
+          {project.results.map((result) => (
+            <article key={result.label}>
+              <p className="detail-label">{result.label}</p>
+              <h3>{result.value}</h3>
+              <p>{result.note}</p>
+            </article>
+          ))}
+        </div>
+        <div className="boundary-panel">
+          <p className="detail-label">{t.boundaries}</p>
+          <ul>
+            {project.boundaries.map((boundary) => (
+              <li key={boundary}>{boundary}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="stack-panel">
+          <p className="detail-label">{t.stack}</p>
+          <TechRow items={project.technologies} />
         </div>
       </section>
 
-      <section className="next-case">
-        <p className="eyebrow">{copy.next}</p>
-        <Link href={`${routePrefix}/work/${nextProject.slug}`}>
-          <span>{nextProject.kicker}</span>
-          <strong>{nextProject.title}</strong>
+      <nav className={`next-project theme-${next.theme}`} aria-label={t.next}>
+        <p>{t.next}</p>
+        <Link href={`${prefix}/work/${next.slug}`}>
+          <span>{next.index}</span>
+          <strong>{next.title}</strong>
           <Arrow />
         </Link>
-      </section>
+      </nav>
 
       <Footer locale={locale} />
     </main>

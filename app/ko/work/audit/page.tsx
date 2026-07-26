@@ -1,24 +1,18 @@
 import type { Metadata } from "next";
 import { CaseStudyPage } from "../../../case-study-page";
-import { getProjectKo, projectsKo } from "../../../portfolio-data-ko";
+import { getProject, projectsKo } from "../../../portfolio-data";
 
-const project = getProjectKo("audit");
+const project = getProject("audit", "ko");
 
 export const metadata: Metadata = {
-  title: `${project.title} — 박재우`,
+  title: project.title,
   description: project.subtitle,
   alternates: {
     canonical: "/ko/work/audit",
     languages: { en: "/work/audit", ko: "/ko/work/audit" },
   },
-  openGraph: {
-    locale: "ko_KR",
-    url: "/ko/work/audit",
-    title: `${project.title} — 박재우`,
-    description: project.subtitle,
-  },
 };
 
-export default function KoreanAuditCaseStudy() {
+export default function Page() {
   return <CaseStudyPage project={project} projects={projectsKo} locale="ko" />;
 }

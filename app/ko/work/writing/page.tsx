@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import { CaseStudyPage } from "../../../case-study-page";
 import { getProject, projectsKo } from "../../../portfolio-data";
 
-const project = getProject("aiops", "ko");
+const project = getProject("writing", "ko");
 
 export const metadata: Metadata = {
   title: project.title,
   description: project.subtitle,
   alternates: {
-    canonical: "/ko/work/aiops",
-    languages: { en: "/work/aiops", ko: "/ko/work/aiops" },
+    canonical: "/ko/work/writing",
+    languages: { en: "/work/writing", ko: "/ko/work/writing" },
   },
 };
 

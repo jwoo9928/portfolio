@@ -1,24 +1,18 @@
 import type { Metadata } from "next";
 import { CaseStudyPage } from "../../../case-study-page";
-import { getProjectKo, projectsKo } from "../../../portfolio-data-ko";
+import { getProject, projectsKo } from "../../../portfolio-data";
 
-const project = getProjectKo("shakespeare");
+const project = getProject("shakespeare", "ko");
 
 export const metadata: Metadata = {
-  title: `${project.title} — 박재우`,
+  title: project.title,
   description: project.subtitle,
   alternates: {
     canonical: "/ko/work/shakespeare",
     languages: { en: "/work/shakespeare", ko: "/ko/work/shakespeare" },
   },
-  openGraph: {
-    locale: "ko_KR",
-    url: "/ko/work/shakespeare",
-    title: `${project.title} — 박재우`,
-    description: project.subtitle,
-  },
 };
 
-export default function KoreanShakespeareCaseStudy() {
+export default function Page() {
   return <CaseStudyPage project={project} projects={projectsKo} locale="ko" />;
 }

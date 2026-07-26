@@ -1,38 +1,21 @@
 import type { Metadata } from "next";
 import { HomePage } from "../home-page";
-import { projectsKo } from "../portfolio-data-ko";
+import { projectsKo } from "../portfolio-data";
 
 export const metadata: Metadata = {
-  title: "박재우 — AI 에이전트 엔지니어 & AI 솔루션 아키텍트",
+  title: "박재우 — AI Agent Engineer & AI Solutions Architect",
   description:
-    "AI 에이전트 플랫폼, 공공 규제 시스템, 현장 설치형 생성형 AI 제품을 구축한 박재우의 포트폴리오입니다.",
+    "에이전트 오케스트레이션, 공공 일상감사, 교육 업무 자동화, 현장형 Windows 키오스크까지 네 가지 AI 제품을 설계하고 구현한 포트폴리오입니다.",
   alternates: {
     canonical: "/ko",
     languages: { en: "/", ko: "/ko" },
   },
   openGraph: {
-    type: "website",
     locale: "ko_KR",
     url: "/ko",
-    siteName: "박재우 — AI 시스템 포트폴리오",
-    title: "박재우 — AI 에이전트 엔지니어 & AI 솔루션 아키텍트",
+    title: "박재우 — AI Agent Engineer & AI Solutions Architect",
     description:
-      "에이전트 인프라, 공공계약 감사, 현장 문화 체험을 실제 AI 시스템으로 구현했습니다.",
-    images: [
-      {
-        url: "/og.png",
-        width: 1536,
-        height: 1024,
-        alt: "박재우 AI 솔루션 아키텍트 및 AI 에이전트 엔지니어 포트폴리오",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "박재우 — AI 에이전트 엔지니어 & AI 솔루션 아키텍트",
-    description:
-      "AI 에이전트 플랫폼, 공공 규제 시스템, 현장 설치형 생성형 AI 제품 포트폴리오.",
-    images: ["/og.png"],
+      "기관의 업무 요구사항을 분석해 AI 제품의 구조를 설계하고, 개발부터 배포와 운영 인계까지 수행합니다.",
   },
 };
 
