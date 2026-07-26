@@ -7,7 +7,7 @@ const navCopy = {
     work: "Work",
     experience: "Experience",
     contact: "Contact",
-    career: "Career document",
+    career: "Resume",
     menu: "Menu",
   },
   ko: {
@@ -48,7 +48,9 @@ export function SiteNav({
         <Link href={`${prefix}/#work`}>{copy.work}</Link>
         <Link href={`${prefix}/#experience`}>{copy.experience}</Link>
         <Link href={`${prefix}/#contact`}>{copy.contact}</Link>
-        {locale === "ko" ? <Link href="/ko/career">{copy.career}</Link> : null}
+        <Link href={locale === "ko" ? "/ko/career" : "/resume"}>
+          {copy.career}
+        </Link>
       </div>
       <div className="nav-actions">
         <div className="language-switch" aria-label="Language">
@@ -83,7 +85,9 @@ export function SiteNav({
           <Link href={`${prefix}/#work`}>{copy.work}</Link>
           <Link href={`${prefix}/#experience`}>{copy.experience}</Link>
           <Link href={`${prefix}/#contact`}>{copy.contact}</Link>
-          {locale === "ko" ? <Link href="/ko/career">{copy.career}</Link> : null}
+          <Link href={locale === "ko" ? "/ko/career" : "/resume"}>
+            {copy.career}
+          </Link>
           <Link href={alternateHref}>
             {locale === "en" ? "한국어" : "English"}
           </Link>
