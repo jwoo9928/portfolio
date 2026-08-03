@@ -29,7 +29,7 @@
 - Consumes: `htmlFor("/resume")` from the existing rendered HTML test harness.
 - Produces: `/resume` HTML containing the approved solution-ownership copy and excluding `Technical Scope` and `In use`.
 
-- [ ] **Step 1: Add failing assertions for the approved resume contract**
+- [x] **Step 1: Add failing assertions for the approved resume contract**
 
 Add these assertions inside `renders the US resume as a concise ATS-readable HTML document`:
 
@@ -50,7 +50,7 @@ assert.doesNotMatch(html, /Technical Scope/);
 assert.doesNotMatch(html, />In use</);
 ```
 
-- [ ] **Step 2: Run the test to verify the old resume fails the new contract**
+- [x] **Step 2: Run the test to verify the old resume fails the new contract**
 
 Run:
 
@@ -61,7 +61,7 @@ node --test --test-name-pattern "US resume" tests/rendered-html.test.mjs
 
 Expected: FAIL because the approved positioning, profile, signal, and first Seoul AI Foundation bullet are absent.
 
-- [ ] **Step 3: Apply the approved resume copy and remove Technical Scope**
+- [x] **Step 3: Apply the approved resume copy and remove Technical Scope**
 
 In `app/resume/page.tsx`:
 
@@ -106,7 +106,7 @@ resulting product.
 5. Delete the complete section whose title is `Technical Scope`.
 6. Change the Education section index from `04` to `03`.
 
-- [ ] **Step 4: Run the focused regression test**
+- [x] **Step 4: Run the focused regression test**
 
 Run:
 
@@ -117,7 +117,7 @@ node --test --test-name-pattern "US resume" tests/rendered-html.test.mjs
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit the tested narrative change**
+- [x] **Step 5: Commit the tested narrative change**
 
 ```powershell
 git add -- app/resume/page.tsx tests/rendered-html.test.mjs
@@ -135,7 +135,7 @@ git commit -m "Refocus resume on solution ownership"
 - Consumes: the updated `/resume` route from Task 1.
 - Produces: a build-verified, one-page US Letter resume with no clipped or overlapping content.
 
-- [ ] **Step 1: Run the complete site test suite**
+- [x] **Step 1: Run the complete site test suite**
 
 Run:
 
@@ -145,7 +145,7 @@ npm test
 
 Expected: all rendered HTML and layout contract tests pass.
 
-- [ ] **Step 2: Run the Next.js production build**
+- [x] **Step 2: Run the Next.js production build**
 
 Run:
 
@@ -155,7 +155,7 @@ npm run build
 
 Expected: build completes successfully and includes `/resume`.
 
-- [ ] **Step 3: Verify generated HTML exclusions and approved copy**
+- [x] **Step 3: Verify generated HTML exclusions and approved copy**
 
 Run:
 
@@ -165,7 +165,7 @@ rg -n "Turning stakeholder needs|Discovery → Delivery|Stakeholder-led AI solut
 
 Expected: approved copy is present; `Technical Scope` and `>In use<` are absent.
 
-- [ ] **Step 4: Print the resume route to PDF and render it for visual inspection**
+- [x] **Step 4: Print the resume route to PDF and render it for visual inspection**
 
 Start the existing production server, print `/resume` with headless Edge using the route's Letter print CSS, and render the PDF page to PNG with Poppler.
 
@@ -177,6 +177,6 @@ Expected:
 - readable top evidence strip;
 - Education numbered `03`.
 
-- [ ] **Step 5: Report verified completion**
+- [x] **Step 5: Report verified completion**
 
 Report the exact copy changes, removed section, test/build results, and print-layout result. Do not claim deployment unless it was explicitly performed.
