@@ -45,9 +45,9 @@ const contacts = [
 
 const deliverySignals = [
   {
-    value: "In use",
-    label: "Reusable AI PoC platform",
-    note: "Consulting delivery",
+    value: "Discovery → Delivery",
+    label: "Stakeholder-led AI solutions",
+    note: "Interview · architecture · implementation",
   },
   {
     value: "Hours → ~5 min",
@@ -119,7 +119,7 @@ export default function ResumePage() {
             </p>
           </div>
           <p className={styles.positioning}>
-            Designing and shipping AI systems for real operational constraints.
+            Turning stakeholder needs into working AI solutions.
           </p>
         </header>
 
@@ -141,11 +141,11 @@ export default function ResumePage() {
           <h2 id="summary-title">Profile</h2>
           <p>
             Software engineer with approximately four years of experience
-            across mobile, Web3, web, and AI products. Currently designs and
-            ships agentic AI systems for institutional workflows - owning
-            requirements discovery, solution architecture, full-stack
-            implementation, evaluation, GPU model serving, deployment, and
-            operating handoff.
+            across mobile, Web3, web, and AI products. I interview
+            institutional stakeholders and internal consultants, translate
+            ambiguous needs and operational constraints into solution
+            requirements, design the appropriate AI architecture, and
+            implement, validate, and deploy the resulting product.
           </p>
         </section>
 
@@ -177,6 +177,12 @@ export default function ResumePage() {
                 </div>
               </header>
               <ul className={styles.bullets}>
+                <li>
+                  Interview institutional stakeholders and internal consultants
+                  to understand workflows, constraints, and success criteria,
+                  then translate those findings into AI solution architectures
+                  and working products.
+                </li>
                 <li>
                   Independently built{" "}
                   <ExternalLink href="/work/aiops">AIOps-PoC</ExternalLink>, a
@@ -306,34 +312,7 @@ export default function ResumePage() {
         </section>
 
         <section className={styles.section}>
-          <SectionTitle index="03">Technical Scope</SectionTitle>
-          <dl className={styles.skills}>
-            <div>
-              <dt>Agentic AI</dt>
-              <dd>
-                Multi-agent orchestration · LangGraph · DeepAgents · typed
-                intent · graph compilation · human-in-the-loop · evaluation
-              </dd>
-            </div>
-            <div>
-              <dt>AI Systems</dt>
-              <dd>
-                vLLM · A100 / Blackwell · multimodal pipelines · hybrid
-                retrieval · knowledge graphs · reranking · model readiness
-              </dd>
-            </div>
-            <div>
-              <dt>Engineering</dt>
-              <dd>
-                Python · FastAPI · TypeScript · Next.js · Electron · PostgreSQL
-                · Neo4j · Qdrant · SQLite · Docker · React Native
-              </dd>
-            </div>
-          </dl>
-        </section>
-
-        <section className={styles.section}>
-          <SectionTitle index="04">Education</SectionTitle>
+          <SectionTitle index="03">Education</SectionTitle>
           <div className={styles.education}>
             <p>
               <strong>Chungnam National University</strong>

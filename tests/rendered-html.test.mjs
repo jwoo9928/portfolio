@@ -185,6 +185,20 @@ test("renders the US resume as a concise ATS-readable HTML document", async () =
   assert.match(html, /PILAB Technology/);
   assert.match(html, /multiple mnemonic seed phrases/);
   assert.match(html, /Chungnam National University/);
+  assert.match(html, /Turning stakeholder needs into working AI solutions\./);
+  assert.match(
+    html,
+    /I interview institutional stakeholders and internal consultants/,
+  );
+  assert.match(html, /Discovery → Delivery/);
+  assert.match(html, /Stakeholder-led AI solutions/);
+  assert.match(
+    html,
+    /Interview institutional stakeholders and internal consultants to understand workflows, constraints, and success criteria/,
+  );
+  assert.match(html, /<span>03<\/span>Education/);
+  assert.doesNotMatch(html, /Technical Scope/);
+  assert.doesNotMatch(html, />In use</);
   assert.match(html, /Download PDF/);
   assert.match(
     html,
