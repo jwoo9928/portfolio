@@ -170,8 +170,14 @@ test("renders the Korean career document with full career and project evidence",
   assert.doesNotMatch(html, /�|援ы쁽|\?꾨줈|吏곷Т/);
 });
 
-test("renders the US resume as a concise ATS-readable HTML document", async () => {
-  const html = await htmlFor("/resume");
+test("publishes the US resume as a standalone ATS-readable HTML file", async () => {
+  const html = await readFile(
+    new URL(
+      "../public/Jaewoo_Park_AI_Resume_2026.html",
+      import.meta.url,
+    ),
+    "utf8",
+  );
 
   assert.match(html, /Jaewoo Park/);
   assert.match(html, /AI Agent Engineer/);
@@ -199,6 +205,8 @@ test("renders the US resume as a concise ATS-readable HTML document", async () =
   assert.match(html, /<span>03<\/span>Education/);
   assert.doesNotMatch(html, /Technical Scope/);
   assert.doesNotMatch(html, />In use</);
+  assert.match(html, /Download HTML/);
+  assert.match(html, /Jaewoo_Park_AI_Resume_2026\.html/);
   assert.match(html, /Download PDF/);
   assert.match(
     html,
@@ -206,6 +214,7 @@ test("renders the US resume as a concise ATS-readable HTML document", async () =
   );
   assert.doesNotMatch(html, /four years of AI experience/i);
   assert.doesNotMatch(html, /A2A protocol|reinforcement learning|fine-tun/i);
+  assert.match(html, /@page\s*\{[\s\S]*?size:\s*Letter/);
 });
 
 test("keeps removed or unverified claims out of published case studies", async () => {
@@ -241,7 +250,13 @@ test("publishes real project assets and social metadata", async () => {
   );
   await access(
     new URL(
-      "../public/resume/Jaewoo_Park_AI_Agent_Engineer_Resume_2026.pdf",
+      "../public/Jaewoo_Park_AI_Agent_Engineer_Resume_2026.pdf",
+      import.meta.url,
+    ),
+  );
+  await access(
+    new URL(
+      "../public/Jaewoo_Park_AI_Resume_2026.html",
       import.meta.url,
     ),
   );
@@ -258,20 +273,6 @@ test("keeps readable display line-height, focus states, and mobile navigation", 
   assert.match(styles, /\[lang="ko"\] \.hero-main h1[\s\S]*?line-height:\s*1\.16/);
   assert.match(styles, /\.hero-main h1[\s\S]*?line-height:\s*1\.03/);
   assert.match(styles, /@media \(max-width: 760px\)/);
-});
-
-test("keeps the resume on a print-oriented single-column Letter layout", async () => {
-  const styles = await readFile(
-    new URL("../app/resume/resume-page.module.css", import.meta.url),
-    "utf8",
-  );
-
-  assert.match(styles, /width:\s*8\.5in/);
-  assert.match(styles, /height:\s*11in/);
-  assert.match(styles, /size:\s*Letter/);
-  assert.match(styles, /@media print/);
-  assert.match(styles, /\.experienceList[\s\S]*?display:\s*grid/);
-  assert.doesNotMatch(styles, /grid-template-columns:\s*repeat\(2,\s*1fr\).*experienceList/);
 });
 
 test("keeps core text colors at WCAG AA contrast", async () => {

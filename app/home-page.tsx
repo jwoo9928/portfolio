@@ -275,7 +275,11 @@ export function HomePage({
           <p className="education-line">{copy.education}</p>
           <Link
             className="career-document-link"
-            href={locale === "ko" ? "/ko/career" : "/resume"}
+            href={
+              locale === "ko"
+                ? "/ko/career"
+                : "/Jaewoo_Park_AI_Resume_2026.html"
+            }
           >
             {copy.careerDocument} <Arrow />
           </Link>

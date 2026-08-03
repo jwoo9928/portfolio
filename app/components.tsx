@@ -48,7 +48,13 @@ export function SiteNav({
         <Link href={`${prefix}/#work`}>{copy.work}</Link>
         <Link href={`${prefix}/#experience`}>{copy.experience}</Link>
         <Link href={`${prefix}/#contact`}>{copy.contact}</Link>
-        <Link href={locale === "ko" ? "/ko/career" : "/resume"}>
+        <Link
+          href={
+            locale === "ko"
+              ? "/ko/career"
+              : "/Jaewoo_Park_AI_Resume_2026.html"
+          }
+        >
           {copy.career}
         </Link>
       </div>
@@ -85,7 +91,13 @@ export function SiteNav({
           <Link href={`${prefix}/#work`}>{copy.work}</Link>
           <Link href={`${prefix}/#experience`}>{copy.experience}</Link>
           <Link href={`${prefix}/#contact`}>{copy.contact}</Link>
-          <Link href={locale === "ko" ? "/ko/career" : "/resume"}>
+          <Link
+            href={
+              locale === "ko"
+                ? "/ko/career"
+                : "/Jaewoo_Park_AI_Resume_2026.html"
+            }
+          >
             {copy.career}
           </Link>
           <Link href={alternateHref}>

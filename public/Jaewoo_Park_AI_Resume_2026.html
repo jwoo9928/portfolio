@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Jaewoo Park — AI Agent Engineer and AI Solutions Architect. Stakeholder discovery, solution architecture, implementation, validation, and deployment."
+    />
+    <title>Jaewoo Park — AI Agent Engineer · AI Solutions Architect</title>
+    <style>
+      :root {
+        --ink: #101820;
+        --muted: #52606b;
+        --line: #c4cdd3;
+        --accent: #154b72;
+        --screen: #e8ecee;
+      }
+
+      * { box-sizing: border-box; }
+
+      html { background: var(--screen); }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        padding: 38px 24px 64px;
+        background:
+          linear-gradient(rgba(25, 50, 65, 0.045) 1px, transparent 1px),
+          var(--screen);
+        background-size: 100% 32px;
+        color: var(--ink);
+        font-family: Arial, "Helvetica Neue", sans-serif;
+      }
+
+      a { color: inherit; text-decoration: none; }
+
+      a:focus-visible,
+      button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .toolbar {
+        width: min(8.5in, 100%);
+        min-height: 42px;
+        margin: 0 auto 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        color: #33434c;
+        font-size: 11px;
+        font-weight: 650;
+      }
+
+      .toolbar p {
+        margin: 0 auto;
+        font-family: "Courier New", monospace;
+        font-size: 9px;
+        letter-spacing: 0.06em;
+      }
+
+      .toolbar-actions { display: flex; align-items: center; gap: 8px; }
+
+      .button {
+        min-height: 38px;
+        padding: 0 13px;
+        border: 1px solid #263a46;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        color: #263a46;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 720;
+      }
+
+      .button.primary { background: #263a46; color: #fff; }
+      .button:hover { border-color: var(--accent); background: var(--accent); color: #fff; }
+
+      .sheet {
+        width: 8.5in;
+        min-height: 11in;
+        margin: 0 auto;
+        padding: 0.45in 0.53in 0.42in;
+        background: #fff;
+        box-shadow: 0 1px 2px rgba(18, 29, 35, 0.08), 0 18px 50px rgba(18, 29, 35, 0.13);
+        color: var(--ink);
+        font-size: 8.6pt;
+        line-height: 1.43;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .identity {
+        padding-bottom: 15px;
+        border-bottom: 3px solid var(--ink);
+        display: grid;
+        grid-template-columns: 1fr 225px;
+        gap: 28px;
+        align-items: end;
+      }
+
+      .document-label {
+        margin: 0;
+        color: var(--accent);
+        font-family: "Courier New", monospace;
+        font-size: 7.2pt;
+        line-height: 1;
+        font-weight: 760;
+        letter-spacing: 0.13em;
+      }
+
+      h1 {
+        margin: 10px 0 0;
+        font-size: 28pt;
+        line-height: 0.96;
+        font-weight: 720;
+        letter-spacing: -0.055em;
+      }
+
+      .role {
+        margin: 8px 0 0;
+        color: var(--accent);
+        font-size: 9.8pt;
+        line-height: 1.25;
+        font-weight: 720;
+        letter-spacing: -0.012em;
+      }
+
+      .role span { padding: 0 3px; color: var(--line); }
+
+      .positioning {
+        margin: 0;
+        padding-left: 17px;
+        border-left: 2px solid var(--accent);
+        color: #31414a;
+        font-size: 8.8pt;
+        line-height: 1.5;
+        font-weight: 590;
+      }
+
+      .contacts {
+        padding: 9px 0;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 17px;
+        color: #33434c;
+        font-style: normal;
+        font-size: 7.1pt;
+        line-height: 1.35;
+      }
+
+      .contacts > span { font-weight: 700; }
+      .contacts a { color: var(--accent); }
+
+      .summary {
+        padding: 11px 0 10px;
+        border-bottom: 1px solid var(--line);
+        display: grid;
+        grid-template-columns: 85px 1fr;
+        gap: 17px;
+      }
+
+      .summary h2 {
+        margin: 0;
+        color: var(--accent);
+        font-family: "Courier New", monospace;
+        font-size: 7.1pt;
+        font-weight: 760;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .summary p { margin: 0; color: #2d3b43; font-size: 8.35pt; line-height: 1.47; }
+
+      .signals {
+        margin: 0;
+        border-bottom: 1px solid var(--line);
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .signals > div {
+        min-height: 56px;
+        padding: 9px 11px 8px 0;
+        border-right: 1px solid var(--line);
+        display: grid;
+        grid-template-columns: 68px 1fr;
+        gap: 9px;
+      }
+
+      .signals > div:not(:first-child) { padding-left: 11px; }
+      .signals > div:last-child { border-right: 0; }
+
+      .signals dt {
+        color: var(--accent);
+        font-size: 9.6pt;
+        line-height: 1.2;
+        font-weight: 760;
+        letter-spacing: -0.03em;
+      }
+
+      .signals dd { margin: 0; display: grid; align-content: start; gap: 2px; }
+      .signals dd strong { font-size: 7.1pt; line-height: 1.35; }
+      .signals dd span { color: var(--muted); font-size: 6.6pt; line-height: 1.35; }
+
+      .section { margin-top: 11px; }
+
+      .section-title {
+        margin: 0;
+        padding-bottom: 4px;
+        border-bottom: 1.5px solid var(--ink);
+        display: flex;
+        align-items: baseline;
+        gap: 9px;
+        color: var(--ink);
+        font-size: 9.7pt;
+        line-height: 1.2;
+        font-weight: 760;
+        letter-spacing: -0.015em;
+        text-transform: uppercase;
+      }
+
+      .section-title span {
+        color: var(--accent);
+        font-family: "Courier New", monospace;
+        font-size: 6.8pt;
+        letter-spacing: 0;
+      }
+
+      .experience { padding: 7px 0 6px; border-bottom: 1px solid #d8dee2; }
+
+      .experience-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 20px;
+        align-items: start;
+      }
+
+      .experience-header h3 {
+        margin: 0;
+        font-size: 9.5pt;
+        line-height: 1.25;
+        font-weight: 760;
+        letter-spacing: -0.012em;
+      }
+
+      .experience-header p {
+        margin: 1px 0 0;
+        color: var(--accent);
+        font-size: 7.5pt;
+        line-height: 1.35;
+        font-weight: 680;
+      }
+
+      .experience-header > div:last-child {
+        display: grid;
+        justify-items: end;
+        gap: 1px;
+        color: var(--muted);
+        font-size: 6.8pt;
+        line-height: 1.35;
+        white-space: nowrap;
+      }
+
+      .experience-header time { color: var(--ink); font-weight: 720; }
+
+      .bullets { margin: 5px 0 0; padding-left: 15px; }
+      .bullets li { padding-left: 1px; color: #24323a; font-size: 7.8pt; line-height: 1.43; }
+      .bullets li + li { margin-top: 3px; }
+      .bullets li::marker { color: var(--accent); }
+
+      .bullets a {
+        color: var(--accent);
+        font-weight: 720;
+        text-decoration: underline;
+        text-decoration-color: #9fb5c3;
+        text-underline-offset: 1px;
+      }
+
+      .condensed { padding-bottom: 7px; }
+      .condensed > p { margin: 4px 0 0; color: #34434b; font-size: 7.7pt; }
+
+      .additional {
+        padding: 6px 0 1px;
+        display: grid;
+        grid-template-columns: 1.17fr 1.55fr 0.78fr;
+        gap: 13px;
+      }
+
+      .additional p { margin: 0; color: var(--muted); font-size: 7pt; line-height: 1.4; }
+      .additional strong { color: var(--ink); font-weight: 720; }
+
+      .education { padding-top: 6px; }
+      .education p { margin: 0; display: flex; justify-content: space-between; gap: 20px; font-size: 7.4pt; }
+      .education strong { font-size: 8pt; }
+      .education span { color: var(--muted); }
+
+      .screen-note {
+        width: min(8.5in, 100%);
+        margin: 18px auto 0;
+        color: #5a6870;
+        font-size: 10px;
+        text-align: center;
+      }
+
+      @media screen and (max-width: 860px) {
+        html, body { background: #fff; }
+        body { padding: 18px 0 40px; }
+        .toolbar { width: calc(100% - 32px); }
+        .toolbar > p, .toolbar .desktop-only { display: none; }
+        .sheet { width: 100%; min-height: 0; padding: 34px 24px 40px; box-shadow: none; }
+        .identity { grid-template-columns: 1fr; gap: 18px; }
+        .positioning { max-width: 340px; }
+        .signals { grid-template-columns: 1fr; }
+        .signals > div, .signals > div:not(:first-child) {
+          min-height: 0;
+          padding: 10px 0;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+        .experience-header { grid-template-columns: 1fr; gap: 4px; }
+        .experience-header > div:last-child { justify-items: start; grid-template-columns: auto auto; gap: 10px; }
+        .additional { grid-template-columns: 1fr; gap: 5px; }
+        .education p { flex-direction: column; gap: 2px; }
+      }
+
+      @page { size: Letter; margin: 0; }
+
+      @media print {
+        html, body { background: #fff; }
+        body { min-height: 0; padding: 0; }
+        .toolbar, .screen-note { display: none; }
+        .sheet {
+          width: 8.5in;
+          height: 11in;
+          min-height: 11in;
+          margin: 0;
+          padding: 0.45in 0.53in 0.42in;
+          overflow: hidden;
+          box-shadow: none;
+        }
+        .experience, .section, .signals, .summary { break-inside: avoid; }
+        .sheet a { text-decoration: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="toolbar" aria-label="Resume actions">
+      <a href="https://jaewoo-park-ai-portfolio.jwoo9928.chatgpt.site">Portfolio</a>
+      <p>US technical resume · Updated July 2026</p>
+      <div class="toolbar-actions">
+        <a class="button desktop-only" href="Jaewoo_Park_AI_Resume_2026.html" download>Download HTML</a>
+        <a class="button primary" href="Jaewoo_Park_AI_Agent_Engineer_Resume_2026.pdf" download>Download PDF</a>
+        <button class="button desktop-only" type="button" onclick="window.print()">Print</button>
+      </div>
+    </nav>
+
+    <main class="sheet" aria-label="Jaewoo Park resume">
+      <header class="identity">
+        <div>
+          <p class="document-label">RESUME · 2026</p>
+          <h1>Jaewoo Park</h1>
+          <p class="role">AI Agent Engineer <span>/</span> AI Solutions Architect</p>
+        </div>
+        <p class="positioning">Turning stakeholder needs into working AI solutions.</p>
+      </header>
+
+      <address class="contacts">
+        <span>Seoul, South Korea</span>
+        <a href="mailto:jwoo9928@gmail.com">jwoo9928@gmail.com</a>
+        <a href="tel:+14082109171">+1 408 210 9171</a>
+        <a href="https://www.linkedin.com/in/jaewoo9928">linkedin.com/in/jaewoo9928</a>
+        <a href="https://github.com/jwoo9928">github.com/jwoo9928</a>
+        <a href="https://jaewoo-park-ai-portfolio.jwoo9928.chatgpt.site">jaewoo-park-ai-portfolio</a>
+      </address>
+
+      <section class="summary" aria-labelledby="profile-title">
+        <h2 id="profile-title">Profile</h2>
+        <p>
+          Software engineer with approximately four years of experience across mobile, Web3, web, and AI products. I interview institutional stakeholders and internal consultants, translate ambiguous needs and operational constraints into solution requirements, design the appropriate AI architecture, and implement, validate, and deploy the resulting product.
+        </p>
+      </section>
+
+      <dl class="signals">
+        <div>
+          <dt>Discovery → Delivery</dt>
+          <dd><strong>Stakeholder-led AI solutions</strong><span>Interview · architecture · implementation</span></dd>
+        </div>
+        <div>
+          <dt>Hours → ~5 min</dt>
+          <dd><strong>Representative internal audit validation</strong><span>Institutional beta underway</span></dd>
+        </div>
+        <div>
+          <dt>8 × A100</dt>
+          <dd><strong>40 GB GPU model-serving fleet</strong><span>Plus Blackwell optimization</span></dd>
+        </div>
+      </dl>
+
+      <section class="section" aria-labelledby="experience-title">
+        <h2 class="section-title" id="experience-title"><span>01</span>Experience</h2>
+
+        <article class="experience">
+          <header class="experience-header">
+            <div><h3>Seoul AI Foundation</h3><p>AI Agent Engineer · AI Solutions Architect</p></div>
+            <div><time>Oct 2025 - Present</time><span>Seoul, South Korea</span></div>
+          </header>
+          <ul class="bullets">
+            <li>Interview institutional stakeholders and internal consultants to understand workflows, constraints, and success criteria, then translate those findings into AI solution architectures and working products.</li>
+            <li>Independently built <a href="https://jaewoo-park-ai-portfolio.jwoo9928.chatgpt.site/work/aiops">AIOps-PoC</a>, a reusable Agent Harness that turns institutional requirements into specialist-agent plans, validated execution DAGs, model-serving environments, request-specific Playgrounds, user evaluation, and reporting; adopted by the consulting team after a six-month build.</li>
+            <li>Separated agent planning from execution through <strong>RuntimeGraphIntent → Graph Intent Compiler → ServingPipelineSpec</strong>, with deterministic topology, type, entry-point, model-readiness, and GPU checks plus human approval. Operate vLLM across 8 × A100 40 GB GPUs and RTX PRO 6000 Blackwell for LLM, VLM, OCR, embedding, and ASR workloads.</li>
+            <li>Built an <a href="https://jaewoo-park-ai-portfolio.jwoo9928.chatgpt.site/work/audit">evidence-grounded public-contract pre-audit system</a> combining versioned regulations, hybrid retrieval, knowledge graphs, proof records, deterministic decision rules, and authenticated human approval. A representative internal review fell from hours to approximately five minutes; institutional beta validation is underway.</li>
+            <li>Delivered <a href="https://jaewoo-park-ai-portfolio.jwoo9928.chatgpt.site/work/shakespeare">AI Shakespeare</a>, a Windows Electron kiosk that generates a structured one-act play and prints it on an 80 mm thermal receipt, with serialized requests, bounded retries, encrypted secrets, SQLite state, printer integration, and NSIS packaging; on-site installation is scheduled for August 2026.</li>
+          </ul>
+        </article>
+
+        <article class="experience">
+          <header class="experience-header">
+            <div><h3>ICT Global Internship Program</h3><p>Software Development Intern</p></div>
+            <div><time>Jul 2024 - Sep 2024</time><span>San Jose, California</span></div>
+          </header>
+          <ul class="bullets">
+            <li>Reframed an availability-dependent, inconsistent manual English-writing review process as an LLM-assisted service; designed the submission-to-feedback workflow and shipped the Next.js product.</li>
+          </ul>
+        </article>
+
+        <article class="experience">
+          <header class="experience-header">
+            <div><h3>PILAB Technology, Inc. · BIFROST</h3><p>Mobile Engineer</p></div>
+            <div><time>Nov 2021 - Aug 2023</time><span>Seoul, South Korea</span></div>
+          </header>
+          <ul class="bullets">
+            <li>Led React Native development for the Biport and Pockie self-custodial multichain wallets; built controllers for multiple mnemonic seed phrases, account and network state, transfers, transaction tracking, and gas-fee optimization.</li>
+            <li>Integrated Bifrost Cross-Chain Swap into both mobile clients, enabling in-app bridge-and-swap flows across supported networks.</li>
+          </ul>
+        </article>
+
+        <article class="experience condensed">
+          <header class="experience-header">
+            <div><h3>dangamsoft</h3><p>Mobile &amp; Web Developer</p></div>
+            <div><time>Mar 2021 - Oct 2021</time><span>Seoul, South Korea</span></div>
+          </header>
+          <p>Developed and released Gurumirangi, a React Native pet-community application with production API integrations.</p>
+        </article>
+      </section>
+
+      <section class="section" aria-labelledby="additional-title">
+        <h2 class="section-title" id="additional-title"><span>02</span>Additional Experience</h2>
+        <div class="additional">
+          <p><strong>Web Development Teaching Assistant</strong> · Chungnam National University · Jun-Nov 2023</p>
+          <p><strong>Founding Member</strong> · SOLIF / NAUEM · 2021-2023 · Reading curation and accessibility-community products</p>
+          <p><strong>1st Cadet</strong> · 42 Seoul · Feb 2020-Mar 2021</p>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="education-title">
+        <h2 class="section-title" id="education-title"><span>03</span>Education</h2>
+        <div class="education">
+          <p><strong>Chungnam National University</strong><span>Division of Computer Convergence · 2019-2025</span></p>
+        </div>
+      </section>
+    </main>
+
+    <p class="screen-note">Standalone HTML · ATS-readable · Print-ready US Letter</p>
+  </body>
+</html>
