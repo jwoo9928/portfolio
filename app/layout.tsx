@@ -2,6 +2,19 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+const deploymentHost =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  process.env.VERCEL_PROJECT_PRODUCTION_URL ??
+  process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL;
+
+const metadataBase = new URL(
+  deploymentHost
+    ? deploymentHost.startsWith("http")
+      ? deploymentHost
+      : `https://${deploymentHost}`
+    : "https://jaewoo-park-ai-portfolio.jwoo9928.chatgpt.site",
+);
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -13,9 +26,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    "https://jaewoo-park-ai-portfolio.jwoo9928.chatgpt.site",
-  ),
+  metadataBase,
   title: {
     default: "Jaewoo Park — AI Agent Engineer & AI Solutions Architect",
     template: "%s — Jaewoo Park",
