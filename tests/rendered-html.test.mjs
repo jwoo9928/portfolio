@@ -170,6 +170,41 @@ test("renders the Korean career document with full career and project evidence",
   assert.doesNotMatch(html, /�|援ы쁽|\?꾨줈|吏곷Т/);
 });
 
+test("renders the Korean AI Serving portfolio with verified decisions and evidence boundaries", async () => {
+  const html = await htmlFor("/ko/serving");
+
+  assert.match(html, /AI Serving Platform/);
+  assert.match(html, /GLM-5\.3-Flash/);
+  assert.match(html, /AWQ W4A16/);
+  assert.match(html, /A100 40GB × 8/);
+  assert.match(html, /RTX PRO 6000 96GB/);
+  assert.match(html, /vLLM/);
+  assert.match(html, /LiteLLM/);
+  assert.match(html, /Graph Intent Compiler/);
+  assert.match(html, /ServingPipelineSpec/);
+  assert.match(
+    html,
+    /rel="canonical" href="https:[^"]+\/ko\/serving"/,
+  );
+  assert.doesNotMatch(html, /NVIDIA Triton Inference Server|Dynamo|TTS/);
+  assert.doesNotMatch(html, /대규모 트래픽|장애 RCA/);
+  assert.doesNotMatch(html, /FlashAttention 4[^<]{0,100}프로덕션 적용/);
+  assert.doesNotMatch(html, /�|援ы쁽|\?꾨줈|吏곷Т/);
+});
+
+test("keeps the Serving portfolio readable across Korean copy and long model identifiers", async () => {
+  const styles = await readFile(
+    new URL("../app/ko/serving/serving-page.module.css", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(styles, /word-break:\s*keep-all/);
+  assert.match(styles, /overflow-wrap:\s*anywhere/);
+  assert.match(styles, /@media \(max-width: 1050px\)/);
+  assert.match(styles, /@media \(max-width: 760px\)/);
+  assert.doesNotMatch(styles, /transition-all|linear-gradient|radial-gradient/);
+});
+
 test("publishes the US resume as a standalone ATS-readable HTML file", async () => {
   const html = await readFile(
     new URL(

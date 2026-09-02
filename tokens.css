@@ -1,0 +1,63 @@
+:root {
+  --color-paper: oklch(96.8% 0.008 145);
+  --color-paper-2: oklch(93.8% 0.01 145);
+  --color-evidence: oklch(99.2% 0.004 145);
+  --color-ink: oklch(18.5% 0.014 150);
+  --color-ink-2: oklch(30% 0.014 150);
+  --color-muted: oklch(43% 0.014 150);
+  --color-rule: oklch(81.5% 0.012 145);
+  --color-rule-strong: oklch(59% 0.014 150);
+  --color-accent: oklch(42% 0.155 258);
+  --color-accent-ink: oklch(98% 0.008 145);
+  --color-focus: oklch(48% 0.19 258);
+
+  --font-display: var(--font-serving-sans), var(--font-geist-sans), sans-serif;
+  --font-body: var(--font-serving-sans), var(--font-geist-sans), sans-serif;
+  --font-code: var(--font-geist-mono), var(--font-serving-sans), ui-monospace, monospace;
+
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-4xl: 9rem;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.25rem;
+  --text-lg: 1.5625rem;
+  --text-xl: 1.953rem;
+  --text-2xl: 2.441rem;
+  --text-3xl: 3.052rem;
+  --text-display: clamp(3rem, 5.8vw, 5.25rem);
+
+  --rule-hair: 1px;
+  --rule-strong: 2px;
+  --radius-none: 0;
+  --dur-fast: 140ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --page-serving: min(1380px, calc(100vw - 4rem));
+  --rail-serving: 11.75rem;
+  --measure-serving: 68ch;
+  --z-sticky: 200;
+  --target-min: 2.75rem;
+  --connector-offset: -1.75rem;
+}
+
+@media (max-width: 1050px) {
+  :root {
+    --page-serving: min(100% - 2.5rem, 920px);
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --page-serving: calc(100% - 2rem);
+  }
+}

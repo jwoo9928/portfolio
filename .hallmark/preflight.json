@@ -1,0 +1,38 @@
+{
+  "date": "2026-09-02",
+  "scope": "/ko/serving",
+  "framework": "Next.js 16 App Router with React 19 and CSS Modules",
+  "packageManager": "npm",
+  "existingVisualSystem": {
+    "paper": "warm off-white",
+    "ink": "green-tinted near-black",
+    "signal": "single blue",
+    "layout": "editorial document with hairline rules and asymmetric columns",
+    "motion": "minimal"
+  },
+  "existingFonts": [
+    "Geist",
+    "Geist Mono",
+    "system Korean fallbacks"
+  ],
+  "preserve": [
+    "existing App Router architecture",
+    "existing package manager and lockfile",
+    "existing Site hosting configuration",
+    "current four-project data model",
+    "public project assets",
+    "global navigation behavior"
+  ],
+  "avoid": [
+    "card grids",
+    "bento layouts",
+    "neon or gradients",
+    "fake dashboards or terminals",
+    "unverified performance claims",
+    "project-specific green, violet, and orange accents"
+  ],
+  "responsiveBreakpoints": [1050, 760],
+  "evidenceAssets": [
+    "public/projects/aiops-plan-approval.png"
+  ]
+}
