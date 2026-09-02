@@ -178,10 +178,22 @@ export default function ServingPortfolioPage() {
             A100 환경에는 AWQ W4A16으로 최종 배포했습니다. RTX 환경에서는
             이기종 AI 모델을 공통 Serving 계약으로 운영했습니다.
           </p>
-          <div className={styles.heroLinks} aria-label="외부 프로필">
+          <div
+            className={styles.heroLinks}
+            aria-label="외부 프로필 및 서빙 포트폴리오 파일"
+          >
             <a href="https://www.linkedin.com/in/jaewoo9928/">LinkedIn</a>
             <a href="https://github.com/jwoo9928">GitHub</a>
             <a href="mailto:jwoo9928@gmail.com">Email</a>
+            <a href="/downloads/Park_Jaewoo_AI_Serving_Portfolio_KO_2026.html">
+              HTML Deck
+            </a>
+            <a
+              href="/downloads/Park_Jaewoo_AI_Serving_Portfolio_KO_2026.pdf"
+              download
+            >
+              PDF 다운로드
+            </a>
           </div>
         </div>
 

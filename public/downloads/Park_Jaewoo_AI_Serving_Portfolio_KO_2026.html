@@ -1,0 +1,1718 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="박재우의 AI Platform·LLM Serving 포트폴리오. 모델 선정, GPU 제약 기반 배포, 이기종 런타임, 운영 거버넌스와 Agent Harness 구현 경험."
+    />
+    <title>Park Jaewoo — AI Platform · LLM Serving Portfolio</title>
+    <style>
+      /* Hallmark · macrostructure: Sequential Evidence Deck · layouts: cover / map / split / sequence / ledger
+       * theme: Operational Evidence · mode: Experience · paper/ink/signal · enrichment: real approval screen + source-backed diagrams
+       * pre-emit critique: P5 H5 E5 S5 R5 V5 · no gradients / no card grid / no invented metrics
+       */
+      :root {
+        --paper: #f1f6f1;
+        --paper-2: #e6ece6;
+        --paper-3: #dce5de;
+        --ink: #0e140f;
+        --ink-2: #29302a;
+        --muted: #4b524c;
+        --rule: #bec5be;
+        --rule-strong: #788079;
+        --signal: #01489f;
+        --signal-soft: #dce7f7;
+        --signal-ink: #f7fbff;
+        --dark: #101821;
+        --dark-2: #1b2631;
+        --dark-rule: #3c4853;
+        --dark-muted: #b7c0c7;
+        --screen: #d8ddd9;
+        --white: #f7fbff;
+        --font-sans: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+        --font-mono: "Geist Mono", "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+        --deck-scale: 1;
+        --scaled-width: 1280px;
+        --scaled-height: 720px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        overflow-x: clip;
+        background: var(--screen);
+        color: var(--ink);
+        font-family: var(--font-sans);
+        word-break: keep-all;
+      }
+
+      body {
+        min-height: 100vh;
+      }
+
+      ::selection {
+        background: var(--signal);
+        color: var(--signal-ink);
+      }
+
+      a {
+        color: inherit;
+        text-decoration-color: var(--signal);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
+      }
+
+      a:focus-visible,
+      button:focus-visible {
+        outline: 3px solid var(--signal);
+        outline-offset: 3px;
+      }
+
+      .deck-controls {
+        position: relative;
+        z-index: 50;
+        width: max-content;
+        max-width: calc(100% - 24px);
+        margin: 14px 14px 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+        border: 1px solid var(--rule-strong);
+        background: var(--paper);
+      }
+
+      .deck-controls button,
+      .deck-controls a {
+        min-width: 56px;
+        min-height: 44px;
+        padding: 0 14px;
+        border: 1px solid var(--rule-strong);
+        background: var(--paper);
+        color: var(--ink);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font: 700 14px/1 var(--font-sans);
+        text-decoration: none;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+
+      .deck-controls button:hover,
+      .deck-controls a:hover {
+        border-color: var(--signal);
+        color: var(--signal);
+      }
+
+      .deck-controls button:active,
+      .deck-controls a:active {
+        background: var(--paper-2);
+      }
+
+      .deck-controls button:disabled {
+        color: var(--muted);
+        cursor: not-allowed;
+      }
+
+      .deck-controls output {
+        min-width: 64px;
+        color: var(--muted);
+        font: 600 13px/1 var(--font-mono);
+        text-align: center;
+      }
+
+      .deck {
+        padding: 14px 0 88px;
+      }
+
+      .slide-shell {
+        width: var(--scaled-width);
+        height: var(--scaled-height);
+        margin: 0 auto 28px;
+      }
+
+      .slide {
+        position: relative;
+        width: 1280px;
+        height: 720px;
+        padding: 50px 64px 46px;
+        overflow: hidden;
+        transform: scale(var(--deck-scale));
+        transform-origin: top left;
+        background: var(--paper);
+        color: var(--ink);
+      }
+
+      .slide.dark {
+        background: var(--dark);
+        color: var(--white);
+      }
+
+      .slide-index {
+        position: absolute;
+        top: 31px;
+        right: 64px;
+        color: var(--muted);
+        font: 600 14px/1 var(--font-mono);
+        letter-spacing: 0.05em;
+      }
+
+      .dark .slide-index {
+        color: var(--dark-muted);
+      }
+
+      .slide-title {
+        min-width: 0;
+        max-width: 1010px;
+        margin: 0;
+        font-size: 52px;
+        font-weight: 700;
+        letter-spacing: -0.035em;
+        line-height: 1.16;
+        overflow-wrap: anywhere;
+      }
+
+      .slide-lead {
+        max-width: 900px;
+        margin: 18px 0 0;
+        color: var(--muted);
+        font-size: 21px;
+        line-height: 1.55;
+      }
+
+      .dark .slide-lead {
+        color: var(--dark-muted);
+      }
+
+      .slide-footer {
+        position: absolute;
+        right: 64px;
+        bottom: 25px;
+        left: 64px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 24px;
+        padding-top: 10px;
+        border-top: 1px solid var(--rule);
+        color: var(--muted);
+        font: 500 13px/1.35 var(--font-mono);
+      }
+
+      .dark .slide-footer {
+        border-color: var(--dark-rule);
+        color: var(--dark-muted);
+      }
+
+      .slide-footer span:first-child {
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+
+      .slide-footer span:last-child {
+        font-variant-numeric: tabular-nums;
+      }
+
+      .mono {
+        font-family: var(--font-mono);
+        letter-spacing: -0.02em;
+        overflow-wrap: anywhere;
+      }
+
+      .signal {
+        color: var(--signal);
+      }
+
+      .cover {
+        padding-top: 54px;
+      }
+
+      .cover-top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--dark-rule);
+        color: var(--dark-muted);
+        font: 600 14px/1 var(--font-mono);
+      }
+
+      .cover-top strong {
+        color: var(--white);
+        font-family: var(--font-sans);
+        font-size: 17px;
+        letter-spacing: 0.02em;
+      }
+
+      .cover-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.5fr);
+        gap: 74px;
+        align-items: end;
+        height: 515px;
+      }
+
+      .cover h1 {
+        min-width: 0;
+        max-width: 880px;
+        margin: 0;
+        font-size: 66px;
+        font-weight: 700;
+        letter-spacing: -0.045em;
+        line-height: 1.12;
+      }
+
+      .cover h1 span {
+        color: var(--signal-soft);
+      }
+
+      .cover-copy p {
+        max-width: 760px;
+        margin: 25px 0 0;
+        color: var(--dark-muted);
+        font-size: 22px;
+        line-height: 1.58;
+      }
+
+      .cover-rail {
+        border-top: 3px solid var(--signal);
+      }
+
+      .cover-rail div {
+        padding: 15px 0;
+        border-bottom: 1px solid var(--dark-rule);
+      }
+
+      .cover-rail b,
+      .cover-rail span {
+        display: block;
+      }
+
+      .cover-rail b {
+        color: var(--signal-soft);
+        font: 600 14px/1.3 var(--font-mono);
+      }
+
+      .cover-rail span {
+        margin-top: 7px;
+        color: var(--white);
+        font-size: 18px;
+        line-height: 1.35;
+      }
+
+      .lane-map {
+        margin-top: 34px;
+        border-top: 3px solid var(--ink);
+      }
+
+      .lane {
+        position: relative;
+        display: grid;
+        grid-template-columns: 165px minmax(0, 1fr);
+        gap: 25px;
+        min-height: 166px;
+        padding: 25px 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .lane-name {
+        align-self: start;
+      }
+
+      .lane-name b {
+        display: block;
+        color: var(--signal);
+        font-size: 20px;
+      }
+
+      .lane-name span {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.45;
+      }
+
+      .lane-track {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 25px;
+        align-items: center;
+      }
+
+      .lane-track::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        left: 15px;
+        height: 2px;
+        background: var(--rule-strong);
+      }
+
+      .lane-node {
+        position: relative;
+        z-index: 1;
+        min-height: 92px;
+        padding: 13px 12px;
+        border-top: 2px solid var(--ink);
+        border-bottom: 2px solid var(--ink);
+        background: var(--paper);
+      }
+
+      .lane-node.emphasis {
+        border-color: var(--signal);
+        color: var(--signal);
+      }
+
+      .lane-node b,
+      .lane-node span {
+        display: block;
+      }
+
+      .lane-node b {
+        font-size: 17px;
+        line-height: 1.35;
+      }
+
+      .lane-node span {
+        margin-top: 7px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .responsibility-strip {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr 1fr 1fr;
+        margin-top: 19px;
+        border-top: 1px solid var(--rule);
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .responsibility-strip span {
+        padding: 10px 12px;
+        border-right: 1px solid var(--rule);
+        color: var(--muted);
+        font: 600 14px/1.3 var(--font-mono);
+        text-align: center;
+      }
+
+      .responsibility-strip span:last-child {
+        border-right: 0;
+      }
+
+      .selection-layout {
+        display: grid;
+        grid-template-columns: 0.72fr 1.28fr;
+        gap: 62px;
+        margin-top: 35px;
+      }
+
+      .selection-brief {
+        padding-top: 14px;
+        border-top: 3px solid var(--ink);
+      }
+
+      .selection-brief h2 {
+        margin: 0;
+        font-size: 25px;
+        line-height: 1.35;
+      }
+
+      .selection-brief p {
+        margin: 16px 0 0;
+        color: var(--muted);
+        font-size: 19px;
+        line-height: 1.6;
+      }
+
+      .selection-test {
+        margin-top: 30px;
+        padding: 18px 0;
+        border-top: 1px solid var(--rule);
+        border-bottom: 1px solid var(--rule);
+        color: var(--signal);
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1.45;
+      }
+
+      .model-list {
+        border-top: 3px solid var(--ink);
+      }
+
+      .model-row {
+        display: grid;
+        grid-template-columns: 54px minmax(0, 1fr) 150px;
+        gap: 15px;
+        align-items: center;
+        min-height: 70px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .model-row > span:first-child {
+        color: var(--muted);
+        font: 600 14px/1 var(--font-mono);
+      }
+
+      .model-row b {
+        font: 600 19px/1.35 var(--font-mono);
+        overflow-wrap: anywhere;
+      }
+
+      .model-row em {
+        color: var(--muted);
+        font-size: 16px;
+        font-style: normal;
+        text-align: right;
+      }
+
+      .model-row.selected {
+        min-height: 96px;
+        border-top: 4px solid var(--signal);
+        border-bottom: 4px solid var(--signal);
+        color: var(--signal);
+      }
+
+      .model-row.selected em {
+        color: var(--signal);
+        font-weight: 700;
+      }
+
+      .selection-result {
+        margin: 19px 0 0;
+        color: var(--ink-2);
+        font-size: 18px;
+        line-height: 1.55;
+      }
+
+      .capacity-layout {
+        margin-top: 34px;
+      }
+
+      .capacity-line {
+        display: grid;
+        grid-template-columns: 1fr 110px 1fr;
+        align-items: end;
+        padding: 18px 0 23px;
+        border-top: 3px solid var(--ink);
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .capacity-item b,
+      .capacity-item span {
+        display: block;
+      }
+
+      .capacity-item b {
+        font: 700 55px/1 var(--font-mono);
+        letter-spacing: -0.05em;
+      }
+
+      .capacity-item span {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 17px;
+      }
+
+      .capacity-item:last-child {
+        text-align: right;
+      }
+
+      .capacity-vs {
+        align-self: center;
+        color: var(--signal);
+        font: 700 38px/1 var(--font-mono);
+        text-align: center;
+      }
+
+      .capacity-note {
+        margin: 13px 0 0;
+        color: var(--muted);
+        font-size: 17px;
+        text-align: center;
+      }
+
+      .quantization-split {
+        display: grid;
+        grid-template-columns: 0.78fr 1.22fr;
+        gap: 48px;
+        margin-top: 28px;
+      }
+
+      .rejected-path,
+      .selected-path {
+        padding-top: 14px;
+        border-top: 3px solid var(--rule-strong);
+      }
+
+      .selected-path {
+        border-color: var(--signal);
+      }
+
+      .rejected-path h2,
+      .selected-path h2 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .rejected-path p,
+      .selected-path p {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.5;
+      }
+
+      .module-map {
+        display: grid;
+        grid-template-columns: 0.82fr 1.18fr;
+        margin-top: 14px;
+        border-top: 1px solid var(--rule);
+      }
+
+      .module-map div {
+        min-height: 78px;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .module-map div + div {
+        border-left: 1px solid var(--rule);
+      }
+
+      .module-map b,
+      .module-map span {
+        display: block;
+      }
+
+      .module-map b {
+        color: var(--signal);
+        font: 700 18px/1.3 var(--font-mono);
+      }
+
+      .module-map span {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.4;
+      }
+
+      .deployment-complete {
+        margin-top: 13px;
+        color: var(--signal);
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .runtime-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 152px minmax(0, 1fr);
+        gap: 24px;
+        align-items: stretch;
+        margin-top: 31px;
+        height: 414px;
+      }
+
+      .runtime-branch {
+        border-top: 3px solid var(--ink);
+      }
+
+      .runtime-branch > h2 {
+        margin: 0;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--rule);
+        font-size: 22px;
+      }
+
+      .runtime-row {
+        display: grid;
+        grid-template-columns: 134px minmax(0, 1fr);
+        gap: 15px;
+        min-height: 103px;
+        padding: 13px 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .runtime-row b {
+        color: var(--signal);
+        font-size: 17px;
+        line-height: 1.35;
+      }
+
+      .runtime-row span {
+        display: block;
+        font: 600 16px/1.35 var(--font-mono);
+        overflow-wrap: anywhere;
+      }
+
+      .runtime-row small {
+        display: block;
+        margin-top: 5px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.35;
+      }
+
+      .runtime-core {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        background: var(--dark);
+        color: var(--white);
+        text-align: center;
+      }
+
+      .runtime-core b {
+        font: 700 20px/1.25 var(--font-mono);
+      }
+
+      .runtime-core span {
+        margin-top: 16px;
+        color: var(--dark-muted);
+        font-size: 15px;
+        line-height: 1.55;
+      }
+
+      .control-stack {
+        margin-top: 28px;
+        border-top: 3px solid var(--ink);
+      }
+
+      .control-band {
+        display: grid;
+        grid-template-columns: 165px minmax(0, 1fr);
+        gap: 22px;
+        align-items: center;
+        min-height: 122px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .control-band h2 {
+        margin: 0;
+        color: var(--signal);
+        font-size: 20px;
+        line-height: 1.35;
+      }
+
+      .step-flow {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 18px;
+        align-items: center;
+      }
+
+      .step-flow div {
+        position: relative;
+        min-height: 68px;
+        padding: 10px 7px;
+        border-top: 2px solid var(--rule-strong);
+        border-bottom: 2px solid var(--rule-strong);
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.35;
+        text-align: center;
+      }
+
+      .step-flow div + div::before {
+        content: "";
+        position: absolute;
+        top: 31px;
+        left: -18px;
+        width: 18px;
+        height: 2px;
+        background: var(--rule-strong);
+      }
+
+      .code-pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 34px;
+        margin-top: 23px;
+      }
+
+      .code-sheet {
+        padding-top: 11px;
+        border-top: 3px solid var(--ink);
+      }
+
+      .code-sheet figcaption {
+        color: var(--muted);
+        font: 600 13px/1.35 var(--font-mono);
+      }
+
+      .code-sheet pre {
+        margin: 10px 0 0;
+        white-space: pre-wrap;
+        color: var(--ink-2);
+        font: 500 15px/1.45 var(--font-mono);
+      }
+
+      .hard-stop {
+        margin-top: 16px;
+        padding: 12px 0;
+        border-top: 1px solid var(--rule);
+        border-bottom: 1px solid var(--rule);
+        color: var(--signal);
+        font-size: 17px;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .lifecycle .control-band {
+        min-height: 104px;
+      }
+
+      .lifecycle .step-flow div {
+        min-height: 58px;
+        padding: 8px 7px;
+        font-size: 15px;
+      }
+
+      .lifecycle .step-flow div + div::before {
+        top: 27px;
+      }
+
+      .lifecycle .code-pair {
+        margin-top: 16px;
+      }
+
+      .lifecycle .code-sheet pre {
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .lifecycle .hard-stop {
+        margin-top: 9px;
+        padding: 8px 0;
+        font-size: 15px;
+      }
+
+      .compat-layout {
+        display: grid;
+        grid-template-columns: 1.03fr 0.97fr;
+        gap: 52px;
+        margin-top: 30px;
+      }
+
+      .decision-tree {
+        border-top: 3px solid var(--ink);
+      }
+
+      .decision-root {
+        padding: 16px 0;
+        border-bottom: 1px solid var(--rule);
+        font: 700 20px/1.35 var(--font-mono);
+      }
+
+      .decision-path {
+        display: grid;
+        grid-template-columns: 200px minmax(0, 1fr);
+        gap: 20px;
+        min-height: 88px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .decision-path b {
+        color: var(--signal);
+        font: 700 17px/1.35 var(--font-mono);
+      }
+
+      .decision-path p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.45;
+      }
+
+      .decision-path.rejected b {
+        color: var(--muted);
+        text-decoration: line-through;
+        text-decoration-thickness: 1px;
+      }
+
+      .compat-evidence {
+        padding-top: 12px;
+        border-top: 3px solid var(--signal);
+      }
+
+      .compat-evidence h2 {
+        margin: 0;
+        font-size: 21px;
+      }
+
+      .compat-evidence pre {
+        margin: 13px 0 0;
+        padding: 15px 17px;
+        border-top: 1px solid var(--rule);
+        border-bottom: 1px solid var(--rule);
+        background: var(--paper-2);
+        color: var(--ink-2);
+        white-space: pre-wrap;
+        font: 500 13px/1.5 var(--font-mono);
+      }
+
+      .execution-notes {
+        margin: 17px 0 0;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.55;
+      }
+
+      .readiness-layout {
+        display: grid;
+        grid-template-columns: 0.82fr 1.18fr;
+        gap: 55px;
+        margin-top: 31px;
+      }
+
+      .readiness-ladder {
+        border-top: 3px solid var(--ink);
+      }
+
+      .readiness-step {
+        display: grid;
+        grid-template-columns: 164px minmax(0, 1fr);
+        gap: 20px;
+        align-items: center;
+        min-height: 71px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .readiness-step b {
+        color: var(--signal);
+        font: 700 18px/1.3 var(--font-mono);
+      }
+
+      .readiness-step span {
+        color: var(--ink-2);
+        font-size: 17px;
+        line-height: 1.4;
+      }
+
+      .integrity-sheet {
+        padding-top: 13px;
+        border-top: 3px solid var(--signal);
+      }
+
+      .integrity-sheet h2 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .integrity-sheet p {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.55;
+      }
+
+      .integrity-sheet pre {
+        margin: 18px 0 0;
+        padding: 17px 18px;
+        background: var(--paper-2);
+        white-space: pre-wrap;
+        font: 500 13px/1.52 var(--font-mono);
+      }
+
+      .release-line {
+        margin-top: 18px;
+        padding-top: 14px;
+        border-top: 1px solid var(--rule);
+        color: var(--signal);
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1.45;
+      }
+
+      .gateway-layout {
+        display: grid;
+        grid-template-columns: 1.04fr 0.96fr;
+        gap: 56px;
+        margin-top: 34px;
+      }
+
+      .gateway-flow {
+        border-top: 3px solid var(--ink);
+      }
+
+      .gateway-stage {
+        display: grid;
+        grid-template-columns: 118px minmax(0, 1fr);
+        gap: 20px;
+        align-items: center;
+        min-height: 70px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .gateway-stage b {
+        color: var(--signal);
+        font: 700 16px/1.35 var(--font-mono);
+      }
+
+      .gateway-stage span {
+        font-size: 18px;
+        line-height: 1.4;
+      }
+
+      .policy-table {
+        width: 100%;
+        border-collapse: collapse;
+        border-top: 3px solid var(--signal);
+      }
+
+      .policy-table th,
+      .policy-table td {
+        padding: 15px 12px;
+        border-bottom: 1px solid var(--rule);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .policy-table th {
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .policy-table td {
+        font-size: 18px;
+        line-height: 1.45;
+      }
+
+      .policy-table td:nth-child(2) {
+        color: var(--signal);
+        font: 700 19px/1.4 var(--font-mono);
+      }
+
+      .policy-note {
+        margin: 17px 0 0;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.55;
+      }
+
+      .approval-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+        gap: 43px;
+        margin-top: 28px;
+      }
+
+      .approval-copy {
+        border-top: 3px solid var(--ink);
+      }
+
+      .approval-step {
+        padding: 13px 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .approval-step b,
+      .approval-step span {
+        display: block;
+      }
+
+      .approval-step b {
+        color: var(--signal);
+        font: 700 16px/1.3 var(--font-mono);
+      }
+
+      .approval-step span {
+        margin-top: 5px;
+        color: var(--ink-2);
+        font-size: 16px;
+        line-height: 1.38;
+      }
+
+      .approval-principle {
+        margin: 16px 0 0;
+        color: var(--signal);
+        font: 700 17px/1.5 var(--font-mono);
+      }
+
+      .approval-figure {
+        margin: 0;
+      }
+
+      .approval-figure img {
+        display: block;
+        width: 100%;
+        height: 416px;
+        object-fit: cover;
+        object-position: right center;
+        border: 1px solid var(--rule-strong);
+      }
+
+      .approval-figure figcaption {
+        margin-top: 9px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .evidence-ledger {
+        width: 100%;
+        margin-top: 29px;
+        border-collapse: collapse;
+        border-top: 3px solid var(--ink);
+      }
+
+      .evidence-ledger th,
+      .evidence-ledger td {
+        padding: 11px 13px;
+        border-bottom: 1px solid var(--rule);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .evidence-ledger th {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .evidence-ledger td {
+        font-size: 15px;
+        line-height: 1.4;
+      }
+
+      .evidence-ledger td:first-child {
+        width: 110px;
+        color: var(--signal);
+        font-weight: 700;
+      }
+
+      .evidence-ledger td:nth-child(2) {
+        width: 255px;
+        font-weight: 700;
+      }
+
+      .evidence-ledger td:last-child {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 13px;
+        overflow-wrap: anywhere;
+      }
+
+      .closing-statement {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 48px;
+        align-items: end;
+        margin-top: 18px;
+      }
+
+      .closing-statement p {
+        margin: 0;
+        font-size: 21px;
+        font-weight: 700;
+        line-height: 1.5;
+      }
+
+      .closing-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+        justify-content: flex-end;
+        font: 600 14px/1.35 var(--font-mono);
+      }
+
+      .evidence-boundary {
+        margin: 13px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+
+      @media screen and (max-width: 760px) {
+        .deck {
+          padding-top: 10px;
+        }
+
+        .slide-shell {
+          margin-bottom: 10px;
+        }
+
+        .deck-controls {
+          max-width: calc(100% - 16px);
+          margin: 8px auto 0;
+          justify-content: center;
+        }
+
+        .deck-controls a {
+          display: none;
+        }
+      }
+
+      @media print {
+        @page {
+          size: 13.333in 7.5in;
+          margin: 0;
+        }
+
+        html,
+        body {
+          width: 13.333in;
+          background: var(--white);
+        }
+
+        .deck-controls {
+          display: none;
+        }
+
+        .deck {
+          padding: 0;
+        }
+
+        .slide-shell,
+        .slide {
+          width: 13.333in;
+          height: 7.5in;
+        }
+
+        .slide-shell {
+          margin: 0;
+          break-after: page;
+          page-break-after: always;
+        }
+
+        .slide-shell:last-child {
+          break-after: auto;
+          page-break-after: auto;
+        }
+
+        .slide {
+          transform: none;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="deck-controls" aria-label="발표자료 제어">
+      <button id="previous" type="button">이전</button>
+      <output id="counter" aria-live="polite">1 / 11</output>
+      <button id="next" type="button">다음</button>
+      <button id="print" type="button">PDF 저장</button>
+      <a href="Park_Jaewoo_AI_Serving_Portfolio_KO_2026.pdf" download>PDF 다운로드</a>
+    </nav>
+
+    <main class="deck" id="deck">
+      <div class="slide-shell">
+        <section class="slide cover dark" aria-labelledby="slide-1-title">
+          <div class="cover-top">
+            <strong>PARK JAEWOO · 박재우</strong>
+            <span>TOSS AI PLATFORM · LLM SERVING · 2026</span>
+          </div>
+          <div class="cover-grid">
+            <div class="cover-copy">
+              <h1 id="slide-1-title">
+                업무에 맞는 모델을 선택하고,<br />
+                GPU 제약 안에서 <span>실제 운영까지</span> 완성했습니다.
+              </h1>
+              <p>
+                모델 선정부터 Runtime·Gateway·Agent Control Plane까지 직접 구축·운영한
+                AI Platform 사례입니다.
+              </p>
+            </div>
+            <div class="cover-rail" aria-label="포트폴리오 범위">
+              <div><b>MODEL</b><span>업무 요청 기반 모델 선정</span></div>
+              <div><b>RUNTIME</b><span>GPU 제약 기반 실행 최적화</span></div>
+              <div><b>PLATFORM</b><span>접근·배포·실행 통제</span></div>
+            </div>
+          </div>
+          <footer class="slide-footer">
+            <span>Software Engineer · 약 4년 · 서울AI재단</span>
+            <span>01 / 11</span>
+          </footer>
+        </section>
+      </div>
+
+      <div class="slide-shell">
+        <section class="slide" aria-labelledby="slide-2-title">
+          <span class="slide-index">PLATFORM MAP</span>
+          <h1 class="slide-title" id="slide-2-title">
+            Cowork LLM과 AI PoC ServingServer를 서로 다른 운영 경로로 분리했습니다.
+          </h1>
+          <div class="lane-map">
+            <div class="lane">
+              <div class="lane-name">
+                <b>사내 Cowork</b>
+                <span>구성원이 공통으로 사용하는 대화형 LLM</span>
+              </div>
+              <div class="lane-track">
+                <div class="lane-node"><b>일반 구성원·인턴</b><span>사용자 유형 분리</span></div>
+                <div class="lane-node emphasis"><b>LiteLLM</b><span>Key · Team · RPM · Budget</span></div>
+                <div class="lane-node"><b>GLM-5.3-Flash</b><span>AWQ W4A16 · vLLM</span></div>
+                <div class="lane-node"><b>A100 40GB × 8</b><span>사내 공용 GPU</span></div>
+              </div>
+            </div>
+            <div class="lane">
+              <div class="lane-name">
+                <b>AI PoC</b>
+                <span>수요기관 요구에 따라 조합되는 이기종 AI 실행 환경</span>
+              </div>
+              <div class="lane-track">
+                <div class="lane-node"><b>수요기관 요구사항</b><span>업무·데이터·제약</span></div>
+                <div class="lane-node emphasis"><b>Agent Harness</b><span>Compiler · Human Approval</span></div>
+                <div class="lane-node"><b>ServingServer</b><span>vLLM + Isolated Sidecars</span></div>
+                <div class="lane-node"><b>RTX PRO 6000</b><span>96GB · 이기종 Runtime</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="responsibility-strip" aria-label="플랫폼 책임 구분">
+            <span>USER / REQUIREMENT</span>
+            <span>GATEWAY / CONTROL</span>
+            <span>SERVING PLANE</span>
+            <span>GPU RESOURCE</span>
+          </div>
+          <footer class="slide-footer">
+            <span>LiteLLM은 Cowork LLM 경로에 적용 · 비정형 모델은 기능별 API와 Service Manifest로 연결</span>
+            <span>02 / 11</span>
+          </footer>
+        </section>
+      </div>
+
+      <div class="slide-shell">
+        <section class="slide" aria-labelledby="slide-3-title">
+          <span class="slide-index">MODEL DECISION</span>
+          <h1 class="slide-title" id="slide-3-title">
+            실제 Cowork 요청에서는 GLM-5.3-Flash가 문제의 핵심을 가장 잘 파악했습니다.
+          </h1>
+          <div class="selection-layout">
+            <div class="selection-brief">
+              <h2>모델 크기가 아니라 업무 적합성에서 시작</h2>
+              <p>
+                다양한 구성원의 요청 의도와 실제 업무 문제를 정확하게 해석하면서,
+                여러 사용자가 공유하는 고정 GPU 환경에서 운영할 수 있어야 했습니다.
+              </p>
+              <div class="selection-test">
+                실제 Cowork 요청 시나리오<br />→ 응답 비교<br />→ 운영 모델 결정
+              </div>
+            </div>
+            <div>
+              <div class="model-list" aria-label="비교 모델과 선정 결과">
+                <div class="model-row">
+                  <span>01</span><b>poolside/Laguna-S-2.1</b><em>비교 후보</em>
+                </div>
+                <div class="model-row">
+                  <span>02</span><b>Solar Open 2</b><em>비교 후보</em>
+                </div>
+                <div class="model-row">
+                  <span>03</span><b>Qwen 27B급</b><em>처리량 대안</em>
+                </div>
+                <div class="model-row selected">
+                  <span>04</span><b>GLM-5.3-Flash</b><em>최종 선정</em>
+                </div>
+              </div>
+              <p class="selection-result">
+                후보별 임의 점수나 순위를 만들지 않고, 실제 업무 요청에서 의도와 핵심 문제를
+                가장 잘 파악한 모델을 선택했습니다.
+              </p>
+            </div>
+          </div>
+          <footer class="slide-footer">
+            <span>근거 상태 · 모델 비교와 최종 선정은 실제 운영자 확인 범위</span>
+            <span>03 / 11</span>
+          </footer>
+        </section>
+      </div>
+
+      <div class="slide-shell">
+        <section class="slide" aria-labelledby="slide-4-title">
+          <span class="slide-index">MODEL DEPLOYMENT</span>
+          <h1 class="slide-title" id="slide-4-title">
+            328GB FP8를 그대로 싣는 대신 AWQ W4A16으로 A100 배포를 성립시켰습니다.
+          </h1>
+          <div class="capacity-layout">
+            <div class="capacity-line" aria-label="체크포인트와 GPU 명목 용량 비교">
+              <div class="capacity-item">
+                <b>328 GB</b><span>GLM-5.3-Flash 공식 FP8 저장소</span>
+              </div>
+              <div class="capacity-vs">&gt;</div>
+              <div class="capacity-item">
+                <b>320 GB</b><span>A100 40GB × 8 명목 합계</span>
+              </div>
+            </div>
+            <p class="capacity-note">
+              가중치뿐 아니라 Runtime·CUDA Graph·KV Cache가 사용할 메모리 여유가 필요했습니다.
+            </p>
+            <div class="quantization-split">
+              <div class="rejected-path">
+                <h2>검토 후 제외 · 공식 FP8 그대로 적재</h2>
+                <p>
+                  약 320B 전체·18B 활성 파라미터 모델의 가중치만으로도 운영 여유를 확보하기
+                  어려웠습니다.
+                </p>
+              </div>
+              <div class="selected-path">
+                <h2>최종 선택 · 커뮤니티 AWQ W4A16 체크포인트</h2>
+                <div class="module-map">
+                  <div><b>W4 · INT4</b><span>Routed MoE Expert 가중치</span></div>
+                  <div><b>A16 · BF16 유지</b><span>Activation · Attention · Router · Shared Expert 등 주요 경로</span></div>
+                </div>
+                <p class="deployment-complete">A100 기반 vLLM 최종 배포 완료</p>
+              </div>
+            </div>
+          </div>
+          <footer class="slide-footer">
+            <span>zai-org/GLM-5.3-Flash · wtdcode/GLM-5.3-Flash-AWQ-W4A16</span>
+            <span>04 / 11</span>
+          </footer>
+        </section>
+      </div>
+
+      <div class="slide-shell">
+        <section class="slide" aria-labelledby="slide-5-title">
+          <span class="slide-index">HETEROGENEOUS RUNTIME</span>
+          <h1 class="slide-title" id="slide-5-title">
+            RTX PRO 6000 한 대에서 모델 특성에 따라 vLLM과 격리형 Sidecar를 분리했습니다.
+          </h1>
+          <div class="runtime-layout">
+            <div class="runtime-branch">
+              <h2>vLLM 실행 계층</h2>
+              <div class="runtime-row">
+                <b>Tiered LLM</b>
+                <div><span>Qwen · Gemma 4개 Tier</span><small>요청 시 Lazy Loading</small></div>
+              </div>
+              <div class="runtime-row">
+                <b>문서 OCR</b>
+                <div><span>zai-org/GLM-OCR</span><small>Multimodal Chat · FA2 · BF16</small></div>
+              </div>
+              <div class="runtime-row">
+                <b>Embedding</b>
+                <div><span>Jina Embeddings v5 4종</span><small>Retrieval · Clustering · Matching · Classification</small></div>
+              </div>
+            </div>
+            <div class="runtime-core">
+              <b>Serving<br />Server</b>
+              <span>FastAPI<br />기능별 API<br />Service Manifest</span>
+            </div>
+            <div class="runtime-branch">
+              <h2>격리형 Sidecar</h2>
+              <div class="runtime-row">
+                <b>Vision</b>
+                <div><span>LocateAnything-3B</span><small>Bounded Queue · Microbatch</small></div>
+              </div>
+              <div class="runtime-row">
+                <b>STT</b>
+                <div><span>Nemotron ASR 0.6B</span><small>Dynamic Microbatch · Singleflight</small></div>
+              </div>
+              <div class="runtime-row">
+                <b>Video</b>
+                <div><span>VideoChat3-4B</span><small>단일 GPU용 요청 제한 계약</small></div>
+              </div>
+            </div>
+          </div>
+          <footer class="slide-footer">
+            <span>실제 구현 확인 · C:/work/projects/AIOps/ServingServer</span>
+            <span>05 / 11</span>
+          </footer>
+        </section>
+      </div>
+
+      <div class="slide-shell">
+        <section class="slide lifecycle" aria-labelledby="slide-6-title">
+          <span class="slide-index">GPU LIFECYCLE</span>
+          <h1 class="slide-title" id="slide-6-title">
+            Lazy Loading·GPU Lease로 공유 GPU의 경합과 모델 전환을 통제했습니다.
+          </h1>
+          <div class="control-stack">
+            <div class="control-band">
+              <h2>LLM Tier<br />수명주기</h2>
+              <div class="step-flow">
+                <div>Tier 요청</div>
+                <div>Load 요청 병합</div>
+                <div>in-flight pin</div>
+                <div>최대 120초 Drain</div>
+                <div>Tier 교체</div>
+              </div>
+            </div>
+            <div class="control-band">
+              <h2>Sidecar<br />스케줄링</h2>
+              <div class="step-flow">
+                <div>Bounded Admission</div>
+                <div>Singleflight</div>
+                <div>Microbatch</div>
+                <div>Shared GPU Lease</div>
+                <div>Sync · Memory Release</div>
+              </div>
+            </div>
+          </div>
+          <div class="code-pair">
+            <figure class="code-sheet">
+              <figcaption>llm_loader.py:149–180 · Load deduplication</figcaption>
+              <pre>task = self._loading_tasks.get(normalized)
+if task is None:
+    task = asyncio.create_task(
+        self._background_load(normalized)
+    )</pre>
+            </figure>
+            <figure class="code-sheet">
+              <figcaption>llm_loader.py:513–525 · In-flight drain</figcaption>
+              <pre>drain_deadline = asyncio.get_running_loop().time() + _TIER_DRAIN_TIMEOUT_S
+while self._tier_inflight.get(tier, 0) &gt; 0:
+    if asyncio.get_running_loop().time() &gt;= drain_deadline:
+        break</pre>
+            </figure>
+          </div>
+          <p class="hard-stop">사용할 수 없는 Tier를 다른 모델로 조용히 대체하지 않고 명시적인 실패를 반환합니다.</p>
+          <footer class="slide-footer">
+            <span>ServingServer/src/loaders/llm_loader.py · tests/test_sidecar_gpu_scheduling_contract.py</span>
+            <span>06 / 11</span>
+          </footer>
+        </section>
+      </div>
+
+      <div class="slide-shell">
+        <section class="slide" aria-labelledby="slide-7-title">
+          <span class="slide-index">RUNTIME COMPATIBILITY</span>
+          <h1 class="slide-title" id="slide-7-title">
+            최신 Backend보다 현재 GPU·모델 조합에서 검증 가능한 실행 계약을 우선했습니다.
+          </h1>
+          <div class="compat-layout">
+            <div class="decision-tree">
+              <div class="decision-root">RTX PRO 6000 · SM120 · vLLM 0.26</div>
+              <div class="decision-path rejected">
+                <b>FA4 + FP8 KV</b>
+                <p>해당 배포 조합에서 운영 호환성을 확보하지 못해 프로덕션 경로에서 제외</p>
+              </div>
+              <div class="decision-path">
+                <b>Generation</b>
+                <p>TRITON_ATTN · FP8 E4M3 KV · Prefix Caching · Chunked Prefill · O2/CUDA Graph</p>
+              </div>
+              <div class="decision-path">
+                <b>OCR · Jina</b>
+                <p>FlashAttention 2 · BF16 중심 경로로 분리</p>
+              </div>
+            </div>
+            <div class="compat-evidence">
+              <h2>실행 계약 테스트</h2>
+              <pre>assert _arg_value(command, "--attention-backend") == "TRITON_ATTN"
+assert _arg_value(command, "--kv-cache-dtype") == "fp8_e4m3"
+assert _arg_value(command, "--optimization-level") == "2"
+assert "--enable-chunked-prefill" in command
+assert "--enable-prefix-caching" in command</pre>
+              <p class="execution-notes">
+                모델별로 Attention Backend와 KV Cache 정밀도를 분리하고, 설정이 바뀌면 테스트가
+                실패하도록 계약을 고정했습니다.
+              </p>
+            </div>
+          </div>
+          <footer class="slide-footer">
+            <span>TRITON_ATTN은 vLLM Attention Backend이며 NVIDIA Triton Inference Server가 아님</span>
+            <span>07 / 11</span>
+          </footer>
+        </section>
+      </div>
+
+      <div class="slide-shell">
+        <section class="slide" aria-labelledby="slide-8-title">
+          <span class="slide-index">DEPLOYMENT CONTRACT</span>
+          <h1 class="slide-title" id="slide-8-title">
+            프로세스 생존과 실제 요청 준비 상태, 배포 무결성을 서로 다른 계약으로 분리했습니다.
+          </h1>
+          <div class="readiness-layout">
+            <div class="readiness-ladder" aria-label="상태 확인 단계">
+              <div class="readiness-step"><b>/live</b><span>프로세스가 살아 있는가</span></div>
+              <div class="readiness-step"><b>/health</b><span>모델과 시작 상태가 정상인가</span></div>
+              <div class="readiness-step"><b>/ready</b><span>지금 요청을 처리할 수 있는가</span></div>
+              <div class="readiness-step"><b>Smoke Request</b><span>Vision·STT가 실제 추론까지 완료하는가</span></div>
+              <div class="readiness-step"><b>Base Image Gate</b><span>CUDA 민감 의존성이 교체되지 않았는가</span></div>
+            </div>
+            <div class="integrity-sheet">
+              <h2>Service Manifest가 실행 가능 범위를 명시</h2>
+              <p>
+                모델 ID, 기능, 입력 형식과 한계를 외부 계약으로 제공하고 Canonical SHA-256으로
+                Manifest 전체의 무결성을 확인합니다.
+              </p>
+              <pre>payload: dict[str, Any] = {
+  "schema_name": "ServingServiceManifest",
+  "profiles": profiles,
+  "operation_contract": serving_operation_contract_snapshot(),
+}
+payload["manifest_hash"] = _manifest_hash(payload)</pre>
+              <div class="release-line">
+                CUDA·PyTorch·vLLM·FlashAttention·FlashInfer가 Base Image 계약과 달라지면 Build를 차단
+              </div>
+            </div>
+          </div>
+          <footer class="slide-footer">
+            <span>ServingServer/src/api/service_manifest.py · tests/test_service_manifest_contract.py</span>
+            <span>08 / 11</span>
+          </footer>
+        </section>
+      </div>
+
+      <div class="slide-shell">
+        <section class="slide" aria-labelledby="slide-9-title">
+          <span class="slide-index">AI GATEWAY</span>
+          <h1 class="slide-title" id="slide-9-title">
+            LiteLLM으로 사용자별 접근·호출량·월 예산을 운영 정책으로 만들었습니다.
+          </h1>
+          <div class="gateway-layout">
+            <div class="gateway-flow" aria-label="LiteLLM 운영 흐름">
+              <div class="gateway-stage"><b>API KEY</b><span>사용자별 접근 키 발급</span></div>
+              <div class="gateway-stage"><b>TEAM / GROUP</b><span>조직과 사용자 유형 단위 관리</span></div>
+              <div class="gateway-stage"><b>RATE / BUDGET</b><span>분당 호출 수와 월 예산 정책 적용</span></div>
+              <div class="gateway-stage"><b>USAGE</b><span>사용량과 Token 소비량 측정</span></div>
+              <div class="gateway-stage"><b>COST ESTIMATE</b><span>모델별 Token 가격으로 외부 API 비용 환산</span></div>
+            </div>
+            <div>
+              <table class="policy-table">
+                <thead>
+                  <tr><th>사용자 범위</th><th>호출 정책</th><th>비용·Token 정책</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>일반 구성원</td><td>120 RPM</td><td>금액·Token 제한 없음</td></tr>
+                  <tr><td>인턴·제한 사용자</td><td>5 RPM</td><td>월 $100 Budget</td></tr>
+                </tbody>
+              </table>
+              <p class="policy-note">
+                내부 청구가 목적이 아니라, 동일 사용량을 외부 API로 전환하거나 병행할 때 필요한
+                운영비를 추정하기 위한 기준입니다.
+              </p>
+            </div>
+          </div>
+          <footer class="slide-footer">
+            <span>운영자 확인 범위 · LiteLLM 정책은 Cowork LLM 경로에 적용</span>
+            <span>09 / 11</span>
+          </footer>
+        </section>
+      </div>
+
+      <div class="slide-shell">
+        <section class="slide" aria-labelledby="slide-10-title">
+          <span class="slide-index">AGENT-TO-RUNTIME</span>
+          <h1 class="slide-title" id="slide-10-title">
+            Agent의 제안은 Compiler와 사람의 승인을 통과한 뒤에만 Runtime으로 전달됩니다.
+          </h1>
+          <div class="approval-layout">
+            <div class="approval-copy">
+              <div class="approval-step"><b>RuntimeGraphIntent</b><span>필요한 모델·처리 노드·데이터 흐름 제안</span></div>
+              <div class="approval-step"><b>Graph Intent Compiler</b><span>입출력 타입·DAG·진입점·모델 준비 상태 검증</span></div>
+              <div class="approval-step"><b>Human Approval</b><span>구성·흐름·산출물·제약을 담당자가 확인</span></div>
+              <div class="approval-step"><b>ServingPipelineSpec</b><span>검증과 승인을 통과한 실행 명세 확정</span></div>
+              <div class="approval-step"><b>Runtime · Playground</b><span>승인된 명세만 모델 실행과 사용자 검증으로 연결</span></div>
+              <p class="approval-principle">Agent proposes.<br />Compiler validates.<br />Runtime executes.</p>
+            </div>
+            <figure class="approval-figure">
+              <img
+                src="../projects/aiops-plan-approval.png"
+                alt="AIOps-PoC에서 담당자가 에이전트 실행 계획을 검토하고 승인하는 실제 화면"
+              />
+              <figcaption>
+                실제 PLAN_APPROVAL 화면 · 사람이 실행 계획을 승인한 경우에만 Runtime 구성 단계로 이동
+              </figcaption>
+            </figure>
+          </div>
+          <footer class="slide-footer">
+            <span>AIOps-PoC · Agent Harness 상위 Control Plane</span>
+            <span>10 / 11</span>
+          </footer>
+        </section>
+      </div>
+
+      <div class="slide-shell">
+        <section class="slide" aria-labelledby="slide-11-title">
+          <span class="slide-index">EVIDENCE INDEX</span>
+          <h1 class="slide-title" id="slide-11-title">
+            모델 선정부터 Runtime·Gateway·Control Plane까지 하나의 운영 문제로 연결했습니다.
+          </h1>
+          <table class="evidence-ledger">
+            <thead>
+              <tr><th>상태</th><th>확인한 내용</th><th>근거</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>구현 확인</td><td>Tier Loader · 120초 Drain</td><td>ServingServer/src/loaders/llm_loader.py</td></tr>
+              <tr><td>구현 확인</td><td>Queue · Microbatch · Singleflight · GPU Lease</td><td>tests/test_sidecar_gpu_scheduling_contract.py</td></tr>
+              <tr><td>구현 확인</td><td>Readiness · Service Manifest</td><td>src/api/service_manifest.py · tests/test_service_manifest_contract.py</td></tr>
+              <tr><td>운영 확인</td><td>GLM AWQ W4A16 배포 · LiteLLM 정책</td><td>운영자 확인 · 사용자별 정책값</td></tr>
+            </tbody>
+          </table>
+          <div class="closing-statement">
+            <p>
+              구조화되지 않은 요구를 모델 선택, GPU Runtime, 접근 정책과 실행 통제로 구체화하고
+              실제 조직이 사용할 수 있는 플랫폼으로 구현했습니다.
+            </p>
+            <div class="closing-links">
+              <a href="mailto:jwoo9928@gmail.com">jwoo9928@gmail.com</a>
+              <a href="https://github.com/jwoo9928">GitHub</a>
+              <a href="https://www.linkedin.com/in/jaewoo9928/">LinkedIn</a>
+              <a href="https://github.com/jwoo9928/portfolio">Portfolio Source</a>
+            </div>
+          </div>
+          <p class="evidence-boundary">
+            공개 범위 · 실제 저장소 구현과 운영 확인값만 사용했으며, 외부 공개가 가능한 TTFT·TPOT·p95·Throughput 수치는 포함하지 않았습니다.
+          </p>
+          <footer class="slide-footer">
+            <span>PARK JAEWOO · AI PLATFORM · LLM SERVING ENGINEER</span>
+            <span>11 / 11</span>
+          </footer>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const shells = [...document.querySelectorAll(".slide-shell")];
+      const counter = document.querySelector("#counter");
+      let activeIndex = 0;
+
+      function resizeDeck() {
+        const scale = Math.min(1, window.innerWidth / 1280);
+        document.documentElement.style.setProperty("--deck-scale", String(scale));
+        document.documentElement.style.setProperty("--scaled-width", `${1280 * scale}px`);
+        document.documentElement.style.setProperty("--scaled-height", `${720 * scale}px`);
+      }
+
+      function goTo(index) {
+        activeIndex = Math.max(0, Math.min(shells.length - 1, index));
+        shells[activeIndex].scrollIntoView({ behavior: "smooth", block: "start" });
+        counter.value = `${activeIndex + 1} / ${shells.length}`;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (!visible) return;
+          activeIndex = shells.indexOf(visible.target);
+          counter.value = `${activeIndex + 1} / ${shells.length}`;
+        },
+        { threshold: [0.45, 0.7] },
+      );
+
+      shells.forEach((shell) => observer.observe(shell));
+      document.querySelector("#previous").addEventListener("click", () => goTo(activeIndex - 1));
+      document.querySelector("#next").addEventListener("click", () => goTo(activeIndex + 1));
+      document.querySelector("#print").addEventListener("click", () => window.print());
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === "PageDown") goTo(activeIndex + 1);
+        if (event.key === "ArrowLeft" || event.key === "PageUp") goTo(activeIndex - 1);
+        if (event.key === "Home") goTo(0);
+        if (event.key === "End") goTo(shells.length - 1);
+      });
+      window.addEventListener("resize", resizeDeck);
+      resizeDeck();
+    </script>
+  </body>
+</html>

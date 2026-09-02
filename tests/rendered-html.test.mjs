@@ -205,6 +205,45 @@ test("keeps the Serving portfolio readable across Korean copy and long model ide
   assert.doesNotMatch(styles, /transition-all|linear-gradient|radial-gradient/);
 });
 
+test("publishes the AI Serving portfolio as an 11-slide standalone HTML deck and PDF", async () => {
+  const deckPath = new URL(
+    "../public/downloads/Park_Jaewoo_AI_Serving_Portfolio_KO_2026.html",
+    import.meta.url,
+  );
+  const pdfPath = new URL(
+    "../public/downloads/Park_Jaewoo_AI_Serving_Portfolio_KO_2026.pdf",
+    import.meta.url,
+  );
+  const [deck, pdf] = await Promise.all([
+    readFile(deckPath, "utf8"),
+    readFile(pdfPath),
+  ]);
+
+  assert.equal((deck.match(/class="slide-shell"/g) ?? []).length, 11);
+  assert.match(deck, /TOSS AI PLATFORM/);
+  assert.match(deck, /poolside\/Laguna-S-2\.1/);
+  assert.match(deck, /GLM-5\.3-Flash/);
+  assert.match(deck, /AWQ W4A16/);
+  assert.match(deck, /RTX PRO 6000/);
+  assert.match(deck, /LiteLLM/);
+  assert.match(deck, /ServingPipelineSpec/);
+  assert.match(deck, /@page\s*{[^}]*13\.333in 7\.5in/s);
+  assert.doesNotMatch(deck, /대규모 트래픽|장애 RCA/);
+  assert.doesNotMatch(deck, /linear-gradient|radial-gradient/);
+  assert.equal(pdf.subarray(0, 4).toString("ascii"), "%PDF");
+  assert.ok(pdf.length > 500_000, "PDF should include the real approval screen");
+
+  const route = await htmlFor("/ko/serving");
+  assert.match(
+    route,
+    /href="\/downloads\/Park_Jaewoo_AI_Serving_Portfolio_KO_2026\.html"/,
+  );
+  assert.match(
+    route,
+    /href="\/downloads\/Park_Jaewoo_AI_Serving_Portfolio_KO_2026\.pdf"/,
+  );
+});
+
 test("publishes the US resume as a standalone ATS-readable HTML file", async () => {
   const html = await readFile(
     new URL(
